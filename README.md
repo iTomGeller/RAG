@@ -1,7 +1,7 @@
 
 -----
 
-# Gemini Clone 前端项目
+# Qianwen AI 前端项目
 
 这是一个使用 Vue 3 (Composition API) 和 Vite 构建的 Gemini AI 聊天应用的简化前端克隆版本。它旨在展示一个基本的聊天界面，能够与 Google 的 Gemini Pro 模型进行交互，实现提问和接收回答的功能。
 
