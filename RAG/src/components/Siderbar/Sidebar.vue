@@ -2,34 +2,41 @@
   <div class="sidebar">
 
     <div class="top">
-      <img @click="toggleExtended" class="menu" :src="assets.menu_icon" alt="Menu Icon" />
+      <!-- <img @click="toggleExtended" class="menu" :src="assets.menu_icon" alt="Menu Icon" /> -->
+      <el-icon class="menu" :size="iconSize" @click="toggleExtended">
+        <Menu />
+      </el-icon>
 
-      <div @click="newChat()" class="new-chat">
+      <!-- <div @click="newChat()" class="new-chat">
         <img :src="assets.plus_icon" alt="Plus Icon" />
         <p v-if="extended">New Chat</p>
-      </div>
+      </div> -->
 
       <div v-if="extended" class="recent">
         <p class="recent-title">Recent</p>
+
         <div v-for="(item, index) in prevPrompts" :key="index" @click="loadPrompt(item)" class="recent-entry">
-          <el-icon>
+          <el-icon :size="iconSize">
             <ChatSquare />
           </el-icon>
-          <p>{{ item.slice(0, 16) }} ...</p>
+          <p>{{ item.slice(0, 16) }} </p>
         </div>
+
       </div>
 
     </div>
 
     <div class="bottom">
 
-      <div class="bottom-item recent-entry">
+      <!-- 创建新对话 -->
+      <div class="bottom-item recent-entry" @click="handleChat">
         <el-icon :size="iconSize">
           <ChatDotSquare />
         </el-icon>
-        <p v-if="extended">Help</p>
+        <p v-if="extended">New Chat</p>
       </div>
 
+      <!-- 回顾历史 -->
       <div class="bottom-item recent-entry">
         <el-icon :size="iconSize">
           <Clock />
@@ -37,11 +44,21 @@
         <p v-if="extended">Activity</p>
       </div>
 
+      <!-- 设置 -->
       <div class="bottom-item recent-entry">
         <el-icon :size="iconSize">
           <Setting />
         </el-icon>
         <p v-if="extended">Settings</p>
+      </div>
+
+
+      <!-- 知识库 -->
+      <div class="bottom-item recent-entry" @click="handleStore">
+        <el-icon :size="iconSize">
+          <Star />
+        </el-icon>
+        <p v-if="extended">Store</p>
       </div>
 
     </div>
@@ -54,11 +71,17 @@ import { ref, inject } from 'vue'; // Import inject
 import { assets } from '../../assets/assets';
 
 import {
+  Menu,
   ChatSquare,
   ChatDotSquare,
   Clock,
-  Setting
+  Setting,
+  Star
 } from '@element-plus/icons-vue';
+
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const iconSize = 25; // Define icon size
 
@@ -76,6 +99,14 @@ const toggleExtended = () => {
 const loadPrompt = async (prompt) => {
   console.log("点击历史", prompt)
   // 加载往期历史，未实现
+};
+
+const handleChat = () => {
+  router.push('/chat')
+};
+
+const handleStore = () => {
+  router.push('/store')
 };
 </script>
 

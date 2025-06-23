@@ -1,13 +1,23 @@
 <script setup>
 import GeminiProvider from './components/context/GeminiProvider.vue';
 import { RouterView } from 'vue-router'
+import Sidebar from './components/Siderbar/Sidebar.vue';
 </script>
 
 <template>
-  <!-- 这里使用context技术进行上下文共享 -->
-  <GeminiProvider>  
-    <RouterView />
+  <GeminiProvider>
+    <div class="container">
+      <Sidebar />
+      <RouterView />
+    </div>
   </GeminiProvider>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container 
+{
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+</style>

@@ -44,7 +44,7 @@
 
 .sidebar .recent-entry {
     display: flex;
-    align-items: start;
+    align-items: center;
     gap: 10px;
     padding: 10px;
     padding-right: 40px;
@@ -63,6 +63,7 @@
 }
 
 .sidebar .bottom-item {
+    align-items: center;
     padding-right: 10px;
     cursor: pointer;
 }

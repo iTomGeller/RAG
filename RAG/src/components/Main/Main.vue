@@ -1,14 +1,14 @@
 <template>
   <div class="main">
     <div class="nav">
-      <p>Gemini</p>
+      <p>Otter AI</p>
       <img :src="assets.user_icon" alt="User Icon" />
     </div>
 
     <div class="main-container">
       <div v-if="!showResult">
         <div class="greet">
-          <p><span>Hello, human</span></p>
+          <p><span>Hi, man</span></p>
           <p>How can I help you today?</p>
         </div>
         <SuggestCards />
@@ -19,7 +19,8 @@
           <p>{{ recentPrompt }}</p>
         </div>
         <div class="result-data">
-          <img :src="assets.gemini_icon" alt="Gemini Icon" />
+          <!-- <img :src="assets.gemini_icon" alt="Gemini Icon" /> -->
+          <img :src="assets.otter_icon" alt="Otter Icon" />
           <div v-if="loading" class="loader">
             <hr />
             <hr />
@@ -32,13 +33,17 @@
       <div class="main-bottom">
         <div class="search-box">
           <input v-model="input" type="text" placeholder="Search" @keyup.enter="sendButtonVisible && onSent(input)" />
+
           <div>
-            <img :src="assets.gallery_icon" alt="Gallery Icon" />
-            <img v-if="sendButtonVisible" @click="onSent(input)" :src="assets.send_icon" alt="Send Icon"
+            <!-- <img :src="assets.gallery_icon" alt="Gallery Icon" /> -->
+             <FileUploadButton />
+            <img v-if="sendButtonVisible" @click="onSent(input)"
+             :src="assets.send_icon" alt="Send Icon"
               class="send-icon" />
           </div>
+
         </div>
-        <p class="bottom-info">Gemini can make mistakes. Check important info.</p>
+        <p class="bottom-info">Otter AI can make mistakes. Check important info.</p>
       </div>
     </div>
   </div>
@@ -48,6 +53,7 @@
 import { computed, inject } from 'vue'; 
 import { assets } from '@/assets/assets'; 
 import SuggestCards from './SuggestCards.vue'; 
+import FileUploadButton from '../FileUpload/FileUploadButton.vue';
 
 const {
   onSent,
