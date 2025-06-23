@@ -17,6 +17,7 @@
 
 ```bash
 git clone https://github.com/iTomGeller/RAG.git
+git checkout front
 cd RAG
 ```
 
