@@ -17,7 +17,7 @@ coverage
 /cypress/videos/
 /cypress/screenshots/
 
-/src/config/gemini.js
+/src/config/
 
 # Editor directories and files
 .vscode/*

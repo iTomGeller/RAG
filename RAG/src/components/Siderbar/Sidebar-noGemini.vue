@@ -1,3 +1,5 @@
+<!-- 与 Gemini解绑 -->
+
 <template>
   <div class="sidebar">
 
@@ -50,22 +52,21 @@
 
 
 <script setup>
-import { ref, inject } from 'vue'; // Import inject
+import { ref } from 'vue';
 import { assets } from '../../assets/assets';
 
-import {
-  ChatSquare,
-  ChatDotSquare,
-  Clock,
-  Setting
-} from '@element-plus/icons-vue';
+const iconSize = 25
+const onSent = async (prompt) => {
+  console.log('Sending prompt from sidebar:', prompt);
+};
 
-const iconSize = 25; // Define icon size
-
-const {
-  prevPrompts,
-  newChat
-} = inject('geminiContext'); // Destructure the needed properties and methods
+const prevPrompts = ref(['What is a singleton?', 'Explain quantum entanglement', 'Write a short story about AI']);
+const setRecentPrompt = (prompt) => {
+  console.log('Setting recent prompt:', prompt);
+};
+const newChat = () => {
+  console.log('Starting a new chat');
+};
 
 const extended = ref(false);
 
@@ -74,8 +75,8 @@ const toggleExtended = () => {
 };
 
 const loadPrompt = async (prompt) => {
-  console.log("点击历史", prompt)
-  // 加载往期历史，未实现
+  setRecentPrompt(prompt);
+  await onSent(prompt);
 };
 </script>
 

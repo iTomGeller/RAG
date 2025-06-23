@@ -1,11 +1,14 @@
+<!-- 与 Gemini解绑 -->
 <template>
   <div class="main">
+
     <div class="nav">
       <p>Gemini</p>
       <img :src="assets.user_icon" alt="User Icon" />
     </div>
 
     <div class="main-container">
+
       <div v-if="!showResult">
         <div class="greet">
           <p><span>Hello, human</span></p>
@@ -45,21 +48,31 @@
 </template>
 
 <script setup>
-import { computed, inject } from 'vue'; 
-import { assets } from '@/assets/assets'; 
-import SuggestCards from './SuggestCards.vue'; 
+import { ref, computed } from 'vue';
+import { assets } from '@/assets/assets'; // Assuming assets path remains the same
+import SuggestCards from './SuggestCards.vue';
 
-const {
-  onSent,
-  recentPrompt,
-  showResult,
-  resultData,
-  input, 
-  loading
-} = inject('geminiContext');
+const onSent = (value) => {
+  loading.value = true;
+  showResult.value = true;
+  recentPrompt.value = value;
+
+  setTimeout(() => {
+    resultData.value = `This is a simulated response for: <b>${value}</b>. <br><br> Vue is awesome!`;
+    loading.value = false;
+  }, 1500);
+};
+
+const recentPrompt = ref('');
+const showResult = ref(false);
+const resultData = ref('');
+const input = ref('');
+const loading = ref(false);
+
 
 const sendButtonVisible = computed(() => input.value.trim() !== '');
 </script>
+
 
 <style scoped>
 @import './Main.css';
