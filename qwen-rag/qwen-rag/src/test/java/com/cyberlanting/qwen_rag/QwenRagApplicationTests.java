@@ -1,0 +1,13 @@
+package com.cyberlanting.qwen_rag;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class QwenRagApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

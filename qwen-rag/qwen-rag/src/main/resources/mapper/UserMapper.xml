@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyberlanting.qwen_rag.mapper.UserMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into user (username, password, email, avatar_url, created_at, updated_at)
+        values (#{username}, #{password}, #{email}, #{avatarUrl}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <update id="update">
+        update user
+        <set>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+            <if test="avatarUrl != null">avatar_url = #{avatarUrl},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="findUser" resultType="com.cyberlanting.qwen_rag.pojo.entity.User">
+        select * from user
+        <where>
+            <if test="username != null">
+                and username = #{username}
+            </if>
+            <if test="email != null">
+                and email = #{email}
+            </if>
+        </where>
+        order by created_at desc
+    </select>
+
+    <select id="getUserById" resultType="com.cyberlanting.qwen_rag.pojo.entity.User">
+        select * from user where id = #{id}
+    </select>
+
+
+</mapper>
