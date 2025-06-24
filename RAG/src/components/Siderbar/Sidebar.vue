@@ -102,14 +102,14 @@ const loadPrompt = async (prompt) => {
 };
 
 const handleChat = () => {
-  router.push('/chat')
+  router.push('/home/chat')
 };
 
 const handleStore = () => {
-  router.push('/store')
+  router.push('/home/store')
 };
 const handleSettings = () => {
-  router.push('/settings')
+  router.push('/home/settings')
 };
 </script>
 
