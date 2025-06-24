@@ -5,7 +5,7 @@
         <div class="settings-header">
           <h2>主题设置</h2>
         </div>
-        
+
         <!-- 主题切换 -->
         <div class="theme-toggle">
           <div class="theme-switch">
@@ -23,7 +23,7 @@
         <!-- 主题预览 -->
         <div class="theme-preview">
           <h3>主题预览</h3>
-          <div class="preview-container" :class="{ 'dark': isDarkTheme }">
+          <div class="preview-container" :class="{ dark: isDarkTheme }">
             <div class="preview-header">
               <div class="preview-nav">
                 <span>导航栏</span>
@@ -64,75 +64,75 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
-import { Refresh } from '@element-plus/icons-vue';
+import { ref, onMounted } from 'vue'
+import { Refresh } from '@element-plus/icons-vue'
 
 // 主题状态
-const isDarkTheme = ref(false);
-const primaryColor = ref('#409eff');
-const bgOpacity = ref(100);
+const isDarkTheme = ref(false)
+const primaryColor = ref('#409eff')
+const bgOpacity = ref(100)
 
 // 切换主题模式
 const toggleTheme = (val: boolean) => {
-  updateTheme(val);
-  localStorage.setItem('theme', val ? 'dark' : 'light');
-};
+  updateTheme(val)
+  localStorage.setItem('theme', val ? 'dark' : 'light')
+}
 
 // 更新主题
 const updateTheme = (isDark: boolean) => {
-  const root = document.documentElement;
-  
+  const root = document.documentElement
+
   // 设置基础主题变量
   if (isDark) {
-    root.style.setProperty('--el-bg-color', `#141414${getOpacityValue()}`);
-    root.style.setProperty('--el-bg-secondary', '#1f1f1f');
-    root.style.setProperty('--el-text-color-primary', '#e5eaf3');
-    root.style.setProperty('--el-border-color-light', '#434343');
+    root.style.setProperty('--el-bg-color', `#141414${getOpacityValue()}`)
+    root.style.setProperty('--el-bg-secondary', '#1f1f1f')
+    root.style.setProperty('--el-text-color-primary', '#e5eaf3')
+    root.style.setProperty('--el-border-color-light', '#434343')
   } else {
-    root.style.setProperty('--el-bg-color', `#ffffff${getOpacityValue()}`);
-    root.style.setProperty('--el-bg-secondary', '#f5f7fa');
-    root.style.setProperty('--el-text-color-primary', '#303133');
-    root.style.setProperty('--el-border-color-light', '#dcdfe6');
+    root.style.setProperty('--el-bg-color', `#ffffff${getOpacityValue()}`)
+    root.style.setProperty('--el-bg-secondary', '#f5f7fa')
+    root.style.setProperty('--el-text-color-primary', '#303133')
+    root.style.setProperty('--el-border-color-light', '#dcdfe6')
   }
-  
+
   // 应用主色调
-  root.style.setProperty('--el-color-primary', primaryColor.value);
-};
+  root.style.setProperty('--el-color-primary', primaryColor.value)
+}
 
 // 获取背景透明度值
 const getOpacityValue = () => {
-  const opacity = bgOpacity.value / 100;
+  const opacity = bgOpacity.value / 100
   // 转换为十六进制表示（两位）
-  const hex = Math.round(opacity * 255).toString(16);
-  return hex.length === 1 ? '0' + hex : hex;
-};
+  const hex = Math.round(opacity * 255).toString(16)
+  return hex.length === 1 ? '0' + hex : hex
+}
 
 // 更新主色调
 const updatePrimaryColor = (color: string) => {
-  primaryColor.value = color;
-  updateTheme(isDarkTheme.value);
-};
+  primaryColor.value = color
+  updateTheme(isDarkTheme.value)
+}
 
 // 更新背景设置
 const updateBackground = () => {
-  updateTheme(isDarkTheme.value);
-};
+  updateTheme(isDarkTheme.value)
+}
 
 // 重置主题
 const resetTheme = () => {
-  isDarkTheme.value = false;
-  primaryColor.value = '#409eff';
-  bgOpacity.value = 100;
-  updateTheme(false);
-  localStorage.removeItem('theme');
-};
+  isDarkTheme.value = false
+  primaryColor.value = '#409eff'
+  bgOpacity.value = 100
+  updateTheme(false)
+  localStorage.removeItem('theme')
+}
 
 // 组件挂载后检查本地存储的主题设置
 onMounted(() => {
-  const savedTheme = localStorage.getItem('theme') || 'light';
-  isDarkTheme.value = savedTheme === 'dark';
-  updateTheme(isDarkTheme.value);
-});
+  const savedTheme = localStorage.getItem('theme') || 'light'
+  isDarkTheme.value = savedTheme === 'dark'
+  updateTheme(isDarkTheme.value)
+})
 </script>
 
 <style scoped>
@@ -140,6 +140,7 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   padding: 24px;
+  width: 100%;
   min-height: 100vh;
   background-color: var(--el-bg-color);
   transition: background-color 0.3s ease;
@@ -245,6 +246,8 @@ onMounted(() => {
 body {
   background-color: var(--el-bg-color);
   color: var(--el-text-color-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 </style>
