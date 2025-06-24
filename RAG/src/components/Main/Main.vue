@@ -2,8 +2,9 @@
   <div class="main">
     <div class="nav">
       <p>Otter AI</p>
-      <img :src="assets.user_icon" alt="User Icon" />
-    </div>
+      <!-- User Profile -->
+      <ProfileFloating />
+   </div>
 
     <div class="main-container">
       <div v-if="!showResult">
@@ -54,6 +55,7 @@ import { computed, inject } from 'vue';
 import { assets } from '@/assets/assets'; 
 import SuggestCards from './SuggestCards.vue'; 
 import FileUploadButton from '../FileUpload/FileUploadButton.vue';
+import ProfileFloating from '../Profile/ProfileFloating.vue';
 
 const {
   onSent,

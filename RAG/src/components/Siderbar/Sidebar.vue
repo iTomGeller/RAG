@@ -45,7 +45,7 @@
       </div>
 
       <!-- 设置 -->
-      <div class="bottom-item recent-entry">
+      <div class="bottom-item recent-entry" @click="handleSettings">
         <el-icon :size="iconSize">
           <Setting />
         </el-icon>
@@ -108,7 +108,11 @@ const handleChat = () => {
 const handleStore = () => {
   router.push('/store')
 };
+const handleSettings = () => {
+  router.push('/settings')
+};
 </script>
+
 
 <style scoped>
 @import './Sidebar.css';

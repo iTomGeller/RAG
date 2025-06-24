@@ -28,7 +28,7 @@
 
 .main .greet {
     margin: 10px 0px;
-    font-size: 45px;
+    font-size: calc(20px + 2vh); /* 根据屏幕高度动态调整字体大小 */
     color: #c4c7c5;
     font-weight: 500;
     padding: 20px;
@@ -43,14 +43,15 @@
 
 .main .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
-    padding: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 自动调整列数并根据屏幕宽度缩放 */
+    gap: calc(10px + 0.5vh); /* 间隙也随高度变化 */
+    padding: 15px;
 }
 
 .main .cards .card {
-    height: 200px;
-    padding: 15px;
+    height: auto;
+    min-height: calc(100px + 5vh); /* 高度随视口高度增长 */
+    padding: 10px;
     background-color: #f0f4f9;
     border-radius: 10px;
     position: relative;
