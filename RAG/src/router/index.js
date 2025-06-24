@@ -1,12 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import StoreView from '../views/StoreView.vue'
+import LoginView from '../views/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
+      name: 'home',
+      component: HomeView,
+    },
+        {
+      path: '/home',
       name: 'home',
       component: HomeView,
     },
@@ -20,7 +26,26 @@ const router = createRouter({
       name: 'store',
       component: StoreView,
     },
+    {
+      path:'/login',
+      name: 'login',
+      component: LoginView,
+    },
   ],
 })
+
+
+//登录拦截
+// router.beforeEach((to, from, next) => {
+//   const isLoggedIn = localStorage.getItem('userInfo')
+//   const publicPages = ['/login']
+//   const isPublic = publicPages.includes(to.path)
+  
+//   if(!isLoggedIn && !isPublic) return next('/login')
+//   if(isLoggedIn && isPublic) return next('/')
+//     next()
+
+
+// })
 
 export default router
