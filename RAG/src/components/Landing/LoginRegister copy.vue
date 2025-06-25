@@ -54,131 +54,116 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from 'vue'
 import { useAuth } from '@/api/useAuth'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router';
 
-export default {
-  setup() {
-    const isLogin = ref(true)
-    const username = ref('')
-    const email = ref('')
-    const password = ref('')
-    const confirmPassword = ref('')
-    const verificationCode = ref('')
-    const isCodeSent = ref(false)
-    const codeCountdown = ref(0)
-    let countdownTimer = null
+const router = useRouter();
 
-    const { loading, errorMessage, login, register, sendVerificationCode } = useAuth()
+const setup = () => {
+  const isLogin = ref(true)
+  const username = ref('')
+  const email = ref('')
+  const password = ref('')
+  const confirmPassword = ref('')
+  const verificationCode = ref('')
+  const isCodeSent = ref(false)
+  const codeCountdown = ref(0)
+  let countdownTimer = null
 
-    //判断邮箱格式是否正确
-    const isEmailValid = computed(() => {
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-      return emailPattern.test(email.value)
-    })
+  const { loading, errorMessage, login, register, sendVerificationCode } = useAuth()
 
-    const toggleForm = () => {
-      isLogin.value = !isLogin.value
-      // Reset field
-      username.value = ''
-      email.value = ''
-      password.value = ''
-      confirmPassword.value = ''
-      verificationCode.value = ''
-      isCodeSent.value = false
-      codeCountdown.value = 0
-      if (countdownTimer) {
-        clearInterval(countdownTimer)
-        countdownTimer = null
-      }
-    }
+  //判断邮箱格式是否正确
+  const isEmailValid = computed(() => {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    return emailPattern.test(email.value)
+  })
 
-    const handleSubmit = async () => {
-      try {
-        if (isLogin.value) {
-          await login({
-            email: email.value,
-            password: password.value,
-          })
-
-          //登陆成功，重定向到主页
-          console.log('登陆成功')
-        } else {
-          console.log('注册')
-          console.log(username.value)
-          console.log(email.value)
-          console.log(password.value)
-          console.log(confirmPassword.value)
-          console.log(verificationCode.value)
-
-
-          await register({
-            username: username.value,
-            email: email.value,
-            password: password.value,
-            confirmPassword: confirmPassword.value,
-            verificationCode: verificationCode.value
-          })
-
-          //注册成功，重定向到登陆页
-          router.push('/login')
-        }
-      } catch (error) {
-        //拦截器错误处理
-        if (error.message) {
-          errorMessage.value = error.message
-        } else {
-          //处理其他错误
-          errorMessage.value = '发生错误，请稍后再试'
-          console.error('发生错误:', error)
-        }
-      }
-    }
-
-    const handleSendCode = async () => {
-      if (!isEmailValid.value) {
-        errorMessage.value = '请输入有效的邮箱地址'
-        return
-      }
-      try {
-        await sendVerificationCode({ email: email.value })
-        isCodeSent.value = true
-        codeCountdown.value = 60
-        errorMessage.value = ''
-
-        countdownTimer = setInterval(() => {
-          if (codeCountdown.value > 0) {
-            codeCountdown.value--
-          } else {
-            clearInterval(countdownTimer)
-            isCodeSent.value = false
-          }
-        }, 1000)
-      } catch (error) {
-        console.error('发送验证码失败', error)
-        errorMessage.value = '发送验证码失败，稍请后再试'
-      }
-    }
-
-    return {
-      isLogin,
-      username,
-      email,
-      password,
-      confirmPassword,
-      verificationCode,
-      isCodeSent,
-      codeCountdown,
-      loading,
-      errorMessage,
-      isEmailValid,
-      toggleForm,
-      handleSubmit,
-      handleSendCode,
+  const toggleForm = () => {
+    isLogin.value = !isLogin.value
+    // Reset field
+    username.value = ''
+    email.value = ''
+    password.value = ''
+    confirmPassword.value = ''
+    verificationCode.value = ''
+    isCodeSent.value = false
+    codeCountdown.value = 0
+    if (countdownTimer) {
+      clearInterval(countdownTimer)
+      countdownTimer = null
     }
   }
+
+  const handleSubmit = async () => {
+    try {
+      if (isLogin.value) {
+        await login({
+          email: email.value,
+          password: password.value,
+        })
+
+        //登陆成功，重定向到主页
+        console.log('登陆成功')
+        router.push('/')
+      } else {
+        console.log('注册')
+        console.log(username.value)
+        console.log(email.value)
+        console.log(password.value)
+        console.log(confirmPassword.value)
+        console.log(verificationCode.value)
+
+
+        await register({
+          username: username.value,
+          email: email.value,
+          password: password.value,
+          confirmPassword: confirmPassword.value,
+          verificationCode: verificationCode.value
+        })
+
+        //注册成功，重定向到登陆页
+        router.push('/login')
+      }
+    } catch (error) {
+      //拦截器错误处理
+      if (error.message) {
+        errorMessage.value = error.message
+      } else {
+        //处理其他错误
+        errorMessage.value = '发生错误，请稍后再试'
+        console.error('发生错误:', error)
+      }
+    }
+  }
+
+  const handleSendCode = async () => {
+    if (!isEmailValid.value) {
+      errorMessage.value = '请输入有效的邮箱地址'
+      return
+    }
+    try {
+      await sendVerificationCode({ email: email.value })
+      isCodeSent.value = true
+      codeCountdown.value = 60
+      errorMessage.value = ''
+
+      countdownTimer = setInterval(() => {
+        if (codeCountdown.value > 0) {
+          codeCountdown.value--
+        } else {
+          clearInterval(countdownTimer)
+          isCodeSent.value = false
+        }
+      }, 1000)
+    } catch (error) {
+      console.error('发送验证码失败', error)
+      errorMessage.value = '发送验证码失败，稍请后再试'
+    }
+  }
+
 }
 </script>
 

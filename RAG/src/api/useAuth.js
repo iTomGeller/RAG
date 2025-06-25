@@ -22,11 +22,14 @@ export function useAuth() {
         loading.value = true
         errorMessage.value = ''
         const response = await auth.login(credentials)
+        console.log(response)
+        console.log(response.data)
 
         //登陆成功，将用户信息存储到本地
-        localStorage.setItem('userInfos', JSON.stringify(response.userVO)) //user value objedt
+        localStorage.setItem('userInfo', JSON.stringify(response.userVO)) //user value objedt
         localStorage.setItem('token', response.token)
         router.push('/home') // 跳转到首页
+        console.log("to home")
     } catch (error) {
         throw error
     } finally {
