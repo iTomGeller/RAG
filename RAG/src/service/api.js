@@ -1,10 +1,8 @@
-// src/utils/api.js
 import axios from 'axios';
 import baseURL from '@/config/baseURL';
-// axios.defaults.withCredentials = true;  // 只有后端设置了 AllowCredentials 才用
 
 const api = axios.create({
-  baseURL: `${baseURL}/api`,
+  baseURL: `${baseURL}`,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
@@ -13,7 +11,7 @@ const api = axios.create({
 
 // 请求拦截器：自动带上 token
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('userToken')
+  const token = localStorage.getItem('token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }

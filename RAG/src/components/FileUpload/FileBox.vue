@@ -4,12 +4,12 @@
             <img :src="iconUrl" :alt="title + ' Icon'" class="wolfram-card__icon" />
         </div>
         <div class="wolfram-card__content">
-            <h3 class="wolfram-card__title">{{ title }}</h3>
+            <h3 class="wolfram-card__title">{{ props.name }}</h3>
             <p class="wolfram-card__description">{{ description }}</p>
         </div>
     </div>
 
-    <el-dialog :before-close="clickCancel" v-model="visiable" :title="title" size='80%' :with-header="false">
+    <el-dialog :before-close="clickCancel" v-model="visiable" :title="props.name" size='80%' :with-header="false">
         <div class="file-cards-grid">
             <FileCard v-for="file in files" :key="file.id" :url="file.url" :fileContent="file.fileContent"
                 :deleteAble="file.deleteAble" />
@@ -21,29 +21,43 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue';
+import { ref, defineProps, computed, onMounted} from 'vue';
 import { assets } from '@/assets/assets';
 import FileCard from './FileCard.vue';
-const name = 'WolframCard';
+import BaseService from '@/service/BaseService';
+import { ElNotification } from 'element-plus';
+
 const props = defineProps({
-    iconUrl: String,
-    title: String,
-    description: String,
-    creator: String
+    id: Number,
+    name: String,
+    type: String,
 });
 
 const visiable = ref(false);
 
-const iconUrl = props.iconUrl || assets.engineer_icon;
+const iconUrl = computed(() => {
+    const iconName = `${props.type}_icon`;
+    // console.log(iconName);
+    return assets[iconName] || assets.Engineer_icon;
+});
 const title = props.title || 'Engineer';
 const description = props.description || 'Engineer is great science';
-const creator = props.creator || 'otter';
 
 
-
+onMounted(async () => {
+    try {
+        await BaseService.getBaseFiles({baseNum: props.id,page: 1, pageSize: 4});
+    } catch (error) {
+        ElNotification.error({
+            message: error.message,
+        });
+    }
+    // console.log(iconUrl.value);
+});
 const handleClick = () => {
     visiable.value = true;
 }
+
 
 
 // --- Data for your file cards ---

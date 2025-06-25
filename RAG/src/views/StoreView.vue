@@ -8,11 +8,11 @@
 
     <div class="file-boxs-grid">
       <FileBox
-        v-for="file in paginatedFiles"
-        :key="file.id"
-        :url="file.url"
-        :fileContent="file.fileContent"
-        :deleteAble="file.deleteAble"
+        v-for="box in boxList"
+        :key="box.id"
+        :id="box.id"
+        :name="box.name"
+        :type="box.type"
       />
     </div>
 
@@ -22,22 +22,25 @@
         @size-change="handleSizeChange"
         :current-page="currentPage"
         :page-size="pageSize"
-        :page-sizes="[4]"      :layout="paginationLayout"
+        :page-sizes="1"      :layout="paginationLayout"
         :total="files.length"  background
       >
       </el-pagination>
     </div>
 
-    <AddKnowledgeBtn />
+    <AddBaseBtn />
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed ,onMounted} from 'vue';
+
 import FileBox from '@/components/FileUpload/FileBox.vue';
-import AddKnowledgeBtn from '@/components/Store/AddKnowledgeBtn.vue';
+import AddBaseBtn from '@/components/Base/AddBaseBtn.vue';
 // 导入 Element Plus 分页组件，确保你在 main.js 或 vite.config.js 中正确引入和注册了 Element Plus
-import { ElPagination } from 'element-plus';
+import { ElPagination,ElNotification } from 'element-plus';
+
+import BaseService from '@/service/BaseService';
 
 const files = ref([
   { id: 1, url: 'https://whu-chat.oss-cn-hangzhou.aliyuncs.com/uploads/cb9702b2-e7c3-48a2-b3c9-7fe2ee875683.docx', fileContent: 'WHU-实验报告 - 项目模板.docx-(38.3 KB)', deleteAble: false },
@@ -55,9 +58,24 @@ const files = ref([
   { id: 13, url: 'https://example.com/research-paper.pdf', fileContent: '研究论文.pdf-(3.1 MB)', deleteAble: false },
 ]);
 
+const boxList = ref([])
+
+onMounted(async () => {
+    try {
+        const files = await BaseService.getUserBaseInfo({page: currentPage.value, pageSize: pageSize.value});
+        boxList.value = files.list;
+        console.log(boxList.value);
+
+    }catch (error) {
+        ElNotification.error({
+            message: error.message,
+        });
+    }
+})
+
 // --- 分页相关状态 ---
 const currentPage = ref(1); // 当前页码，默认为第一页
-const pageSize = 4; // 每页显示的文件数量，固定为4
+const pageSize = ref(4); // 每页显示的文件数量，固定为4
 
 // Element Plus 分页组件的布局
 // 你可以根据需要调整，例如：'total, sizes, prev, pager, next, jumper'

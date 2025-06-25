@@ -12,10 +12,10 @@
                 @processfile="handleUploadSuccess" :max-file-size="'10MB'" />
             <div v-if="fileLink != null" class="result-container">
                 <el-button @click="sendFile(fileLink, fileName, fileSize)" class="button">
-                    {{ "发送" }}
+                    {{ "确认" }}
                 </el-button>
                 <el-button @click="deleteFile(fileLink)" class="button">
-                    {{ "撤销" }}
+                    {{ "取消" }}
                 </el-button>
             </div>
         </div>
@@ -41,7 +41,7 @@ const FilePond = vueFilePond(FilePondPluginFileValidateSize);
 
 
 // 创建 FilePond 组件
-const token = localStorage.getItem('userToken')
+const token = localStorage.getItem('token')
 
 // 文件相关配置
 const fileLink = ref("");
@@ -57,10 +57,10 @@ const pondRef = ref(null)
 // 服务器上传配置
 const serverOptions = {
     process: {
-        url: `${baseURL}/api/fileupload/upload`,
+        url: `${baseURL}/files/upload/1`,
         method: "POST",
         timeout: 7000,
-        withCredentials: false,
+        withCredentials: true,
         headers: {
             Authorization: `Bearer ${token}`, // 如果需要认证
         },
