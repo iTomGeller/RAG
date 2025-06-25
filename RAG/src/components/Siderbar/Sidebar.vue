@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" ref="sidebarRef">
 
     <div class="top">
       <!-- <img @click="toggleExtended" class="menu" :src="assets.menu_icon" alt="Menu Icon" /> -->
@@ -83,20 +83,33 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const iconSize = 25; // Define icon size
 
 const {
   prevPrompts,
   newChat
 } = inject('geminiContext'); // Destructure the needed properties and methods
 
+import { gsap } from 'gsap'; // 引入GSAP
+
+const iconSize = 25;
+
 const extended = ref(false);
+const sidebarRef = ref(null);
 
 const toggleExtended = () => {
   extended.value = !extended.value;
+
+  if (sidebarRef.value) {
+    gsap.to(sidebarRef.value, {
+      duration: 0.5,
+      width: extended.value ? '200px' : '50px',
+      ease: 'power2.out',
+      transformOrigin: 'right center'
+    });
+  }
 };
 
-const loadPrompt = async (prompt) => {
+const loadPrompt = async (prompt) => {  
   console.log("点击历史", prompt)
   // 加载往期历史，未实现
 };
