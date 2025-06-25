@@ -1,11 +1,11 @@
 <template>
   <div class="profile-popover">
-    <el-popover class="popover"  placement="bottom-start" trigger="hover" width="250px" offset="20" >
+    <el-popover popper-class="my-popover"  placement="bottom-start" trigger="click" width="250px" offset="20" >
       <!-- content goes here -->
       <div class="profile-content">
         <!-- user information -->
         <div class="user-info">
-          <img :src="user.avatar" alt="User Avatar" class="avatar" />
+          <img :src="user.avatarUrl" alt="User Avatar" class="avatar" />
           <div class="user-details">
             <h3>{{ user.name }}</h3>
             <p>{{ user.email }}</p>
@@ -21,7 +21,7 @@
 
       <!-- avatar popover -->
       <template #reference>
-        <el-avatar :src="user.avatar" class="home-avatar" />
+        <el-avatar :src="user.avatarUrl" class="home-avatar" />
       </template>
 
     </el-popover>
@@ -29,6 +29,9 @@
 </template>
 
 <script>
+import { getUserInfo } from '@/api/userinfo-api';
+import { onMounted } from 'vue';
+
     export default{
         name : 'ProfileFloating',
         data(){
@@ -41,15 +44,40 @@
             }
         }
     }
+
+// const user = reactive({
+//   name :'11',
+//   email: '22',
+//   avatarUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+// })
+
+// onMounted(() => {
+//   const userInfo = getUserInfo();
+//   if (userInfo) {
+//     user.name = userInfo.name;
+//     user.email = userInfo.email;
+//     user.avatarUrl = userInfo.avatarUrl;  
+//     }
+//     });
+
+
 </script>
 
 
 
-<style scoped>
 
+<!--popper元素挂载在body下，故在scoped区域下无法修改style -->
+<style>
+.my-popover {
+  --el-popover-border-radius: 30px;
+}
+</style>
+
+
+<style scoped>
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 }
 

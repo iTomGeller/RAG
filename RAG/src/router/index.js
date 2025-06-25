@@ -7,12 +7,16 @@ import SettingsView from '../views/SettingsView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'home',
+    //   component: HomeView,
+    // },
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      redirect: '/login',//默认重定向
     },
-        {
+    {
       path: '/home',
       name: 'home',
       component: HomeView,
@@ -28,7 +32,7 @@ const router = createRouter({
       component: StoreView,
     },
     {
-      path:'/login',
+      path: '/login',
       name: 'login',
       component: LoginView,
     },
@@ -41,17 +45,5 @@ const router = createRouter({
 })
 
 
-//登录拦截
-// router.beforeEach((to, from, next) => {
-//   const isLoggedIn = localStorage.getItem('userInfo')
-//   const publicPages = ['/login']
-//   const isPublic = publicPages.includes(to.path)
-  
-//   if(!isLoggedIn && !isPublic) return next('/login')
-//   if(isLoggedIn && isPublic) return next('/')
-//     next()
-
-
-// })
 
 export default router
