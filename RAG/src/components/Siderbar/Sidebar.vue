@@ -101,8 +101,8 @@ const toggleExtended = () => {
 
   if (sidebarRef.value) {
     gsap.to(sidebarRef.value, {
-      duration: 0.5,
-      width: extended.value ? '200px' : '50px',
+      duration: 0.1,
+      width: extended.value ? '200px' : '70px',
       ease: 'power2.out',
       transformOrigin: 'right center'
     });
