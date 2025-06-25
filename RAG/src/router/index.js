@@ -10,7 +10,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: HomeView,
+      component: LoginView,
     },
     {
       path: '/home',
@@ -54,16 +54,22 @@ const router = createRouter({
   ],
 })
 
-//登录拦截
-// router.beforeEach((to, from, next) => {
-//   const isLoggedIn = localStorage.getItem('userInfo')
-//   const publicPages = ['/login']
-//   const isPublic = publicPages.includes(to.path)
+// 登录拦截
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = localStorage.getItem('userInfo')
+  console.log(isLoggedIn)
+  const publicPages = ['/login']
+  const isPublic = publicPages.includes(to.path)
 
-//   if(!isLoggedIn && !isPublic) return next('/login')
-//   if(isLoggedIn && isPublic) return next('/')
-//     next()
+  if(!isLoggedIn && !isPublic)
+    {
+      console.log("拦截！！")
+      return next('/login')
+    } 
 
-// })
+  if(isLoggedIn && isPublic) return next('/')
+    next()
+
+})
 
 export default router
