@@ -17,4 +17,5 @@ public class File {
     private String name;
     private String url;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

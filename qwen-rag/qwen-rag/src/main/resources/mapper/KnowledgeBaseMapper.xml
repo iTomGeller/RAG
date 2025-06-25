@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyberlanting.qwen_rag.mapper.KnowledgeBaseMapper">
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into knowledge_base(user_id, name, type, created_at, updated_at)
+        values (#{userId}, #{name}, #{type}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <select id="isBelongsToUser" resultType="java.lang.Boolean">
+        select exists(select 1 from knowledge_base where id = #{knowledgeBaseId} and user_id = #{userId})
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(*) from knowledge_base where user_id = #{userId}
+    </select>
+    <select id="getKnowledgeBaseList" resultType="com.cyberlanting.qwen_rag.pojo.vo.KnowledgeBaseVO">
+        select id, user_id, name, type, created_at, updated_at from knowledge_base where user_id = #{userId}
+        limit #{offset}, #{pageSize}
+    </select>
+
+
+</mapper>

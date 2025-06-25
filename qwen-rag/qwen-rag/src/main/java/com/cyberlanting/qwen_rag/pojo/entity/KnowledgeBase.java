@@ -15,8 +15,7 @@ public class KnowledgeBase {
     private Long id;
     private Long userId;  // 关联用户ID
     private String name;
-    private String type;
+    private String type; // 'Humanities','Science','Engineering','Health','Social','Default'
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyberlanting.qwen_rag.mapper.FileMapper">
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into file(knowledge_base_id, name, url, created_at, updated_at)
+        values (#{knowledgeBaseId}, #{name}, #{url}, #{createdAt}, #{updatedAt})
+    </insert>
+</mapper>

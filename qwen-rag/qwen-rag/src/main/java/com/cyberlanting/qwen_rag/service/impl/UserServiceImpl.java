@@ -102,8 +102,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public void update(UserDTO userDTO) {
+        Long userId = getUserId();
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
+        user.setId(userId);
         user.setUpdatedAt(LocalDateTime.now());
         userMapper.update(user);
     }
