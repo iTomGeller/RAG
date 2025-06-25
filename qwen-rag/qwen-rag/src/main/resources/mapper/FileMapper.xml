@@ -8,4 +8,13 @@
         insert into file(knowledge_base_id, name, url, created_at, updated_at)
         values (#{knowledgeBaseId}, #{name}, #{url}, #{createdAt}, #{updatedAt})
     </insert>
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(*) from file where knowledge_base_id = #{knowledgeBaseId}
+    </select>
+    <select id="getFileList" resultType="com.cyberlanting.qwen_rag.pojo.vo.FileVO">
+        select id, knowledge_base_id, name, url, created_at, updated_at
+        from file
+        where knowledge_base_id = #{knowledgeBaseId}
+        limit #{offset}, #{pageSize}
+    </select>
 </mapper>

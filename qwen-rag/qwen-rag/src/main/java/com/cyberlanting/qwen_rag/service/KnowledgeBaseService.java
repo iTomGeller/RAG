@@ -14,4 +14,6 @@ public interface KnowledgeBaseService {
     KnowledgeBaseVO createKnowledgeBase(KnowledgeBaseDTO knowledgeBaseDTO);
 
     PageResult getKnowledgeBaseList(Integer page, Integer pageSize);
+
+    void initializeKnowledgeBase(Long userId);
 }

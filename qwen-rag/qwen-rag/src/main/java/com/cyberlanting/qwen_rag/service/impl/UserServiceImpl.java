@@ -5,8 +5,11 @@ import com.cyberlanting.qwen_rag.common.context.BaseContext;
 import com.cyberlanting.qwen_rag.common.exception.*;
 import com.cyberlanting.qwen_rag.common.result.Result;
 import com.cyberlanting.qwen_rag.mapper.UserMapper;
+import com.cyberlanting.qwen_rag.pojo.dto.KnowledgeBaseDTO;
 import com.cyberlanting.qwen_rag.pojo.dto.UserDTO;
+import com.cyberlanting.qwen_rag.pojo.entity.KnowledgeBase;
 import com.cyberlanting.qwen_rag.pojo.entity.User;
+import com.cyberlanting.qwen_rag.service.KnowledgeBaseService;
 import com.cyberlanting.qwen_rag.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +21,7 @@ import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -29,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private KnowledgeBaseService knowledgeBaseService;
 
     /**
      * 用户注册
@@ -55,7 +62,14 @@ public class UserServiceImpl implements UserService {
         String avatarUrl = "https://www.dummyimage.com/600x400/fff/000000&text=" + user.getUsername().charAt(0);
         user.setAvatarUrl(avatarUrl);
         userMapper.save(user);
+        Long userId = user.getId();
+        if (userId == null) {
+            log.info("用户插入失败");
+            throw new UnknownException("未知错误：用户插入失败");
+        }
+        knowledgeBaseService.initializeKnowledgeBase(user.getId());
     }
+
 
     /**
      * 用户登录

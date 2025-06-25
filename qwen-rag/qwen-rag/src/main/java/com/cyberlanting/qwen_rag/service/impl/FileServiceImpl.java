@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -80,12 +81,14 @@ public class FileServiceImpl implements FileService {
             throw new ParamaterErrorException("知识库不存在或不属于该用户");
         }
         Integer total = FileMapper.getTotal(userId, knowledgeBaseId);
-        Integer totalPage = (total - 1) / pageSize + 1;
-        if (page < 1 || page > totalPage) {
+        // 处理total为0的情况
+        Integer totalPage = total == 0 ? 0 : (total - 1) / pageSize + 1;
+        // 当total为0时，只有page=1是合法的（或无数据情况）
+        if (page < 1 || (total > 0 && page > totalPage)) {
             throw new ParamaterErrorException("页码错误");
         }
         Integer offset = (page - 1) * pageSize;
-        List<FileVO> fileList = FileMapper.getFileList(knowledgeBaseId, offset, pageSize);
+        List<FileVO> fileList = total == 0 ? Collections.emptyList() : FileMapper.getFileList(knowledgeBaseId, offset, pageSize);
         return new PageResult(totalPage, total, fileList);
     }
 

@@ -64,13 +64,12 @@ public class EmailServiceImpl implements EmailService {
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"zh-CN\">\n" +
                 "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <meta charset=\"UTF-8\" />\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n" +
                 "    <title>验证函</title>\n" +
                 "    <style>\n" +
                 "        body {\n" +
-                "            font-family: '楷体', serif;\n" +
-                "            font-weight: 700;\n" +
+                "            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n" +
                 "            color: #333;\n" +
                 "            margin: 0;\n" +
                 "            padding: 0;\n" +
@@ -78,84 +77,105 @@ public class EmailServiceImpl implements EmailService {
                 "            justify-content: center;\n" +
                 "            align-items: center;\n" +
                 "            height: 100vh;\n" +
+                "            background: linear-gradient(to right, #eef2f3, #d4e6f1);\n" +
                 "        }\n" +
-                "       .letter {\n" +
+                "\n" +
+                "        .letter {\n" +
                 "            width: 80%;\n" +
-                "            max-width: 800px;\n" +
-                "            background-color: rgba(255, 255, 255, 0.8);\n" +
-                "            border: 2px solid #999;\n" +
-                "            border-radius: 8px;\n" +
-                "            padding: 40px;\n" +
-                "            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n" +
+                "            max-width: 500px;\n" +
+                "            background-color: #ffffff;\n" +
+                "            border: 1px solid #ddd;\n" +
+                "            border-radius: 12px;\n" +
+                "            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);\n" +
+                "            padding-left: 80px;\n" +
+                "            padding-bottom: 40px;\n" +
+                "            padding-right: 80px;\n" +
+                "            padding-top: 40px;\n" +
                 "            position: relative;\n" +
+                "            text-align: left;\n" +
                 "        }\n" +
-                "       .letter::before {\n" +
+                "\n" +
+                "        .letter::before {\n" +
                 "            content: '';\n" +
                 "            position: absolute;\n" +
                 "            top: -10px;\n" +
                 "            left: -10px;\n" +
                 "            right: -10px;\n" +
                 "            bottom: -10px;\n" +
-                "            border: 1px dashed #999;\n" +
+                "            border: 1px dashed #ccc;\n" +
                 "            z-index: -1;\n" +
+                "            border-radius: 12px;\n" +
                 "        }\n" +
-                "       .letter-header {\n" +
-                "            text-align: center;\n" +
-                "            margin-bottom: 30px;\n" +
-                "        }\n" +
-                "       .letter-header h1 {\n" +
-                "            font-size: 36px;\n" +
+                "\n" +
+                "        .letter-header h1 {\n" +
+                "            font-size: 32px;\n" +
                 "            font-weight: bold;\n" +
                 "            margin: 0;\n" +
+                "            color: #2c3e50;\n" +
+                "            text-align: left;\n" +
                 "        }\n" +
-                "       .letter-body {\n" +
-                "            line-height: 1.8;\n" +
-                "            font-size: 20px;\n" +
-                "            text-align: justify;\n" +
+                "\n" +
+                "        .letter-body {\n" +
+                "            font-size: 18px;\n" +
+                "            line-height: 1.6;\n" +
+                "            margin-top: 20px;\n" +
+                "            color: #555;\n" +
+                "            text-align: left;\n" +
                 "        }\n" +
-                "       .code {\n" +
+                "\n" +
+                "        .code-container{\n" +
+                "            text-align: center;\n" +
+                "        }\n" +
+                "\n" +
+                "        .code {\n" +
                 "            font-size: 30px;\n" +
                 "            font-weight: bold;\n" +
-                "            color: #2c3e50;\n" +
-                "            margin: 20px 0 20px 4em; /* 添加 margin-left 实现缩进 */\n" +
-                "            text-align: center;\n" +
-                "            padding: 10px;\n" +
-                "            border: 2px solid #2c3e50;\n" +
+                "            color: #2980b9;\n" +
+                "            margin: 20px auto;\n" +
+                "            padding: 12px 20px;\n" +
+                "            border: 2px solid #2980b9;\n" +
                 "            border-radius: 8px;\n" +
                 "            display: inline-block;\n" +
-                "            background-color: rgba(255, 255, 255, 0.5);\n" +
+                "            background-color: #ecf7ff;\n" +
                 "        }\n" +
-                "       .letter-footer {\n" +
-                "            font-size: 16px;\n" +
+                "\n" +
+                "        .letter-footer {\n" +
+                "            font-size: 14px;\n" +
                 "            font-style: italic;\n" +
+                "            color: #aaa;\n" +
+                "            margin-top: 30px;\n" +
                 "            text-align: center;\n" +
-                "            margin-top: 40px;\n" +
                 "        }\n" +
-                "       .background-img {\n" +
+                "\n" +
+                "        .background-img {\n" +
                 "            position: absolute;\n" +
                 "            top: 0;\n" +
                 "            left: 0;\n" +
                 "            width: 100%;\n" +
                 "            height: 100%;\n" +
                 "            object-fit: cover;\n" +
-                "            z-index: -1;\n" +
+                "            opacity: 0.05;\n" +
+                "            z-index: 0;\n" +
                 "        }\n" +
                 "    </style>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "    <div class=\"letter\">\n" +
-                "        <img class=\"background-img\" src=\"cid:ink\" alt=\"背景图片\">\n" +
                 "        <div class=\"letter-header\">\n" +
                 "            <h1>验证函</h1>\n" +
                 "        </div>\n" +
                 "        <div class=\"letter-body\">\n" +
-                "            <p>阁下台鉴：</p>\n" +
-                "            <p>&emsp;&emsp;您的验证码为：</p>\n" +
-                "            <div class=\"code\">" + authCode + "</div>\n" +
-                "            <p>&emsp;&emsp;有效期5分钟，请及时研磨书写。</p>\n" +
+                "            <p>您好，</p>\n" +
+                "            <p>您正在我们的网站进行注册用户操作，我们向您的邮箱发送了一个验证码以确保是您本人在操作。</p>\n" +
+                "            <p>您的验证码为：</p>\n" +
+                "            <div class=\"code-container\">\n" +
+                "                <div class=\"code\">" + authCode + "</div>\n" +
+                "            </div>\n" +
+                "            <p>请在5分钟内使用，以保证验证码的有效性。</p>\n" +
+                "            <p>此邮件为系统自动发出，请勿回复本邮件。有任何问题，发送邮件至 872556642@qq.com，我们的客户服务团队会及时为您解答。</p>\n" +
                 "        </div>\n" +
                 "        <div class=\"letter-footer\">\n" +
-                "            <p>© 赛博兰亭团队</p>\n" +
+                "            <p>© 2025 OtterAI. All Rights Reserved.</p>\n" +
                 "        </div>\n" +
                 "    </div>\n" +
                 "</body>\n" +

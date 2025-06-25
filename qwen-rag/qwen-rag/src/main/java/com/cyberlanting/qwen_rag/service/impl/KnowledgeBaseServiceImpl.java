@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
@@ -53,12 +55,38 @@ public class KnowledgeBaseServiceImpl implements KnowledgeBaseService {
     public PageResult getKnowledgeBaseList(Integer page, Integer pageSize) {
         Long userId = getUserId();
         Integer total = knowledgeBaseMapper.getTotal(userId);
-        Integer totalPage = (total - 1) / pageSize + 1;
-        if (page < 1 || page > totalPage) {
+        // 处理total为0的情况
+        Integer totalPage = total == 0 ? 0 : (total - 1) / pageSize + 1;
+        // 当total为0时，只有page=1是合法的（或无数据情况）
+        if (page < 1 || (total > 0 && page > totalPage)) {
             throw new ParamaterErrorException("页码错误");
         }
         Integer offset = (page - 1) * pageSize;
-        List<KnowledgeBaseVO> knowledgeBaseList = knowledgeBaseMapper.getKnowledgeBaseList(userId, offset, pageSize);
+        List<KnowledgeBaseVO> knowledgeBaseList = total == 0 ? Collections.emptyList()
+                : knowledgeBaseMapper.getKnowledgeBaseList(userId, offset, pageSize);
         return new PageResult(totalPage, total, knowledgeBaseList);
+    }
+
+    public void initializeKnowledgeBase(Long userId) {
+        // 创建知识库
+        // 知识库名称列表：文科知识库 (Humanities)、理科知识库 (Science)、工科/应用科学知识库 (Engineering)、医学/健康知识库 (Health)、社科知识库 (Social)
+        Map<String, String> knowledgeBaseNameList = Map.of(
+                "Humanities", "文科知识库",
+                "Science", "理科知识库",
+                "Engineering", "工科/应用科学知识库",
+                "Health", "医学/健康知识库",
+                "Social", "社科知识库",
+                "Default", "其他"
+        );
+        for (Map.Entry<String, String> entry : knowledgeBaseNameList.entrySet()) {
+            KnowledgeBase knowledgeBase = KnowledgeBase.builder()
+                    .type(entry.getKey())
+                    .name(entry.getValue())
+                    .userId(userId)
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+            knowledgeBaseMapper.insert(knowledgeBase);
+        }
     }
 }
