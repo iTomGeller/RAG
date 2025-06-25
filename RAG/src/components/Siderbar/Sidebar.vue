@@ -33,7 +33,7 @@
           <ChatDotSquare />
         </el-icon>
         <transition name="fade-slide">
-          <p v-show="extended">新建对话</p>
+          <p class="recent-tag" v-show="extended">新建对话</p>
         </transition>
       </div>
 
@@ -43,7 +43,7 @@
           <Clock />
         </el-icon>
         <transition name="fade-slide">
-          <p v-show="extended">历史对话</p>
+          <p class="recent-tag" v-show="extended">历史对话</p>
         </transition>
       </div>
 
@@ -53,7 +53,7 @@
           <Setting />
         </el-icon>
         <transition name="fade-slide">
-          <p v-show="extended">设置</p>
+          <p class="recent-tag" v-show="extended">设置</p>
         </transition>
       </div>
 
@@ -63,7 +63,7 @@
           <Star />
         </el-icon>
         <transition name="fade-slide">
-          <p v-show="extended">知识库</p>
+          <p class="recent-tag" v-show="extended">知识库</p>
         </transition>
       </div>
     </div>
@@ -121,7 +121,6 @@ const handleSettings = () => {
 
 <style scoped>
 @import './Sidebar.css';
-
 .fade-slide-enter-active {
   opacity: 0;
   transform: translateX(-10px);
@@ -138,5 +137,5 @@ const handleSettings = () => {
 }
 .fade-slide-leave-to {
   opacity: 0;
-}
+} 
 </style>
