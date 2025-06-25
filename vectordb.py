@@ -20,6 +20,6 @@ def query(query, topk = 10) :
     )
     return results
 
-#测试用
-add({"document":"123","metadata":{"title":"say hello","url":"www.baidu.com"}})
-print(query("what about the food?"))
+# #测试用
+# add({"document":"123","metadata":{"title":"say hello","url":"www.baidu.com"}})
+# print(query("what about the food?"))
