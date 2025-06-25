@@ -1,7 +1,9 @@
 <template>
   <Sidebar @update:extended="handleSidebarToggle" />
-  <div class="container" :style="{ marginLeft: sidebarWidth + 'px' }">
-  <router-view />
+  <div class="container">
+    <div class="router-container" :style="{marginLeft: sidebarWidth + 'px'}">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -28,9 +30,10 @@ onMounted(() => {
 
 <style scoped>
 .container {
-  transition: margin-left 0.3s ease; /* 平滑过渡效果 */
-  display: flex;
   height: 100vh;
   width: 100%;
+}
+.router-container {
+  transition: margin-left 0.3s ease; /* 平滑过渡效果 */
 }
 </style>
