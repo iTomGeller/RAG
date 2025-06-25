@@ -34,7 +34,7 @@
 
 <script setup>
 import { assets } from '@/assets/assets';
-import { ref } from 'vue';
+import { ref,defineEmits } from 'vue';
 import BaseService from '@/service/BaseService';
 import { ElNotification } from 'element-plus';
 
@@ -44,6 +44,8 @@ const visiable = ref(false)
 
 const baseName = ref("")
 const baseType = ref()
+
+const emit = defineEmits(['addBaseSuccess'])
 
 const clear = () => {
     baseName.value = ""
@@ -61,7 +63,6 @@ const handleClick = () => {
 }
 
 const handleCheck = async () => {
-    console.log("hello")
     if (!baseName.value || !baseType.value) {
         ElNotification.error({
             message: 'Please fill in all fields',
@@ -77,6 +78,7 @@ const handleCheck = async () => {
         ElNotification.success({
             message: 'Create knowledge base successfully',
         })
+        emit('addBaseSuccess')
         close()
     } catch (error) {
         ElNotification.error({

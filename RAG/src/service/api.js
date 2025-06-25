@@ -25,7 +25,7 @@ api.interceptors.request.use((config) => {
 
 // 响应拦截器
 api.interceptors.response.use((response) => {
-  console.log(response)
+  // console.log(response)
   const { data, status, statusText } = response
 
   if (status != 200) {
