@@ -57,7 +57,10 @@ const router = createRouter({
 // 登录拦截
 router.beforeEach((to, from, next) => {
   const isLoggedIn = localStorage.getItem('userInfo')
+  const token = localStorage.getItem('token')
   console.log(isLoggedIn)
+  console.log(token)
+  
   const publicPages = ['/login']
   const isPublic = publicPages.includes(to.path)
 

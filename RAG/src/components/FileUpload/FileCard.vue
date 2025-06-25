@@ -35,7 +35,6 @@
 </template>
 
 <script setup>
-console.log("hi");
 import { defineProps, ref, computed, onMounted } from 'vue';
 import { Delete } from '@element-plus/icons-vue'
 
@@ -83,7 +82,6 @@ const handleDelete = async () => {
 };
 
 onMounted(() => { 
-console.log("Hello")
 });
 </script>
 

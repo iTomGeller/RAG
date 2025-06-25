@@ -34,7 +34,9 @@
 
 <script setup>
 import { assets } from '@/assets/assets';
-import { ref } from 'vue';
+import { ref,defineEmits } from 'vue';
+import BaseService from '@/service/BaseService';
+import { ElNotification } from 'element-plus';
 
 const iconUrl = assets.new_box_icon
 const title = 'Create Knowledge Base'
@@ -42,6 +44,8 @@ const visiable = ref(false)
 
 const baseName = ref("")
 const baseType = ref()
+
+const emit = defineEmits(['addBaseSuccess'])
 
 const clear = () => {
     baseName.value = ""
@@ -58,9 +62,29 @@ const handleClick = () => {
     visiable.value = true;
 }
 
-const handleCheck = () => {
-    console.log(baseName.value, baseType.value)
-    close()
+const handleCheck = async () => {
+    if (!baseName.value || !baseType.value) {
+        ElNotification.error({
+            message: 'Please fill in all fields',
+        })
+        return
+    }
+
+    try {
+        await BaseService.addBase({
+            name: baseName.value,
+            type: baseType.value
+        })
+        ElNotification.success({
+            message: 'Create knowledge base successfully',
+        })
+        emit('addBaseSuccess')
+        close()
+    } catch (error) {
+        ElNotification.error({
+            message: 'Create knowledge base failed',
+        })
+    }
 }
 
 const handleCancel = () => {

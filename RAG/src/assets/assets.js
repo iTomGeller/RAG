@@ -14,11 +14,11 @@ import code_icon from './code_icon.png'
 import send_icon from './send_icon.png'
 import gemini_icon from './gemini_icon.png'
 import otter_icon from './otter.png'
-import engineer_icon from './box-icons/engineer.png'
-import healthcare_icon from './box-icons/healthcare.png'
-import humanities_icon from './box-icons/humanities.png'
-import science_icon from './box-icons/science.png'
-import social_icon from './box-icons/social.png'
+import Engineer_icon from './box-icons/engineer.png'
+import Health_icon from './box-icons/healthcare.png'
+import Humanities_icon from './box-icons/humanities.png'
+import Science_icon from './box-icons/science.png'
+import Social_icon from './box-icons/social.png'
 import new_box_icon from './box-icons/new-box.png'
 
 export const assets = {
@@ -38,10 +38,10 @@ export const assets = {
     send_icon,
     gemini_icon,
     otter_icon,
-    engineer_icon,
-    healthcare_icon,
-    humanities_icon,
-    science_icon,
-    social_icon,
-    new_box_icon
+    new_box_icon,
+    Engineer_icon,
+    Health_icon,
+    Humanities_icon,
+    Social_icon,
+    Science_icon,
 }
