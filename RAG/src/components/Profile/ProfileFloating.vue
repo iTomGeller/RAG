@@ -1,21 +1,31 @@
 <template>
   <div class="profile-popover">
-    <el-popover popper-class="my-popover"  placement="bottom-start" trigger="click" width="250px" offset="20" >
+    <el-popover
+      popper-class="my-popover"
+      placement="bottom-start"
+      trigger="click"
+      width="250px"
+      offset="20"
+      :popper-style ="{borderRadius: '30px'}"
+    >
       <!-- content goes here -->
       <div class="profile-content">
         <!-- user information -->
         <div class="user-info">
           <img :src="user.avatarUrl" alt="User Avatar" class="avatar" />
           <div class="user-details">
-            <h3>{{ user.name }}</h3>
+            <h3>{{ user.username }}</h3>
             <p>{{ user.email }}</p>
           </div>
         </div>
 
         <!-- user options -->
         <div class="profile-actions">
-          <el-button class="act-btn"  @click="editProfile">Update Avatar</el-button>
-          <el-button class="act-btn"  @click="logout">Logout</el-button>
+          <div class="btn-box">
+          <!-- <el-button class="act-btn" @click="editProfile">Update Avatar</el-button> -->
+          <AvatarUpload />
+          <el-button class="act-btn" @click="logout">退出</el-button>
+          </div>
         </div>
       </div>
 
@@ -23,61 +33,54 @@
       <template #reference>
         <el-avatar :src="user.avatarUrl" class="home-avatar" />
       </template>
-
     </el-popover>
   </div>
 </template>
 
 <script>
-import { getUserInfo } from '@/api/userinfo-api';
-import { onMounted } from 'vue';
+import AvatarUpload from './AvatarUpload.vue';
 
-    export default{
-        name : 'ProfileFloating',
-        data(){
-            return{
-                user:{
-                    name: 'Alex',
-                    email: '123456',
-                    avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-                }
-            }
-        }
+export default {
+  name: 'ProfileFloating',
+  components: {AvatarUpload},
+  data() {
+    return {
+      user: {
+        username: ' ',
+        email: ' ',
+        avatarUrl: ' ',
+      },
     }
-
-// const user = reactive({
-//   name :'11',
-//   email: '22',
-//   avatarUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-// })
-
-// onMounted(() => {
-//   const userInfo = getUserInfo();
-//   if (userInfo) {
-//     user.name = userInfo.name;
-//     user.email = userInfo.email;
-//     user.avatarUrl = userInfo.avatarUrl;  
-//     }
-//     });
-
-
+  },
+  mounted() {
+    const userInfo = localStorage.getItem('userInfo');
+    if (userInfo) {
+      this.user = JSON.parse(userInfo);
+    }
+  },
+  methods: {
+    editProfile() {
+      console.log('edit profile');
+      },
+      logout() {
+        localStorage.removeItem('userInfo');
+        location.reload(); //跳转
+      },
+  }
+}
 </script>
 
-
-
-
 <!--popper元素挂载在body下，故在scoped区域下无法修改style -->
-<style>
-.my-popover {
-  --el-popover-border-radius: 30px;
-}
-</style>
-
 
 <style scoped>
+/* .my-popover {
+  --el-popover-border-radius: 50px;
+} */
+
 .avatar {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
+  border: 0.5px solid rgb(46, 5, 87);
   border-radius: 50%;
 }
 
@@ -85,9 +88,10 @@ import { onMounted } from 'vue';
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 30px;
 }
 
-.user-info{
+.user-info {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -99,23 +103,45 @@ import { onMounted } from 'vue';
   text-align: center;
 }
 
-.profile-actions{
+.profile-actions {
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   align-items: center;
-  gap:10px;
-
+  gap: 10px;
 }
 
-
-.act-btn{
-  width: 150px;
+.btn-box  .act-btn {
+  flex: 1;
+  margin: 0 !important;
+  border: none;
+  
 }
 
 .home-avatar {
   margin-top: 10px;
   width: 40px;
   height: 40px;
+  border: 0.5px solid rgb(46, 5, 87);
   border-radius: 50%;
+  background-color: transparent;
+}
+
+.btn-box {
+  background-color: #f5f5f5;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  width: 210px;
+  gap: 5px solid hsl(0, 7%, 9%);
+}
+
+.act-btn {
+  height: 50px;
+  width: 220px;
+  margin:0 !important;
+  padding: 0 !important;
+ 
+  background-color: transparent;
 }
 </style>

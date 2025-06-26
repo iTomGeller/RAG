@@ -5,7 +5,6 @@ import Sidebar from '@/components/Siderbar/Sidebar.vue';
 
 <template>
   <div class="home">
-   <Sidebar />
     <Main />
   </div>
 </template>

@@ -100,7 +100,6 @@ export default {
 
           //登陆成功，重定向到主页
           console.log('登陆成功')
-          router.push('/home')
         } else {
           console.log('注册')
           console.log(username.value)
