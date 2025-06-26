@@ -4,15 +4,14 @@ import LoginRegister from '@/components/Landing/LoginRegister.vue'
 
 <template>
   <div class="login-view">
-    <LoginRegister />
+      <LoginRegister />
   </div>
 </template>
 
+<script>
+import { assets } from '@/assets/assets';
+</script>
+
 <style scoped>
-/* .login-view {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-} */
+
 </style>

@@ -20,6 +20,7 @@ import Humanities_icon from './box-icons/humanities.png'
 import Science_icon from './box-icons/science.png'
 import Social_icon from './box-icons/social.png'
 import new_box_icon from './box-icons/new-box.png'
+import loginBg from './loginBg.jpg'
 
 export const assets = {
     history_icon,
@@ -44,4 +45,6 @@ export const assets = {
     Humanities_icon,
     Social_icon,
     Science_icon,
+    loginBg,
+    
 }

@@ -3,6 +3,8 @@
     <div class="form-container">
       <h2 class="title">{{ isLogin ? '登陆' : '注册' }}</h2>
       <div class="error" v-if="errorMessage">{{ errorMessage }}</div>
+
+      <!-- 注册页面 -->
       <form @submit.prevent="handleSubmit">
         <template v-if="!isLogin">
           <div class="input-group">
@@ -11,11 +13,12 @@
           </div>
         </template>
 
+        <!-- 邮箱输入框/登录 or 注册 -->
         <div class="input-group">
           <label for="email">邮箱</label>
           <input type="email" id="email" v-model="email" required />
         </div>
-
+        <!-- 邮箱正确，跳出验证码输入框 -->
         <template v-if="!isLogin && isEmailValid">
           <div calss="input-group">
             <label for="verificationCode">验证码</label>
@@ -28,25 +31,23 @@
           </div>
         </template>
 
-        <!-- <template v-if="!isLogin">
-          <div class="input-group">
-            <label for="nickname">昵称</label>
-            <input class="ink-input" type="text" id="nickname" v-model="nickname" required />
-          </div>
-        </template> -->
-
+        <!-- 密码输入框/登录 or 注册 -->
         <div class="input-group">
           <label for="password">密码</label>
           <input class="ink-input" type="password" id="password" v-model="password" required />
         </div>
+
+
         <div class="input-group" v-if="!isLogin">
           <label for="confirmPassword">确认密码</label>
           <input type="password" id="confirmPassword" v-model="confirmPassword" required />
         </div>
-        <button class="ink-button" type="submit" :disabled="loading">
+
+        <button class="ink-button" type="submit" :disabled="loading" @click="handleSubmit">
           {{ loading ? '处理中...' : isLogin ? '开始使用' : '启名' }}
         </button>
       </form>
+
       <p class="toggle-form" @click="toggleForm">
         {{ isLogin ? '没有账号？注册' : '已有账号？登录' }}
       </p>
@@ -57,9 +58,9 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useAuth } from '@/api/useAuth'
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 
 const setup = () => {
   const isLogin = ref(true)
@@ -115,13 +116,12 @@ const setup = () => {
         console.log(confirmPassword.value)
         console.log(verificationCode.value)
 
-
         await register({
           username: username.value,
           email: email.value,
           password: password.value,
           confirmPassword: confirmPassword.value,
-          verificationCode: verificationCode.value
+          verificationCode: verificationCode.value,
         })
 
         //注册成功，重定向到登陆页
@@ -163,12 +163,11 @@ const setup = () => {
       errorMessage.value = '发送验证码失败，稍请后再试'
     }
   }
-
 }
 </script>
 
 <style scoped>
-.login-register {
+/* .login-register {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -241,5 +240,6 @@ button {
 .code-input {
   display: flex;
   gap: 10px;
-}
+} */
 </style>
+
