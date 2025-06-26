@@ -8,6 +8,9 @@
         insert into file(knowledge_base_id, name, url, created_at, updated_at)
         values (#{knowledgeBaseId}, #{name}, #{url}, #{createdAt}, #{updatedAt})
     </insert>
+    <delete id="delete">
+        delete from file where id = #{id}
+    </delete>
     <select id="getTotal" resultType="java.lang.Integer">
         select count(*) from file where knowledge_base_id = #{knowledgeBaseId}
     </select>
@@ -16,5 +19,10 @@
         from file
         where knowledge_base_id = #{knowledgeBaseId}
         limit #{offset}, #{pageSize}
+    </select>
+    <select id="getFileById" resultType="com.cyberlanting.qwen_rag.pojo.entity.File">
+        select id, knowledge_base_id, name, url, created_at, updated_at
+        from file
+        where id = #{id}
     </select>
 </mapper>

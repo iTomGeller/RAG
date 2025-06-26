@@ -1,5 +1,6 @@
 package com.cyberlanting.qwen_rag.service.impl;
 
+import com.aliyuncs.utils.StringUtils;
 import com.cyberlanting.qwen_rag.common.exception.ParamaterErrorException;
 import com.cyberlanting.qwen_rag.common.result.PageResult;
 import com.cyberlanting.qwen_rag.mapper.FileMapper;
@@ -114,6 +115,61 @@ public class FileServiceImpl implements FileService {
             log.error("文件上传失败：{}", e);
         }
         return Result.error("文件上传失败");
+    }
+
+    @Override
+    public Result deleteFile(Long id) {
+        // 1. 从数据库获取文件信息
+        File file = FileMapper.getFileById(id);
+        if (file == null) {
+            return Result.error("文件不存在");
+        }
+
+        // 2. 获取文件URL
+        String url = file.getUrl();
+        if (StringUtils.isEmpty(url)) {
+            FileMapper.delete(id); // 如果URL为空，只删除数据库记录
+            return Result.success();
+        }
+
+        try {
+            // 3. 从URL中提取对象Key
+            String objectName = extractObjectNameFromUrl(url);
+            if (StringUtils.isEmpty(objectName)) {
+                log.warn("无法从URL中提取对象Key，URL: {}", url);
+                FileMapper.delete(id);
+                return Result.success();
+            }
+
+            // 4. 调用OSS删除文件
+            aliOSSUtils.delete(objectName);
+
+            // 5. 删除数据库记录
+            FileMapper.delete(id);
+
+            return Result.success();
+        } catch (Exception e) {
+            log.error("删除文件失败，文件ID：{}，URL：{}", id, url, e);
+            // 即使OSS删除失败，也删除数据库记录（可根据业务需求调整）
+            FileMapper.delete(id);
+            return Result.error("删除文件失败，但已移除数据库记录");
+        }
+    }
+
+    /**
+     * 从OSS URL中提取对象Key
+     */
+    private String extractObjectNameFromUrl(String url) {
+        // 统一处理HTTP和HTTPS情况
+        String httpRemoved = url.replace("https://", "").replace("http://", "");
+
+        // 找到第一个斜杠后的所有内容就是objectKey
+        int firstSlashIndex = httpRemoved.indexOf("/");
+        if (firstSlashIndex == -1) {
+            return ""; // 如果URL格式异常，返回空字符串
+        }
+
+        return httpRemoved.substring(firstSlashIndex + 1);
     }
 
     public File persistFile(String originName, String url, Long knowledgeBaseId) {

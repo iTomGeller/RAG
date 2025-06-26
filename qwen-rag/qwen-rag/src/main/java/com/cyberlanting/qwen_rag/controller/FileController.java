@@ -38,4 +38,8 @@ public class FileController {
         return fileService.getFileList(page, pageSize, knowledgeBaseId);
     }
 
+    @DeleteMapping
+    public Result deleteFile(@RequestParam Long id) {
+        return fileService.deleteFile(id);
+    }
 }

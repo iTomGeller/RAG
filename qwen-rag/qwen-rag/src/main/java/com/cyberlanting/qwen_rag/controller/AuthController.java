@@ -65,7 +65,7 @@ public class AuthController {
         // 登录成功，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId());
-        String token = JwtUtils.createJWT(SECRET_KEY, 3600000, claims);
+        String token = JwtUtils.createJWT(SECRET_KEY, 7 * 24 * 60 * 60 * 1000, claims);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(user, userVO);
         LoginResponse loginResponse = new LoginResponse(userVO, token);

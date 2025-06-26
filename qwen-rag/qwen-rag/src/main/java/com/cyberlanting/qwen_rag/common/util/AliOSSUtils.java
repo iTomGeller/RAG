@@ -65,5 +65,30 @@ public class AliOSSUtils {
 
         return stringBuilder.toString();
     }
+
+    public void delete(String objectName) {
+        OSS ossClient = null;
+        try {
+            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+
+            // 检查文件是否存在（可选）
+            boolean exists = ossClient.doesObjectExist(bucketName, objectName);
+            if (!exists) {
+                log.warn("文件在OSS上不存在，objectName: {}", objectName);
+                return;
+            }
+
+            // 删除文件
+            ossClient.deleteObject(bucketName, objectName);
+            log.info("OSS文件删除成功，objectName: {}", objectName);
+        } catch (Exception e) {
+            log.error("OSS文件删除失败，objectName: {}", objectName, e);
+            throw new RuntimeException("OSS文件删除失败", e);
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
+        }
+    }
 }
 

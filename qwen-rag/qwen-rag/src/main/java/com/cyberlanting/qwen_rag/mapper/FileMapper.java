@@ -13,4 +13,8 @@ public interface FileMapper {
     Integer getTotal(Long userId, Long knowledgeBaseId);
 
     List<FileVO> getFileList(Long knowledgeBaseId, Integer offset, Integer pageSize);
+
+    File getFileById(Long id);
+
+    void delete(Long id);
 }

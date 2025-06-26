@@ -11,4 +11,6 @@ public interface FileService {
     PageResult getFileList(Integer page, Integer pageSize, Long knowledgeBaseId);
 
     Result uploadAvatar(MultipartFile file);
+
+    Result deleteFile(Long id);
 }

@@ -108,10 +108,50 @@
 			<version>3.17.4</version>
 		</dependency>
 
+		<!-- 工具类 -->
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
 			<version>5.8.36</version>
+		</dependency>
+
+		<!-- LangChain起步依赖 -->
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-open-ai-spring-boot-starter</artifactId>
+			<version>1.1.0-beta7</version>
+		</dependency>
+
+		<!-- AiServices -->
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-spring-boot-starter</artifactId>
+			<version>1.1.0-beta7</version>
+		</dependency>
+
+		<!-- 流式调用 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-reactor</artifactId>
+			<version>1.1.0-beta7</version>
+		</dependency>
+
+		<!-- RAG  -->
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-easy-rag</artifactId>
+			<version>1.1.0-beta7</version>
+		</dependency>
+
+		<!-- pdf解析器依赖 -->
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-document-parser-apache-tika</artifactId>
+			<version>1.1.0-beta7</version>
 		</dependency>
 
 	</dependencies>
