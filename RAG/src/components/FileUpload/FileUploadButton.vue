@@ -11,11 +11,11 @@
                 accepted-file-types="file/*" :server="serverOptions" :instant-upload="true"
                 @processfile="handleUploadSuccess" :max-file-size="'10MB'" />
             <div v-if="fileLink != null" class="result-container">
-                <el-button @click="sendFile(fileLink, fileName, fileSize)" class="button">
+                <el-button @click="handleCheck" class="button">
                     {{ "确认" }}
                 </el-button>
-                <el-button @click="deleteFile(fileLink)" class="button">
-                    {{ "取消" }}
+                <el-button @click="deleteFile" class="button">
+                    {{ "撤销" }}
                 </el-button>
             </div>
         </div>
@@ -32,32 +32,34 @@ import "filepond/dist/filepond.min.css";
 import { ElMessage } from "element-plus";
 import baseURL from "@/config/baseURL.js";
 import FileService from "@/service/FileService.js";
-
-// 导入插件
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 
-// 注册插件
 const FilePond = vueFilePond(FilePondPluginFileValidateSize);
-
-
-// 创建 FilePond 组件
 const token = localStorage.getItem('token')
 
 // 文件相关配置
 const fileLink = ref("");
 const fileName = ref("");
 const fileSize = ref("");
-
+const fileId = ref("");
 const dialog = ref(false);
-
-const props = defineProps(["roomId"]);
-
 const pondRef = ref(null)
+
+const clear = () => {
+    fileLink.value = "";
+    fileName.value = "";
+    fileSize.value = "";
+}
+
+const close = () => {
+    clear()
+    dialog.value = false
+}
 
 // 服务器上传配置
 const serverOptions = {
     process: {
-        url: `${baseURL}/files/upload/1`,
+        url: `${baseURL}/files/upload/2`,  // 此处的数字对应知识库id
         method: "POST",
         timeout: 7000,
         withCredentials: true,
@@ -66,9 +68,12 @@ const serverOptions = {
         },
         onload: (response) => {
             console.log("response", response)
-            // 返回的 URL 会赋值给 file.serverId
+            // 返回的 id 会赋值给 file.serverId
             const res = JSON.parse(response)
-            return res.url
+            console.log("res.data.url", res.data.url)
+            console.log("res.data.id", res.data.id)
+            fileId.value = res.data.id
+            return res.data.id
         },
         onerror: (response) => {
             console.error("上传失败返回值：", response)
@@ -76,13 +81,14 @@ const serverOptions = {
         }
     },
     revert: (serverId, load, error) => {
-        fetch(`${baseURL}/api/fileupload/delete`, {
-            method: "POST",
+        console.log("revert serverId", serverId)
+        fetch(`${baseURL}/files`, {
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify({ url: serverId }) // 后端要求的是JSO(url:"http……")而不是string
+            body: JSON.stringify({ id: serverId }) // 后端要求的是JSO(url:"http……")而不是string
         })
             .then(res => {
                 if (res.ok) {
@@ -99,26 +105,24 @@ const serverOptions = {
 
 };
 
-const sendFile = async (fileLink, fileName, fileSize) => {
-    try {
-        await signalRService.sendMessage(props.roomId, `${fileName}-(${fileSize})`, fileLink)
-
-    }
-    catch (error) {
-        ElMessage.error("上传失败", error);
-    }
-    dialog.value = false
+const handleCheck = async () => {
+    close()
 }
 
-const deleteFile = async (fileLink) => {
-    try {
-        await FileService.deleteFile(fileLink)
+const deleteFile = async () => {
+    console.log("后端不暴露delete接口,此功能暂时没有实现")
+    close()
+    return
+    // 后端暂时没有实现
 
+    console.log("deleteFile fileId", fileId.value)
+    try {
+        await FileService.deleteFile(fileId.value)
     }
     catch (error) {
         ElMessage.error("删除失败", error);
     }
-    dialog.value = false
+    close()
 }
 
 // 处理上传成功事件
@@ -128,18 +132,16 @@ const handleUploadSuccess = (error, file) => {
 
         // 得到原始文件名
         const originalFileName = file.filename; // 原始文件名
-        console.log("原始文件名:", originalFileName);
+
         fileName.value = originalFileName
-
-        // 得到最终返回文件链接
-        console.log("Url", file.serverId)
         fileLink.value = file.serverId
-
-        //  得到文件大小
         const fileSizeBytes = file.fileSize; // FilePond 自动提供的大小（字节数）
         const sizeFormatted = formatFileSize(fileSizeBytes);
+
         fileSize.value = sizeFormatted
 
+        console.log("原始文件名:", originalFileName);
+        console.log("Url", file.serverId)
         console.log('文件大小:', sizeFormatted); // 示例：1.3 MB
 
         // 七秒之后删除小弹窗

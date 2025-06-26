@@ -6,7 +6,7 @@
       <p>Knowledge will bring you the opportunity to make a difference.</p>
     </div>
 
-    <div class="file-boxs-grid">
+    <div class="file-boxs-grid" :class="{ 'single-item-center': boxList.length === 1 }">
       <FileBox
         v-for="box in boxList"
         :key="box.id"
@@ -37,26 +37,9 @@ import { ref, computed ,onMounted} from 'vue';
 
 import FileBox from '@/components/FileUpload/FileBox.vue';
 import AddBaseBtn from '@/components/Base/AddBaseBtn.vue';
-// 导入 Element Plus 分页组件，确保你在 main.js 或 vite.config.js 中正确引入和注册了 Element Plus
 import { ElPagination,ElNotification } from 'element-plus';
 
 import BaseService from '@/service/BaseService';
-
-const files = ref([
-  { id: 1, url: 'https://whu-chat.oss-cn-hangzhou.aliyuncs.com/uploads/cb9702b2-e7c3-48a2-b3c9-7fe2ee875683.docx', fileContent: 'WHU-实验报告 - 项目模板.docx-(38.3 KB)', deleteAble: false },
-  { id: 2, url: 'https://example.com/another-document.pdf', fileContent: '前端开发指南.pdf-(1.2 MB)', deleteAble: true },
-  { id: 3, url: 'https://example.com/design-principles.pptx', fileContent: '设计原则.pptx-(2.5 MB)', deleteAble: false },
-  { id: 4, url: 'https://example.com/project-planning.docx', fileContent: '项目计划书.docx-(1.1 MB)', deleteAble: true },
-  { id: 5, url: 'https://example.com/marketing-strategy.pdf', fileContent: '市场营销策略.pdf-(0.8 MB)', deleteAble: false },
-  { id: 6, url: 'https://example.com/budget-report.xlsx', fileContent: '预算报告.xlsx-(0.5 MB)', deleteAble: true },
-  { id: 7, url: 'https://example.com/team-meeting-notes.txt', fileContent: '团队会议记录.txt-(0.1 MB)', deleteAble: false },
-  { id: 8, url: 'https://example.com/customer-feedback.csv', fileContent: '客户反馈.csv-(0.3 MB)', deleteAble: true },
-  { id: 9, url: 'https://example.com/new-product-spec.pdf', fileContent: '新产品规格书.pdf-(1.8 MB)', deleteAble: false },
-  { id: 10, url: 'https://example.com/hr-policy.docx', fileContent: '人力资源政策.docx-(0.7 MB)', deleteAble: true },
-  { id: 11, url: 'https://example.com/meeting-agenda.pdf', fileContent: '会议议程.pdf-(0.2 MB)', deleteAble: false },
-  { id: 12, url: 'https://example.com/sales-report.xlsx', fileContent: '销售报告.xlsx-(0.6 MB)', deleteAble: true },
-  { id: 13, url: 'https://example.com/research-paper.pdf', fileContent: '研究论文.pdf-(3.1 MB)', deleteAble: false },
-]);
 
 const boxList = ref([])
 const totalPage = ref(0)
@@ -65,7 +48,7 @@ const totalBoxes = ref(0)
 onMounted(async () => {
     try {
         const res = await BaseService.getUserBaseInfo({page: 1 , pageSize: pageSize.value });
-        // console.log(res)
+
         boxList.value = res.list;
         totalBoxes.value = res.total;
         totalPage.value = res.totalPage;
@@ -201,10 +184,14 @@ h1 {
    可以将其复制过来或直接应用在 pagination-controls-container 上 */
 .example-pagination-block+.example-pagination-block {
   margin-top: 10px;
-  /* 如果有多个分页块 */
 }
 
 .example-pagination-block .example-demonstration {
   margin-bottom: 16px;
+}
+
+.file-boxs-grid.single-item-center {
+  grid-template-columns: 1fr; 
+  justify-items: center; 
 }
 </style>
