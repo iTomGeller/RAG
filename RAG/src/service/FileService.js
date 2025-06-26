@@ -1,18 +1,19 @@
-import api from "./api"
+import api from './api'
 
 const FileService = {
-  async deleteFile(url){
+  test() {
+    console.log('test')
+  },
+  async deleteFile(fileId) {
+    console.log(`Delete file ${id}:`, fileId)
     try {
-      const response = await api.post('/fileupload/delete',{url});
-      console.log(`Delete file ${url}:`, response.data);
-      return response.data;
-    }catch(error){
-      this.handleError(error);
+      const response = await api.delete('/files', { fileId })
+      return response.data
+    } catch (error) {
+      console.error('Delete file error:', error)
+      throw error
     }
-  }
-};
+  },
+}
 
-
-export default FileService;
-
-
+export default FileService

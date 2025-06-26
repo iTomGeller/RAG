@@ -48,6 +48,7 @@ const totalBoxes = ref(0)
 onMounted(async () => {
     try {
         const res = await BaseService.getUserBaseInfo({page: 1 , pageSize: pageSize.value });
+
         boxList.value = res.list;
         totalBoxes.value = res.total;
         totalPage.value = res.totalPage;
