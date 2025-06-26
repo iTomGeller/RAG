@@ -1,5 +1,5 @@
 <template>
-  <el-button @click="dialog = true" alt="Logout Icon" class="act-btn">修改信息</el-button>
+  <el-button  color="e5e5e5" @click="dialog = true" alt="Logout Icon" class="act-btn" >修改信息</el-button>
 
   <el-dialog
     :before-close="clickCancel"
@@ -21,7 +21,7 @@
         :max-file-size="'10MB'"
       />
       <div v-if="fileLink != null" class="result-container">
-        <el-button @click="sendFile(fileLink, fileName, fileSize)" class="button">
+        <el-button @click="confirmUpdate" class="button">
           {{ '确认' }}
         </el-button>
         <el-button @click="onCancel" class="button">
@@ -135,15 +135,15 @@ const handleUploadSuccess = (error, file) => {
   if (!error) {
     ElMessage.success('上传成功')
 
-    // 得到原始文件名
-    // const originalFileName = file.filename // 原始文件名
-    // console.log('原始文件名:', originalFileName)
-    // fileName.value = originalFileName
-    fileName.value = file.serverId
+    //得到原始文件名
+    const originalFileName = file.filename // 原始文件名
+    console.log('原始文件名:', originalFileName)
+    fileName.value = originalFileName
+    // fileName.value = file.serverId
 
-    // // 得到最终返回文件链接
-    // console.log('Url', file.serverId)
-    // fileLink.value = file.serverId
+    // 得到最终返回文件链接
+    console.log('Url', file.serverId)
+    fileLink.value = file.serverId
 
     //  得到文件大小
     const fileSizeBytes = file.fileSize // FilePond 自动提供的大小（字节数）
@@ -153,9 +153,9 @@ const handleUploadSuccess = (error, file) => {
     console.log('文件大小:', sizeFormatted) // 示例：1.3 MB
 
     // 七秒之后删除小弹窗
-    setTimeout(() => {
-      pondRef.value?.removeFile(file.id)
-    }, 7000)
+    // setTimeout(() => {
+    //   pondRef.value?.removeFile(file.id)
+    // }, 7000)
   } else {
     ElMessage.error('上传失败', error)
   }
@@ -194,7 +194,7 @@ const confirmUpdate = async () => {
 
     ElMessage.success('头像更新成功！');
     emit('update-success', fileLink.value); // 触发成功事件，并传递新URL
-    closeDialogAndReset(); // 关闭弹窗并重置状态
+    // closeDialogAndReset(); // 关闭弹窗并重置状态
 
   } catch (error) {
     console.error('更新用户信息失败:', error);
@@ -256,9 +256,10 @@ const onCancel = () => {
 .act-btn {
   height: 50px;
   width: 200px;
-  margin: 0 !important;
+  margin: 0 0 0 5px!important;
   padding: 0 !important;
   background-color: transparent;
   border: none;
+  border-radius: 20px;
 }
 </style>

@@ -24,7 +24,7 @@
           <div class="btn-box">
           <!-- <el-button class="act-btn" @click="editProfile">Update Avatar</el-button> -->
           <AvatarUpload />
-          <el-button class="act-btn" @click="logout">退出</el-button>
+          <el-button  color= "#e5e5e5" class="act-btn" @click="logout">退出</el-button>
           </div>
         </div>
       </div>
@@ -71,11 +71,9 @@ export default {
 </script>
 
 <!--popper元素挂载在body下，故在scoped区域下无法修改style -->
+<!-- 使用 :popper-style="{ borderRadius: '30px' }" 控制边框圆角 -->
 
 <style scoped>
-/* .my-popover {
-  --el-popover-border-radius: 50px;
-} */
 
 .avatar {
   width: 60px;
@@ -112,7 +110,7 @@ export default {
 
 .btn-box  .act-btn {
   flex: 1;
-  margin: 0 !important;
+  /* margin: 0 !important; */
   border: none;
   
 }
@@ -138,10 +136,10 @@ export default {
 
 .act-btn {
   height: 50px;
-  width: 220px;
-  margin:0 !important;
+  width: 200px;
+  margin:0 0 0 5px !important;
   padding: 0 !important;
- 
   background-color: transparent;
+  border-radius: 20px;
 }
 </style>
