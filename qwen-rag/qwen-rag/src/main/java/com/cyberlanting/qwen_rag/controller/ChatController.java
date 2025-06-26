@@ -4,6 +4,7 @@ import com.cyberlanting.qwen_rag.common.result.Result;
 import com.cyberlanting.qwen_rag.pojo.entity.Chat;
 import com.cyberlanting.qwen_rag.service.Assistant;
 import com.cyberlanting.qwen_rag.service.ChatService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -21,7 +22,8 @@ public class ChatController {
     private ChatService chatService;
 
     @PostMapping(produces = "text/html;charset=utf-8")
-    public Flux<String> chat(String memoryId, String message) {
+    public Flux<String> chat(String memoryId, String message) throws JsonProcessingException {
+        message = chatService.queryAndEnhancedPrompt(message);
         Flux<String> result = assistant.chat(memoryId, message);
         return result;
     }
