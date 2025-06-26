@@ -3,6 +3,7 @@ package com.cyberlanting.qwen_rag.service.impl;
 import com.aliyuncs.utils.StringUtils;
 import com.cyberlanting.qwen_rag.common.exception.ParamaterErrorException;
 import com.cyberlanting.qwen_rag.common.result.PageResult;
+import com.cyberlanting.qwen_rag.common.util.FileUtils;
 import com.cyberlanting.qwen_rag.mapper.FileMapper;
 import com.cyberlanting.qwen_rag.common.context.BaseContext;
 import com.cyberlanting.qwen_rag.common.exception.NotLoginException;
@@ -11,7 +12,9 @@ import com.cyberlanting.qwen_rag.common.util.AliOSSUtils;
 import com.cyberlanting.qwen_rag.mapper.KnowledgeBaseMapper;
 import com.cyberlanting.qwen_rag.pojo.entity.File;
 import com.cyberlanting.qwen_rag.pojo.vo.FileVO;
+import com.cyberlanting.qwen_rag.service.Assistant;
 import com.cyberlanting.qwen_rag.service.FileService;
+import dev.langchain4j.model.openai.OpenAiChatModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +40,9 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     private KnowledgeBaseMapper knowledgeBaseMapper;
+
+    @Autowired
+    private OpenAiChatModel openAiChatModel;
 
     public Long getUserId() {
         Long userId = BaseContext.getCurrentId();
@@ -153,6 +159,42 @@ public class FileServiceImpl implements FileService {
             // 即使OSS删除失败，也删除数据库记录（可根据业务需求调整）
             FileMapper.delete(id);
             return Result.error("删除文件失败，但已移除数据库记录");
+        }
+    }
+
+    @Override
+    public Result<FileVO> uploadFileWithClassification(MultipartFile file) {
+        String content = "";
+        try {
+            content = FileUtils.parseFileToText(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if (content == null || content.isEmpty()) {
+            return Result.error("文件上传失败");
+        }
+        String prompt = "请将以下文档内容分类到指定的知识库类别中。可用类别及 ID：\n" +
+                "1. 理科知识库\n2. 医学/健康知识库\n3. 其他\n4. 文科知识库\n5. 社科知识库\n6. 工科/应用科学知识库\n\n" +
+                "文档内容：\n" + content + "\n\n" +
+                "**必须只返回数字 1-6**，不要包含任何其他文字或解释。如果无法确定，返回 3。";
+
+        String aiResponse = openAiChatModel.chat(prompt).trim();
+        log.info("AI 分类响应: {}", aiResponse);
+
+        Long knowledgeBaseId;
+        try {
+            knowledgeBaseId = Long.parseLong(aiResponse);
+            if (knowledgeBaseId < 1 || knowledgeBaseId > 6) {
+                knowledgeBaseId = 3L;  // 超出范围则默认 3
+            }
+        } catch (NumberFormatException e) {
+            knowledgeBaseId = 3L;  // 解析失败则默认 3
+            log.error("AI 返回无效分类: {}", aiResponse);
+        }
+        try {
+            return uploadFile(file, knowledgeBaseId);
+        } catch (FileUploadException e) {
+            throw new RuntimeException(e);
         }
     }
 

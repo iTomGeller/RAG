@@ -14,5 +14,7 @@ import dev.langchain4j.service.spring.AiServiceWiringMode;
 )
 public interface Assistant {
     Flux<String> chat(@MemoryId String memoryId, @UserMessage String message);
+
+    String chat(@UserMessage String message);
 }
 

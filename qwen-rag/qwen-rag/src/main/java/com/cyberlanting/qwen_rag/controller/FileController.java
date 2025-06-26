@@ -25,6 +25,14 @@ public class FileController {
         return fileService.uploadFile(file, knowledgeBaseId);
     }
 
+    @PostMapping("/upload/auto-classify")
+    public Result<FileVO> uploadFileWithClassification(@RequestParam MultipartFile file) throws FileUploadException {
+        if (file == null || file.isEmpty()) {
+            return Result.error("文件为空");
+        }
+        return fileService.uploadFileWithClassification(file);
+    }
+
     @PostMapping("/upload/avatar")
     public Result uploadAvatar(@RequestParam MultipartFile file) throws FileUploadException {
         if (file == null || file.isEmpty()) {
