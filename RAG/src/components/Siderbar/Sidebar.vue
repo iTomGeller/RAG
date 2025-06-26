@@ -88,10 +88,11 @@ const iconSize = 25
 
 const extended = ref(false)
 const sidebarRef = ref(null)
+const emit = defineEmits(['update:extended']) // 定义自定义事件
 
 const toggleExtended = () => {
   extended.value = !extended.value
-
+  emit('update:extended', extended.value) // 触发事件并传递当前状态
   if (sidebarRef.value) {
     gsap.to(sidebarRef.value, {
       duration: 0.1,
@@ -137,5 +138,5 @@ const handleSettings = () => {
 }
 .fade-slide-leave-to {
   opacity: 0;
-} 
+}
 </style>
