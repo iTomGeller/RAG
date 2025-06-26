@@ -3,9 +3,12 @@ package com.cyberlanting.qwen_rag.controller;
 import com.cyberlanting.qwen_rag.common.result.Result;
 import com.cyberlanting.qwen_rag.pojo.entity.Chat;
 import com.cyberlanting.qwen_rag.service.Assistant;
+import com.cyberlanting.qwen_rag.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/chat")
@@ -14,14 +17,18 @@ public class ChatController {
     @Autowired
     private Assistant assistant;
 
+    @Autowired
+    private ChatService chatService;
+
     @PostMapping(produces = "text/html;charset=utf-8")
     public Flux<String> chat(String memoryId, String message) {
         Flux<String> result = assistant.chat(memoryId, message);
         return result;
     }
 
-    public Result<Chat> getChatList() {
-        return null;
+    @GetMapping("/list")
+    public Result<List<Chat>> getChatList() {
+        return chatService.getChatList();
     }
 
 }
