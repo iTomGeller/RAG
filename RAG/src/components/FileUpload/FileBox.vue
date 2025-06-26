@@ -5,14 +5,14 @@
         </div>
         <div class="wolfram-card__content">
             <h3 class="wolfram-card__title">{{ props.name }}</h3>
-            <p class="wolfram-card__description">{{ description }}</p>
+            <!-- <p class="wolfram-card__description">{{ description }}</p> -->
         </div>
     </div>
 
     <el-dialog :before-close="clickCancel" v-model="visiable" :title="props.name" size='80%' :with-header="false">
         <div class="file-cards-grid">
             <FileCard v-for="file in files" :key="file.id" :url="file.url" :fileContent="file.fileContent"
-                :deleteAble="file.deleteAble" />
+                deleteAble="false" />
         </div>
     </el-dialog>
 
@@ -49,10 +49,9 @@ onMounted(async () => {
         await BaseService.getBaseFiles({baseNum: props.id,page: 1, pageSize: 4});
     } catch (error) {
         ElNotification.error({
-            message: error.message,
+            message: "获取知识库列表失败"
         });
     }
-    // console.log(iconUrl.value);
 });
 const handleClick = () => {
     visiable.value = true;

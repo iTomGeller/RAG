@@ -4,7 +4,6 @@ const BaseService = {
   async getUserBaseInfo({ page, pageSize }) {
     try {
       const response = await api.get('/knowledgebase', { params: { page, pageSize } })
-    //   console.log('Get user base info:', response.data)
       return response.data
     } catch (error) {
       console.error('Get user base info error:', error)
@@ -15,7 +14,6 @@ const BaseService = {
   async getBaseFiles({ page, pageSize, baseNum }) {
     try {
       const response = await api.get(`/files/${baseNum}`,{params: { page, pageSize }})
-    //   console.log('Get files:', response.data)
       return response.data
     } catch (error) {
       console.error('Get files error:', error)
@@ -26,7 +24,6 @@ const BaseService = {
   async addBase({ name, type }) {
     try {
       const response = await api.post('/knowledgebase', { name, type })
-    //   console.log('Add base:', response.data)
       return response.data
     } catch (error) {
       console.error('Add base error:', error)
