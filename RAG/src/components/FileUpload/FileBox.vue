@@ -11,21 +11,25 @@
 
     <el-dialog :before-close="clickCancel" v-model="visiable" :title="props.name" size='80%' :with-header="false">
         <div class="file-cards-grid">
-            <FileCard v-for="file in files" :key="file.id" :url="file.url" :fileContent="file.fileContent"
-                deleteAble="false" />
+            <FileCard v-for="file in files" :key="file.id" :url="file.url" :fileName="file.name"/>
+        </div>
+        <div v-if="!showUpload" class="upload-button-container">
+            <el-button @click="showUpload = true" type="primary">上传文件</el-button>
+        </div>
+        <div v-else class="upload-container">
+            <FileUpload :baseId="props.id" @cancel="showUpload = false" />
+            <el-button @click="showUpload = false">取消</el-button>
         </div>
     </el-dialog>
-
-
-
 </template>
 
 <script setup>
 import { ref, defineProps, computed, onMounted} from 'vue';
 import { assets } from '@/assets/assets';
 import FileCard from './FileCard.vue';
-import BaseService from '@/service/BaseService';
+import FileService from '@/service/FileService';
 import { ElNotification } from 'element-plus';
+import FileUpload from './FileUpload.vue';
 
 const props = defineProps({
     id: Number,
@@ -34,6 +38,8 @@ const props = defineProps({
 });
 
 const visiable = ref(false);
+const files = ref([]);
+const showUpload = ref(false);
 
 const iconUrl = computed(() => {
     const iconName = `${props.type}_icon`;
@@ -43,10 +49,11 @@ const iconUrl = computed(() => {
 const title = props.title || 'Engineer';
 const description = props.description || 'Engineer is great science';
 
-
 onMounted(async () => {
     try {
-        await BaseService.getBaseFiles({baseNum: props.id,page: 1, pageSize: 4});
+        const res = await FileService.getBaseFiles({baseNum: props.id,page: 1, pageSize: 4});
+        files.value = res.list;
+        console.log(files.value);
     } catch (error) {
         ElNotification.error({
             message: "获取知识库列表失败"
@@ -59,45 +66,45 @@ const handleClick = () => {
 
 
 
-// --- Data for your file cards ---
-const files = ref([
-    {
-        id: 1, // Unique ID for key prop
-        url: 'https://whu-chat.oss-cn-hangzhou.aliyuncs.com/uploads/cb9702b2-e7c3-48a2-b3c9-7fe2ee875683.docx',
-        fileContent: 'WHU-实验报告 - 项目模板.docx-(38.3 KB)',
-        deleteAble: false
-    },
-    {
-        id: 2,
-        url: 'https://example.com/another-document.pdf', // Example URL
-        fileContent: '前端开发指南.pdf-(1.2 MB)',
-        deleteAble: true // Example: make this one deletable
-    },
-    {
-        id: 3,
-        url: 'https://example.com/design-principles.pptx', // Example URL
-        fileContent: '设计原则.pptx-(2.5 MB)',
-        deleteAble: false
-    },
-    {
-        id: 3,
-        url: 'https://example.com/design-principles.pptx', // Example URL
-        fileContent: '设计原则.pptx-(2.5 MB)',
-        deleteAble: false
-    },
-    {
-        id: 3,
-        url: 'https://example.com/design-principles.pptx', // Example URL
-        fileContent: '设计原则.pptx-(2.5 MB)',
-        deleteAble: false
-    },
-    {
-        id: 3,
-        url: 'https://example.com/design-principles.pptx', // Example URL
-        fileContent: '设计原则.pptx-(2.5 MB)',
-        deleteAble: false
-    },
-]);
+// // --- Data for your file cards ---
+// const files = ref([
+//     {
+//         id: 1, // Unique ID for key prop
+//         url: 'https://whu-chat.oss-cn-hangzhou.aliyuncs.com/uploads/cb9702b2-e7c3-48a2-b3c9-7fe2ee875683.docx',
+//         fileContent: 'WHU-实验报告 - 项目模板.docx-(38.3 KB)',
+//         deleteAble: false
+//     },
+//     {
+//         id: 2,
+//         url: 'https://example.com/another-document.pdf', // Example URL
+//         fileContent: '前端开发指南.pdf-(1.2 MB)',
+//         deleteAble: true // Example: make this one deletable
+//     },
+//     {
+//         id: 3,
+//         url: 'https://example.com/design-principles.pptx', // Example URL
+//         fileContent: '设计原则.pptx-(2.5 MB)',
+//         deleteAble: false
+//     },
+//     {
+//         id: 3,
+//         url: 'https://example.com/design-principles.pptx', // Example URL
+//         fileContent: '设计原则.pptx-(2.5 MB)',
+//         deleteAble: false
+//     },
+//     {
+//         id: 3,
+//         url: 'https://example.com/design-principles.pptx', // Example URL
+//         fileContent: '设计原则.pptx-(2.5 MB)',
+//         deleteAble: false
+//     },
+//     {
+//         id: 3,
+//         url: 'https://example.com/design-principles.pptx', // Example URL
+//         fileContent: '设计原则.pptx-(2.5 MB)',
+//         deleteAble: false
+//     },
+// ]);
 </script>
 
 <style scoped>
@@ -152,6 +159,7 @@ const files = ref([
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2; /* 添加标准属性 */
     -webkit-box-orient: vertical;
 }
 

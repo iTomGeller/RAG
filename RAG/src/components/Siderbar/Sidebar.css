@@ -52,7 +52,7 @@
 }
 
 .sidebar .recent-tag {
-  max-height: 20px;
+  white-space: nowrap;
 }
 
 .sidebar .recent-entry {
@@ -64,6 +64,7 @@
   border-radius: 50px;
   color: #282828;
   cursor: pointer;
+  margin-top: 0px;
 }
 
 .sidebar .recent-entry:hover {

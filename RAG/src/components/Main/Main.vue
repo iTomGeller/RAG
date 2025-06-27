@@ -37,7 +37,6 @@
 
           <div>
             <!-- <img :src="assets.gallery_icon" alt="Gallery Icon" /> -->
-             <FileUploadButton />
             <img v-if="sendButtonVisible" @click="onSent(input)"
              :src="assets.send_icon" alt="Send Icon"
               class="send-icon" />
@@ -54,7 +53,6 @@
 import { computed, inject } from 'vue'; 
 import { assets } from '@/assets/assets'; 
 import SuggestCards from './SuggestCards.vue'; 
-import FileUploadButton from '../FileUpload/FileUploadButton.vue';
 import ProfileFloating from '../Profile/ProfileFloating.vue';
 
 const {
