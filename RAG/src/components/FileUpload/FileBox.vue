@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, computed, onMounted} from 'vue';
+import { ref, computed, onMounted} from 'vue';
 import { assets } from '@/assets/assets';
 import FileCard from './FileCard.vue';
 import FileService from '@/service/FileService';

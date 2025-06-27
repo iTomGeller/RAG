@@ -72,7 +72,6 @@
 
 <script setup>
 import { ref, inject } from 'vue' // Import inject
-import { assets } from '../../assets/assets'
 
 import { Menu, ChatSquare, ChatDotSquare, Clock, Setting, Star } from '@element-plus/icons-vue'
 

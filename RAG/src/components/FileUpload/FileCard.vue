@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { defineProps, ref, computed, onMounted } from 'vue';
+import {  ref, computed, onMounted } from 'vue';
 import { Delete } from '@element-plus/icons-vue'
 
 const props = defineProps(['url', 'fileName']);
