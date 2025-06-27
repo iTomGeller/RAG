@@ -83,8 +83,9 @@ public class ChatServiceImpl implements ChatService {
             Map<String, Object> responseBody = objectMapper.readValue(response.getBody(), Map.class);
             Map<String, Object> responseMessage = (Map<String, Object>) responseBody.get("message");
 
+            List<List<String>> documentsOrigin = (List<List<String>>) responseMessage.get("documents");
             // 5. 提取文档信息
-            List<String> documents = (List<String>) responseMessage.get("documents");
+            List<String> documents = documentsOrigin.get(0);
             List<String> titles = (List<String>) responseMessage.get("title");
             List<String> urls = (List<String>) responseMessage.get("url");
 
@@ -98,7 +99,8 @@ public class ChatServiceImpl implements ChatService {
                 ));
             }
             // 6. 增强用户Prompt
-            return buildEnhancedPrompt(userQuery, docInfos);
+            String enhancedPrompt = buildEnhancedPrompt(userQuery, docInfos);
+            return enhancedPrompt;
         } else {
             throw new RuntimeException("Query failed: " + response.getBody());
         }
