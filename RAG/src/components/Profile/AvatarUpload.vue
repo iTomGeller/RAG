@@ -117,24 +117,7 @@ const serverOptions = {
   },
 }
 
-const handleCheck = async () => {
-  close()
-}
 
-const deleteFile = async () => {
-  console.log('后端不暴露delete接口,此功能暂时没有实现')
-  close()
-  return
-  // 后端暂时没有实现
-
-  console.log('deleteFile fileId', fileId.value)
-  try {
-    await FileService.deleteFile(fileId.value)
-  } catch (error) {
-    ElMessage.error('删除失败', error)
-  }
-  close()
-}
 
 // 处理上传成功事件
 const handleUploadSuccess = (error, file) => {

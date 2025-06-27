@@ -179,77 +179,120 @@ export default {
 
 <style scoped>
 .login-register {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f0f2f5;
-}
-
-.form-container {
-  padding: 40px 50px;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  width: 400px;
-  text-align: center;
+  width: 100%;
+  max-width: 420px;
+  padding: 48px;
+  border-radius: 20px;
+  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.08);
+  color: #f0f0f0;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  transition: all 0.4s ease;
 }
 
 .form-container h2 {
-  margin-bottom: 30px;
-  font-weight: normal;
-  font-size: 28px;
-  font-family: 'Ma Shan Zheng', cursive;
+  margin-bottom: 24px;
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #101b30ee;
+  text-align: center;
 }
 
-.iput-group {
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
+.input-group {
+  margin-bottom: 22px;
   text-align: left;
 }
 
 .input-group label {
-  flex: 0 0 80px;
-  font-size: 16px;
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #ccc;
 }
 
 .input-group input {
-  flex: 1;
-  padding: 12px 15px;
-  font-size: 16px;
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  font-size: 15px;
+  color: #e0e0e0;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.input-group input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.09);
+  border: 1px solid #409eff;
+  box-shadow: 0 0 6px #409eff88;
 }
 
 button {
   width: 100%;
-  padding: 12px;
-  font-size: 18px;
-  margin-top: 10px;
-}
-
-.toggle-form {
-  margin-top: 24px;
+  padding: 13px;
+  font-size: 17px;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  /* background: linear-gradient(135deg, #409eff, #6c9cff); */
+  /* color: white; */
   cursor: pointer;
-  font-size: 16px;
+  box-shadow: 0 0 12px rgba(120, 128, 135, 0.3);
   transition: all 0.3s ease;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  padding: 4px 8px;
 }
 
-.toggle-form:hover {
-  text-decoration-thickness: 2px;
+button:hover:not(:disabled) {
+  box-shadow: 0 0 18px rgba(191, 210, 230, 0.5);
+  background: linear-gradient(135deg, #ccd3d9, #bed1f6);
 }
 
-.error {
-  color: #8b0000;
-  font-size: 16px;
-  margin: 10px 0;
-  text-align: center;
-  font-family: 'SimSun', serif;
+button:disabled {
+  background: #2c3e50;
+  color: #aaa;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .code-input {
   display: flex;
   gap: 10px;
 }
+
+.code-input input {
+  flex: 1;
+}
+
+.code-input button {
+  flex-shrink: 0;
+  padding: 0 16px;
+}
+
+.toggle-form {
+  margin-top: 20px;
+  font-size: 15px;
+  color: #bbbbbb;
+  text-align: center;
+  cursor: pointer;
+}
+
+.toggle-form:hover {
+  color: hsl(210, 48%, 22%);
+  text-decoration: underline;
+}
+
+.error {
+  color: #ff4d4f;
+  margin-bottom: 16px;
+  text-align: center;
+  font-size: 14px;
+}
+
+
 </style>
