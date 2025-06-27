@@ -28,42 +28,42 @@
 
     <div class="bottom">
       <!-- 创建新对话 -->
-      <div class="bottom-item recent-entry" @click="handleChat">
+      <div class="bottom-item recent-entry" @click="handleChat" :ref="(el) => collectRecentEntry(el, 0)">
         <el-icon :size="iconSize">
           <ChatDotSquare />
         </el-icon>
         <transition name="fade-slide">
-          <p class="recent-tag" v-show="extended">新建对话</p>
+          <span class="recent-tag" v-show="extended">新建对话</span>
         </transition>
       </div>
 
       <!-- 回顾历史 -->
-      <div class="bottom-item recent-entry">
+      <div class="bottom-item recent-entry" :ref="(el) => collectRecentEntry(el, 1)">
         <el-icon :size="iconSize">
           <Clock />
         </el-icon>
         <transition name="fade-slide">
-          <p class="recent-tag" v-show="extended">历史对话</p>
+          <span class="recent-tag" v-show="extended">历史对话</span>
         </transition>
       </div>
 
       <!-- 设置 -->
-      <div class="bottom-item recent-entry" @click="handleSettings">
+      <div class="bottom-item recent-entry" @click="handleSettings" :ref="(el) => collectRecentEntry(el, 2)">
         <el-icon :size="iconSize">
           <Setting />
         </el-icon>
         <transition name="fade-slide">
-          <p class="recent-tag" v-show="extended">设置</p>
+          <span class="recent-tag" v-show="extended">设置</span>
         </transition>
       </div>
 
       <!-- 知识库 -->
-      <div class="bottom-item recent-entry" @click="handleStore">
+      <div class="bottom-item recent-entry" @click="handleStore" :ref="(el) => collectRecentEntry(el, 3)">
         <el-icon :size="iconSize">
           <Star />
         </el-icon>
         <transition name="fade-slide">
-          <p class="recent-tag" v-show="extended">知识库</p>
+          <span class="recent-tag" v-show="extended">知识库</span>
         </transition>
       </div>
     </div>
@@ -90,6 +90,16 @@ const extended = ref(false)
 const sidebarRef = ref(null)
 const emit = defineEmits(['update:extended']) // 定义自定义事件
 
+// 创建一个数组来保存.recent-entry元素的引用
+const recentEntries = ref([])
+
+// 收集每个.recent-entry到数组中
+const collectRecentEntry = (el, index) => {
+  if (el) {
+    recentEntries.value[index] = el
+  }
+}
+
 const toggleExtended = () => {
   extended.value = !extended.value
   emit('update:extended', extended.value) // 触发事件并传递当前状态
@@ -99,6 +109,16 @@ const toggleExtended = () => {
       width: extended.value ? '200px' : '75px',
       ease: 'power2.out',
       transformOrigin: 'right center',
+    })
+  }
+
+  // 对所有.recent-entry应用margin-top动画
+  if (recentEntries.value && recentEntries.value.length > 0) {
+    gsap.to(recentEntries.value, {
+      duration: 0.3,
+      marginTop: extended.value ? '20px' : '0px',
+      ease: 'power2.out',
+      stagger: 0.05,
     })
   }
 }

@@ -140,7 +140,6 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   padding: 24px;
-  width: 100%;
   min-height: 100vh;
   background-color: var(--el-bg-color);
   transition: background-color 0.3s ease;
