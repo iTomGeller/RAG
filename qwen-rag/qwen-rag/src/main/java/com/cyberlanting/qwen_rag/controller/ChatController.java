@@ -43,24 +43,23 @@ public class ChatController {
 //        return result;
 //    }
 
-    @RequestMapping(produces = "text/event-stream")
+    @PostMapping(produces = "text/event-stream")
     public Flux<String> chat(String memoryId, String message) throws JsonProcessingException {
-//        // 阶段1：先发送数据源（JSON格式）
-//        List<Source> sources = retrievalService.getSources(message);
-//        String sourcesJson = objectMapper.writeValueAsString(sources);
-
-        // 阶段1：先发送数据源（JSON格式）
+        // 阶段1：准备数据源
         List<DocumentInfoVO> documentInfos = chatService.queryAndEnhancedPrompt(message);
+
+
         String sourcesJson = objectMapper.writeValueAsString(documentInfos);
-        log.info(sourcesJson);
+        log.info("sources: {}", sourcesJson);
 
         // 阶段2：流式生成回复内容
         Flux<String> contentStream = assistant.chat(memoryId, message);
 
         return Flux.concat(
-                Flux.just("SOURCES:" + sourcesJson + "\n\n"), // 数据源标记
-                contentStream.map(chunk -> "CONTENT:" + chunk + "\n\n"),
-                Flux.just("END:\n\n") // 结束标记
+                Flux.just("SOURCES:" + sourcesJson + "\n"),  // 数据源标记
+                Flux.just("CONTENT:\n"),                     // 内容开始标记（只出现一次）
+                contentStream,                               // 原始内容流（无额外标记）
+                Flux.just("END\n")                           // 结束标记
         );
     }
 

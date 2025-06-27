@@ -8,7 +8,9 @@ import com.cyberlanting.qwen_rag.common.result.Result;
 import com.cyberlanting.qwen_rag.pojo.entity.Chat;
 import com.cyberlanting.qwen_rag.pojo.entity.DocumentInfo;
 import com.cyberlanting.qwen_rag.service.ChatService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;
 
@@ -25,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class ChatServiceImpl implements ChatService {
 
@@ -33,6 +36,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Value("${qwen-rag.hyj-rag.ip}")
+    private String ragServerIp;
 
     @Override
     public Result<List<Chat>> getChatList() {
@@ -62,7 +68,9 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<DocumentInfoVO> queryAndEnhancedPrompt(String userQuery) throws JsonProcessingException {
         // 1. 准备请求URL和请求体
-        String apiUrl = "http://127.0.0.1:5000/query";
+        String apiUrl = ragServerIp + "/query";
+
+        log.info("query: " + apiUrl);
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("query", userQuery);
@@ -73,40 +81,54 @@ public class ChatServiceImpl implements ChatService {
 
         // 3. 发送POST请求
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.postForEntity(
-                apiUrl,
-                new HttpEntity<>(requestBody, headers),
-                String.class
-        );
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.postForEntity(
+                    apiUrl,
+                    new HttpEntity<>(requestBody, headers),
+                    String.class
+            );
+        } catch (Exception e) {
+            log.error("Query failed with exception: " + e.getMessage());
+            return Collections.emptyList(); // 返回空列表
+        }
 
-        // 4. 解析响应
+        // 4. 处理响应
         if (response.getStatusCode().is2xxSuccessful()) {
-            Map<String, Object> responseBody = objectMapper.readValue(response.getBody(), Map.class);
-            Map<String, Object> responseMessage = (Map<String, Object>) responseBody.get("message");
+            try {
+                Map<String, Object> responseBody = objectMapper.readValue(response.getBody(), Map.class);
+                Map<String, Object> responseMessage = (Map<String, Object>) responseBody.get("message");
 
-            List<List<String>> documentsOrigin = (List<List<String>>) responseMessage.get("documents");
-            // 5. 提取文档信息
-            List<String> documents = documentsOrigin.get(0);
-            List<String> titles = (List<String>) responseMessage.get("title");
-            List<String> urls = (List<String>) responseMessage.get("url");
+                List<List<String>> documentsOrigin = (List<List<String>>) responseMessage.get("documents");
+                // 5. 提取文档信息
+                List<String> documents = documentsOrigin.get(0);
+                List<String> titles = (List<String>) responseMessage.get("title");
+                List<String> urls = (List<String>) responseMessage.get("url");
 
-            // 6. 封装结果
-            List<DocumentInfo> docInfos = new ArrayList<>();
-            List<DocumentInfoVO> documentInfoVOS = new ArrayList<>();
-            for (int i = 0; i < documents.size(); i++) {
-                docInfos.add(new DocumentInfo(
-                        titles.get(i),
-                        urls.get(i),
-                        documents.get(i)
-                ));
-                documentInfoVOS.add(new DocumentInfoVO(
-                        titles.get(i),
-                        urls.get(i)
-                ));
+                // 6. 封装结果
+                List<DocumentInfo> docInfos = new ArrayList<>();
+                List<DocumentInfoVO> documentInfoVOS = new ArrayList<>();
+                for (int i = 0; i < documents.size(); i++) {
+                    docInfos.add(new DocumentInfo(
+                            titles.get(i),
+                            urls.get(i),
+                            documents.get(i)
+                    ));
+                    documentInfoVOS.add(new DocumentInfoVO(
+                            titles.get(i),
+                            urls.get(i)
+                    ));
+                }
+                // 6. 增强用户Prompt
+                userQuery = buildEnhancedPrompt(userQuery, docInfos);
+                return documentInfoVOS;
+            } catch (Exception e) {
+                log.error("Error parsing response: " + e.getMessage());
+                return Collections.emptyList(); // 返回空列表
             }
-            // 6. 增强用户Prompt
-            userQuery = buildEnhancedPrompt(userQuery, docInfos);
-            return documentInfoVOS;
+        } else if (response.getStatusCode().value() == 500) {
+            log.error("Server returned 500 error: " + response.getBody());
+            return Collections.emptyList(); // 返回空列表
         } else {
             throw new RuntimeException("Query failed: " + response.getBody());
         }

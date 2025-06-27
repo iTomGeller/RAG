@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -45,6 +46,10 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     private OpenAiChatModel openAiChatModel;
+
+    @Value("${qwen-rag.hyj-rag.ip}")
+    private String ragServerIp;
+
 
     public Long getUserId() {
         Long userId = BaseContext.getCurrentId();
@@ -231,7 +236,7 @@ public class FileServiceImpl implements FileService {
     // 同步方法
     public void persistFileToVectorDB(String document, String title, String url) {
         // 1. 准备请求URL和请求体
-        String apiUrl = "http://127.0.0.1:5000/save";
+        String apiUrl = ragServerIp + "/save";
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("document", document);
