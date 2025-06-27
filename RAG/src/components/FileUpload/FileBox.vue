@@ -20,7 +20,7 @@
     </div>
 
     <!-- 分页控件 -->
-    <div class="pagination-controls-container">
+    <div class="file-cards-pagination-controls-container">
       <el-pagination
         @current-change="handleCurrentChange"
         :current-page="currentPage"
@@ -178,16 +178,11 @@ const handleCurrentChange = async (newPage) => {
   padding: 20px 0;
 }
 
-.pagination-controls-container {
+.file-cards-pagination-controls-container {
   margin-top: 30px;
   margin-bottom: 30px;
   width: 100%;
   display: flex;
   justify-content: center;
-}
-
-/* 覆盖 Element Plus 默认样式，如果需要 */
-.el-pagination {
-  font-size: 14px;
 }
 </style>
