@@ -11,5 +11,6 @@ import { RouterView } from 'vue-router'
   </GeminiProvider>
 </template>
 
-<style scoped>
+<style >
+
 </style>

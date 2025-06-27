@@ -28,12 +28,6 @@
           </div>
         </template>
 
-        <!-- <template v-if="!isLogin">
-          <div class="input-group">
-            <label for="nickname">昵称</label>
-            <input class="ink-input" type="text" id="nickname" v-model="nickname" required />
-          </div>
-        </template> -->
 
         <div class="input-group">
           <label for="password">密码</label>
@@ -43,9 +37,9 @@
           <label for="confirmPassword">确认密码</label>
           <input type="password" id="confirmPassword" v-model="confirmPassword" required />
         </div>
-        <button class="ink-button" type="submit" :disabled="loading">
+        <button class="ink-button" type="submit" :disabled="loading" @click="handleSubmit">
           {{ loading ? '处理中...' : isLogin ? '开始使用' : '启名' }}
-        </button>
+        </button>   
       </form>
       <p class="toggle-form" @click="toggleForm">
         {{ isLogin ? '没有账号？注册' : '已有账号？登录' }}
@@ -69,6 +63,7 @@ export default {
     const verificationCode = ref('')
     const isCodeSent = ref(false)
     const codeCountdown = ref(0)
+    const router = useRouter()
     let countdownTimer = null
 
     const { loading, errorMessage, login, register, sendVerificationCode } = useAuth()
