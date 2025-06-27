@@ -2,9 +2,12 @@ package com.cyberlanting.qwen_rag.controller;
 
 import com.cyberlanting.qwen_rag.common.result.Result;
 import com.cyberlanting.qwen_rag.pojo.entity.Chat;
+import com.cyberlanting.qwen_rag.pojo.entity.DocumentInfo;
+import com.cyberlanting.qwen_rag.pojo.vo.DocumentInfoVO;
 import com.cyberlanting.qwen_rag.service.Assistant;
 import com.cyberlanting.qwen_rag.service.ChatService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
@@ -27,19 +30,38 @@ public class ChatController {
     private ChatService chatService;
 
     @Autowired
-    private OpenAiChatModel aiChatModel;
+    private ObjectMapper objectMapper;
 
-    @Autowired
-    private OpenAiStreamingChatModel aiStreamingChatModel;
 
-    @PostMapping(produces = "text/html;charset=utf-8")
-    public Flux<String> chat(String memoryId, String message) throws JsonProcessingException {
-        message = chatService.queryAndEnhancedPrompt(message);
+//    @RequestMapping(produces = "text/html;charset=utf-8")
+//    public Flux<String> chat(String memoryId, String message) throws JsonProcessingException {
+//        chatService.queryAndEnhancedPrompt(message);
 //        log.info("enhanced message: {}", message);
-//        String resultTest = aiChatModel.chat(message);
-//        log.info("result: {}", resultTest);
-        Flux<String> result = assistant.chat(memoryId, message);
-        return result;
+////        String resultTest = aiChatModel.chat(message);
+////        log.info("result: {}", resultTest);
+//        Flux<String> result = assistant.chat(memoryId, message);
+//        return result;
+//    }
+
+    @RequestMapping(produces = "text/event-stream")
+    public Flux<String> chat(String memoryId, String message) throws JsonProcessingException {
+//        // 阶段1：先发送数据源（JSON格式）
+//        List<Source> sources = retrievalService.getSources(message);
+//        String sourcesJson = objectMapper.writeValueAsString(sources);
+
+        // 阶段1：先发送数据源（JSON格式）
+        List<DocumentInfoVO> documentInfos = chatService.queryAndEnhancedPrompt(message);
+        String sourcesJson = objectMapper.writeValueAsString(documentInfos);
+        log.info(sourcesJson);
+
+        // 阶段2：流式生成回复内容
+        Flux<String> contentStream = assistant.chat(memoryId, message);
+
+        return Flux.concat(
+                Flux.just("SOURCES:" + sourcesJson + "\n\n"), // 数据源标记
+                contentStream.map(chunk -> "CONTENT:" + chunk + "\n\n"),
+                Flux.just("END:\n\n") // 结束标记
+        );
     }
 
     @GetMapping("/list")

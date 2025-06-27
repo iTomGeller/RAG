@@ -18,12 +18,21 @@ public class RedisChatMemoryStore implements ChatMemoryStore {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    // 统一管理 Key 前缀
+    private static final String MEMORY_KEY_PREFIX = "OTTAR:MEMORY:";
+
+    private String getMemoryKey(Object memoryId) {
+        return MEMORY_KEY_PREFIX + memoryId.toString();
+    }
+
     @Override
     public List<ChatMessage> getMessages(Object memoryId) {
         // 获取会话信息
-        String json = redisTemplate.opsForValue().get(memoryId.toString());
-        // 把json字符串转化成List<ChatMessage>
+        String json = redisTemplate.opsForValue().get(getMemoryKey(memoryId)); // 使用统一的 Key
+        // 如果 Redis 中没有数据，json 会是 null，Deserializer 会返回空列表，这是正常的首次聊天情况
         List<ChatMessage> list = ChatMessageDeserializer.messagesFromJson(json);
+        // 为了调试，可以打印出获取到的消息
+        // System.out.println("GET Messages for " + memoryId + ": " + (list != null ? list.size() : 0) + " messages");
         return list;
     }
 
@@ -32,12 +41,14 @@ public class RedisChatMemoryStore implements ChatMemoryStore {
         // 更新会话消息
         // 1. 把list转换成json数据
         String json = ChatMessageSerializer.messagesToJson(list);
+        // 为了调试，可以打印出要存储的 JSON
+        // System.out.println("UPDATE Messages for " + memoryId + ". JSON to store: " + json);
         // 2. 把json数据存储到redis中
-        redisTemplate.opsForValue().set("OTTAR:MEMORY:" + memoryId.toString(), json, Duration.ofDays(3));
+        redisTemplate.opsForValue().set(getMemoryKey(memoryId), json, Duration.ofDays(3)); // 使用统一的 Key
     }
 
     @Override
     public void deleteMessages(Object memoryId) {
-        redisTemplate.delete("OTTAR:MEMORY:" + memoryId.toString());
+        redisTemplate.delete(getMemoryKey(memoryId)); // 使用统一的 Key
     }
 }

@@ -1,6 +1,7 @@
 package com.cyberlanting.qwen_rag.service.impl;
 
 
+import com.cyberlanting.qwen_rag.pojo.vo.DocumentInfoVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cyberlanting.qwen_rag.common.result.Result;
@@ -59,7 +60,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public String queryAndEnhancedPrompt(String userQuery) throws JsonProcessingException {
+    public List<DocumentInfoVO> queryAndEnhancedPrompt(String userQuery) throws JsonProcessingException {
         // 1. 准备请求URL和请求体
         String apiUrl = "http://127.0.0.1:5000/query";
 
@@ -91,16 +92,21 @@ public class ChatServiceImpl implements ChatService {
 
             // 6. 封装结果
             List<DocumentInfo> docInfos = new ArrayList<>();
+            List<DocumentInfoVO> documentInfoVOS = new ArrayList<>();
             for (int i = 0; i < documents.size(); i++) {
                 docInfos.add(new DocumentInfo(
                         titles.get(i),
                         urls.get(i),
                         documents.get(i)
                 ));
+                documentInfoVOS.add(new DocumentInfoVO(
+                        titles.get(i),
+                        urls.get(i)
+                ));
             }
             // 6. 增强用户Prompt
-            String enhancedPrompt = buildEnhancedPrompt(userQuery, docInfos);
-            return enhancedPrompt;
+            userQuery = buildEnhancedPrompt(userQuery, docInfos);
+            return documentInfoVOS;
         } else {
             throw new RuntimeException("Query failed: " + response.getBody());
         }
