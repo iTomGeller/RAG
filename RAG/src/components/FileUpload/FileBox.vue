@@ -5,7 +5,6 @@
     </div>
     <div class="wolfram-card__content">
       <h3 class="wolfram-card__title">{{ props.name }}</h3>
-      <!-- <p class="wolfram-card__description">{{ description }}</p> -->
     </div>
   </div>
 
@@ -19,68 +18,94 @@
     <div class="file-cards-grid">
       <FileCard v-for="file in files" :key="file.id" :url="file.url" :fileName="file.name" />
     </div>
-      <div v-if="!showUpload" class="upload-button-container">
-        <el-button @click="showUpload = true" type="primary">上传文件</el-button>
-      </div>
-      <div v-else class="upload-container">
-        <FileUpload
-          :baseId="props.id"
-          @update:uploaded="handleFileUploaded"
-          @cancel="showUpload = false"
-        />
-        <el-button @click="showUpload = false">取消</el-button>
-      </div>
+
+    <!-- 分页控件 -->
+    <div class="pagination-controls-container">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :layout="'prev, pager, next'"
+        :total="total"
+        background
+      />
+    </div>
+
+    <div v-if="!showUpload" class="upload-button-container">
+      <el-button @click="showUpload = true" type="primary">上传文件</el-button>
+    </div>
+    <div v-else class="upload-container">
+      <FileUpload
+        :baseId="props.id"
+        @update:uploaded="handleFileUploaded"
+        @cancel="showUpload = false"
+      />
+      <el-button @click="showUpload = false">取消</el-button>
+    </div>
   </el-dialog>
 </template>
 
 <script setup>
-import { ref, defineProps, computed, onMounted } from 'vue'
-import { assets } from '@/assets/assets'
-import FileCard from './FileCard.vue'
-import FileService from '@/service/FileService'
-import { ElNotification } from 'element-plus'
-import FileUpload from './FileUpload.vue'
+import { ref, defineProps, computed, onMounted } from 'vue';
+import { assets } from '@/assets/assets';
+import FileCard from './FileCard.vue';
+import FileService from '@/service/FileService';
+import { ElNotification, ElPagination } from 'element-plus';
+import FileUpload from './FileUpload.vue';
 
 const props = defineProps({
   id: Number,
   name: String,
   type: String,
-})
+});
 
-const visiable = ref(false)
-const files = ref([])
-const showUpload = ref(false)
+const visiable = ref(false);
+const files = ref([]);
+const showUpload = ref(false);
+
+// --- 分页相关状态 ---
+const currentPage = ref(1); // 当前页码，默认为第一页
+const pageSize = ref(4); // 每页显示的文件数量，固定为4
+const total = ref(0); // 总文件数
 
 const iconUrl = computed(() => {
-  const iconName = `${props.type}_icon`
-  // console.log(iconName);
-  return assets[iconName] || assets.Engineer_icon
-})
-const title = props.title || 'Engineer'
-const description = props.description || 'Engineer is great science'
+  const iconName = `${props.type}_icon`;
+  return assets[iconName] || assets.Engineer_icon;
+});
+
+const title = props.title || 'Engineer';
+const description = props.description || 'Engineer is great science';
 
 onMounted(() => {
-  update()
-})
-const handleFileUploaded = () => {
-  update()
-}
-const handleClick = () => {
-  visiable.value = true
-}
+  refresh();
+});
 
-const update = async () => {
+const handleFileUploaded = () => {
+  refresh();
+};
+
+const handleClick = () => {
+  visiable.value = true;
+};
+
+const refresh = async () => {
   try {
-    const res = await FileService.getBaseFiles({ baseNum: props.id, page: 1, pageSize: 4 })
-    files.value = res.list
-    console.log(files.value)
+    const res = await FileService.getBaseFiles({ baseNum: props.id, page: currentPage.value, pageSize: pageSize.value });
+    files.value = res.list;
+    total.value = res.total;
+    console.log(files.value);
   } catch (error) {
     ElNotification.error({
       message: '获取知识库列表失败',
-    })
+    });
   }
-  console.log('updated')
-}
+  console.log('updated');
+};
+
+const handleCurrentChange = async (newPage) => {
+  currentPage.value = newPage;
+  await refresh();
+};
 </script>
 
 <style scoped>
@@ -151,5 +176,18 @@ const update = async () => {
   /* grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); */
   gap: 30px;
   padding: 20px 0;
+}
+
+.pagination-controls-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* 覆盖 Element Plus 默认样式，如果需要 */
+.el-pagination {
+  font-size: 14px;
 }
 </style>

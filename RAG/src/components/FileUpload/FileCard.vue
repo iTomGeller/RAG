@@ -5,15 +5,29 @@
 
   <!-- 图片类型 -->
   <template v-if="isImage(props.url)">
-    <img :src="props.url" alt="image" class="chat-image" @click="showImagePreview = true" />
+    <!-- <img :src="props.url" alt="image" class="chat-image" @click="showImagePreview = true" />
     <div v-if="showImagePreview" class="image-preview-overlay" @click="showImagePreview = false">
       <img :src="props.url" class="image-preview" />
+    </div> -->
+    <div class="file-card" @click="handlePreview">
+      <div class="file-info">
+        <div class="file-name">{{ parsed.fileName }}</div>
+        <div class="file-size">{{ parsed.fileSize }}</div>
+      </div>
+      <img :src="getIcon(props.url)" class="file-icon" />
     </div>
   </template>
 
   <!-- 视频类型 -->
   <template v-else-if="isVideo(props.url)">
-    <video controls :src="props.url" class="chat-video" />
+    <!-- <video controls :src="props.url" class="chat-video" /> -->
+    <div class="file-card" @click="handlePreview">
+      <div class="file-info">
+        <div class="file-name">{{ parsed.fileName }}</div>
+        <div class="file-size">{{ parsed.fileSize }}</div>
+      </div>
+      <img :src="getIcon(props.url)" class="file-icon" />
+    </div>
   </template>
 
 
@@ -22,7 +36,7 @@
     <div class="file-card" @click="handlePreview">
       <div class="file-info">
         <div class="file-name">{{ parsed.fileName }}</div>
-        <div class="file-size">{{ parsed.fileSize }}</div>
+        <!-- <div class="file-size">{{ parsed.fileSize }}</div> -->
       </div>
       <img :src="getIcon(props.url)" class="file-icon" />
     </div>
@@ -52,7 +66,7 @@ function isVideo(url) {
 }
 
 function isDocument(url) {
-  return /\.(docx?|pptx?|xlsx?|pdf)$/i.test(url);
+  return /\.(docx?|doc?|pptx?|xlsx?|pdf?|txt)$/i.test(url);
 }
 
 function getIcon(url) {
