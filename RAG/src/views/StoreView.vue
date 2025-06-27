@@ -28,7 +28,10 @@
       </el-pagination>
     </div>
 
-    <AddBaseBtn @addBaseSuccess="handleAddBaseSuccess" />
+    <FileUpload
+        @update:uploaded="handleFileUploaded"
+        @cancel="showUpload = false"
+      />
   </div>
 </template>
 
@@ -36,7 +39,7 @@
 import { ref, computed ,onMounted} from 'vue';
 
 import FileBox from '@/components/FileUpload/FileBox.vue';
-import AddBaseBtn from '@/components/Base/AddBaseBtn.vue';
+import FileUpload from '@/components/FileUpload/FileUpload.vue';
 import { ElPagination,ElNotification } from 'element-plus';
 
 import BaseService from '@/service/BaseService';
@@ -75,7 +78,7 @@ const refresh = async () => {
     });
   }
 }
-const handleAddBaseSuccess = async () => {
+const handleFileUploaded = async () => {
   await refresh();
 };
 

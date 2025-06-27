@@ -16,7 +16,7 @@
     :with-header="false"
   >
     <div class="file-cards-grid">
-      <FileCard v-for="file in files" :key="file.id" :url="file.url" :fileName="file.name" />
+      <FileCard v-for="file in files" :key="file.id" :file="file" />
     </div>
 
     <!-- 分页控件 -->
@@ -34,14 +34,6 @@
     <div v-if="!showUpload" class="upload-button-container">
       <el-button @click="showUpload = true" type="primary">上传文件</el-button>
     </div>
-    <div v-else class="upload-container">
-      <FileUpload
-        :baseId="props.id"
-        @update:uploaded="handleFileUploaded"
-        @cancel="showUpload = false"
-      />
-      <el-button @click="showUpload = false">取消</el-button>
-    </div>
   </el-dialog>
 </template>
 
@@ -51,7 +43,6 @@ import { assets } from '@/assets/assets';
 import FileCard from './FileCard.vue';
 import FileService from '@/service/FileService';
 import { ElNotification, ElPagination } from 'element-plus';
-import FileUpload from './FileUpload.vue';
 
 const props = defineProps({
   id: Number,
@@ -61,7 +52,6 @@ const props = defineProps({
 
 const visiable = ref(false);
 const files = ref([]);
-const showUpload = ref(false);
 
 // --- 分页相关状态 ---
 const currentPage = ref(1); // 当前页码，默认为第一页
@@ -80,11 +70,8 @@ onMounted(() => {
   refresh();
 });
 
-const handleFileUploaded = () => {
-  refresh();
-};
-
 const handleClick = () => {
+  refresh();
   visiable.value = true;
 };
 
