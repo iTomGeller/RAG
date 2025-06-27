@@ -38,10 +38,10 @@
 import { defineProps, ref, computed, onMounted } from 'vue';
 import { Delete } from '@element-plus/icons-vue'
 
-const props = defineProps(['url', 'fileContent', 'deleteAble']);
+const props = defineProps(['url', 'fileName']);
 const showImagePreview = ref(false);
 
-const parsed = computed(() => parseFileContent(props.fileContent));
+const parsed = computed(() => parseFileName(props.fileName));
 
 function isImage(url) {
   return /\.(png|jpe?g|gif|bmp|webp)$/i.test(url);
@@ -63,10 +63,11 @@ function getIcon(url) {
   return new URL('@/assets/icons/file.png', import.meta.url).href;
 }
 
-function parseFileContent(fileContent) {
+function parseFileName(fileName) {
+  return fileName;
   // format like "filename-(size)"
-  const match = fileContent?.match(/^(.*)-\(([^)]+)\)$/);
-  if (!match) return { fileName: fileContent, fileSize: null };
+  const match = fileName?.match(/^(.*)-\(([^)]+)\)$/);
+  if (!match) return { fileName: fileName, fileSize: null };
   return { fileName: match[1], fileSize: match[2] };
 }
 

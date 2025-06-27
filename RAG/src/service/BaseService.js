@@ -10,17 +10,6 @@ const BaseService = {
       throw error
     }
   },
-
-  async getBaseFiles({ page, pageSize, baseNum }) {
-    try {
-      const response = await api.get(`/files/${baseNum}`,{params: { page, pageSize }})
-      return response.data
-    } catch (error) {
-      console.error('Get files error:', error)
-      throw error
-    }
-  },
-
   async addBase({ name, type }) {
     try {
       const response = await api.post('/knowledgebase', { name, type })
