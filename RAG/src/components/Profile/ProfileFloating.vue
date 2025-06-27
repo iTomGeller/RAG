@@ -78,7 +78,7 @@ export default {
 .avatar {
   width: 60px;
   height: 60px;
-  border: 0.5px solid rgb(46, 5, 87);
+  border: 0.5px solid rgb(255, 255, 255);
   border-radius: 50%;
 }
 
@@ -117,9 +117,9 @@ export default {
 
 .home-avatar {
   margin-top: 10px;
-  width: 40px;
-  height: 40px;
-  border: 0.5px solid rgb(46, 5, 87);
+  width: 60px;
+  height: 60px;
+  border: 0.5px solid rgb(255, 255, 255);
   border-radius: 50%;
   background-color: transparent;
 }
