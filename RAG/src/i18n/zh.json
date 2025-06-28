@@ -1,0 +1,35 @@
+ {
+    "login":{
+        "login":"登录",
+        "username":"用户名",
+        "password":"密码",
+        "register":"注册"
+
+    },
+    "sidebar":{
+        "recently":"最近聊天",
+        "newchat":"新建对话",
+        "history":"历史对话",
+        "knowledgebase":"知识库",
+        "settings":"设置"
+
+  },
+  "profile":{
+    "edit":"修改信息",
+    "logout":"退出登录"
+  },
+    "knowledgebase":{
+        "title":"知识库",
+        "description1":"这里是知识库的描述",
+        "description2":"nothing",
+        "categories":{
+            "others":"其他",
+            "medical":"医学/健康知识",
+            "science":"理科知识库",
+            "art":"文科知识库",
+            "society":"社科知识库",
+            "engineering":"工科/应用知识库"
+        }
+  }
+}
+

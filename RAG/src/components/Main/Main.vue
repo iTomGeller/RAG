@@ -3,13 +3,14 @@
     <div class="nav">
       <p>Otter AI</p>
       <!-- User Profile -->
+      <TranslateButton />
       <ProfileFloating />
    </div>
 
     <div class="main-container">
       <div v-if="!showResult">
         <div class="greet">
-          <p><span>Hi, man</span></p>
+          <p><span>Hi, {{ getUserName() }}</span></p>
           <p>How can I help you today?</p>
         </div>
         <SuggestCards />
@@ -54,6 +55,7 @@ import { computed, inject } from 'vue';
 import { assets } from '@/assets/assets'; 
 import SuggestCards from './SuggestCards.vue'; 
 import ProfileFloating from '../Profile/ProfileFloating.vue';
+import TranslateButton from './TranslateButton.vue';
 
 const {
   onSent,
@@ -65,7 +67,14 @@ const {
 } = inject('geminiContext');
 
 const sendButtonVisible = computed(() => input.value.trim() !== '');
+
+const getUserName = () => {
+  const user = JSON.parse(localStorage.getItem('userInfo'));
+  return user?.username || 'User';
+};
+
 </script>
+
 
 <style scoped>
 @import './Main.css';
