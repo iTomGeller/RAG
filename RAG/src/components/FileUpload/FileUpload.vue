@@ -43,7 +43,7 @@
 
 <script setup>
 import { assets } from '@/assets/assets'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import vueFilePond from 'vue-filepond'
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
@@ -57,6 +57,7 @@ const emit = defineEmits(['update:uploaded'])
 // 当前选择的文件列表
 const files = ref([])
 const pond = ref(null)
+const baseInfo = ref([])
 const isUploading = ref(false)
 //显示相关
 const iconUrl = assets.new_box_icon
@@ -78,16 +79,20 @@ const handleAddFile = (error, file) => {
 
 // 移除文件
 const handleRemoveFile = (error, file) => {
-  console.log('移除文件:', file)
-  const index = files.value.findIndex((f) => f.id === file.id)
-  if (index > -1) {
-    files.value.splice(index, 1)
+  if (!error) {
+    console.log('移除文件:', file)
+    const index = files.value.findIndex((f) => f.id === file.id)
+    if (index > -1) {
+      files.value.splice(index, 1)
+    }
   }
 }
 // 确认上传所有文件
 const uploadFiles = async () => {
+  console.log(baseInfo.value)
   isUploading.value = true // 开始加载动画
-  for (const file of files.value) {
+  const filesTemp = files.value.slice()
+  for (const file of filesTemp) {
     try {
       // 创建 FormData 对象
       const formData = new FormData()
@@ -96,36 +101,44 @@ const uploadFiles = async () => {
       // 调用 FileService.addFile 方法
       const res = await FileService.addFile(formData)
       console.log(`文件 ${res.data.name} 上传成功`)
-      ElNotification.success({
-        message: `文件“ ${res.data.name} ”上传成功,\n已被放入 ${await searchBaseNameById(res.data.knowledgeBaseId)}`,
-      })
+      //显示分类信息
+      fileDestination(res.data.name, res.data.knowledgeBaseId)
     } catch (err) {
       console.error(`文件 ${file.filename} 上传失败`, err)
+    } finally {
+      //移除filepond中的对应文件
+      pond.value.removeFile(file)
     }
   }
   clear()
   emit('update:uploaded') // 触发事件并传递当前状态
-  isUploading.value = false // 结束加载动画
   onCancel()
 }
-const searchBaseNameById = async (id) => {
-  console.log('请求知识库名称')
-  const res = await BaseService.getUserBaseInfo({ page: 1, pageSize: 6 })
-  for (let i = 0; i < res.total; i++) {
-    if (res.list[i].id === id) {
-      console.log(res.list[i].name)
-      return res.list[i].name
-    }
-  }
-  console.log('请求知识库名称失败')
-  return null
+//文件分类信息
+const fileDestination = async (name, id) => {
+  ElNotification.success({
+    message: `文件“ ${name} ”上传成功,\n已被放入 ${baseInfo.value.find((item) => item.id === id).name}`,
+  })
 }
 //取消
 const clear = () => {
   // 清空文件列表
   files.value = []
   pond.value.removeFiles()
+  isUploading.value = false // 结束加载动画
 }
+onMounted(async () => {
+  // 获得知识库列表\
+  try {
+    const res = await BaseService.getUserBaseInfo({ page: 1, pageSize: 1000 })
+    baseInfo.value = res.list
+  } catch (error) {
+    console.log(error)
+    ElNotification.error({
+      message: '获取知识库列表失败',
+    })
+  }
+})
 const clickCancel = (done) => {
   visiable.value = false
   clear()

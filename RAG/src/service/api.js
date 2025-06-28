@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 
 const api = axios.create({
   baseURL: `${baseURL}`,
-  timeout: 5000,
+  timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
   },
