@@ -4,16 +4,29 @@
   </el-icon> -->
 
   <!-- 图片类型 -->
-  <template v-if="isImage(props.url)">
-    <img :src="props.url" alt="image" class="chat-image" @click="showImagePreview = true" />
+  <template v-if="isImage(props.file.url)">
+    <!-- <img :src="props.url" alt="image" class="chat-image" @click="showImagePreview = true" />
     <div v-if="showImagePreview" class="image-preview-overlay" @click="showImagePreview = false">
       <img :src="props.url" class="image-preview" />
+    </div> -->
+    <div class="file-card" @click="handlePreview">
+      <div class="file-info">
+        <div class="file-name">{{ props.file.name }}</div>
+      </div>
+      <img :src="getIcon(props.url)" class="file-icon" />
     </div>
   </template>
 
   <!-- 视频类型 -->
-  <template v-else-if="isVideo(props.url)">
-    <video controls :src="props.url" class="chat-video" />
+  <template v-else-if="isVideo(props.file.url)">
+    <!-- <video controls :src="props.url" class="chat-video" /> -->
+    <div class="file-card" @click="handlePreview">
+      <div class="file-info">
+        <div class="file-name">{{ parsed.fileName }}</div>
+        <div class="file-size">{{ parsed.fileSize }}</div>
+      </div>
+      <img :src="getIcon(props.file.url)" class="file-icon" />
+    </div>
   </template>
 
 
@@ -22,7 +35,7 @@
     <div class="file-card" @click="handlePreview">
       <div class="file-info">
         <div class="file-name">{{ parsed.fileName }}</div>
-        <div class="file-size">{{ parsed.fileSize }}</div>
+        <!-- <div class="file-size">{{ parsed.fileSize }}</div> -->
       </div>
       <img :src="getIcon(props.url)" class="file-icon" />
     </div>
@@ -30,7 +43,7 @@
 
   <!-- 其他类型 -->
   <template v-else>
-    <a :href="props.url" target="_blank">{{ props.url }}</a>
+    <a :href="props.url" target="_blank">{{ props.file.url }}</a>
   </template>
 </template>
 
@@ -38,7 +51,7 @@
 import {  ref, computed, onMounted } from 'vue';
 import { Delete } from '@element-plus/icons-vue'
 
-const props = defineProps(['url', 'fileName']);
+const props = defineProps(['file']);
 const showImagePreview = ref(false);
 
 const parsed = computed(() => parseFileName(props.fileName));
@@ -52,7 +65,7 @@ function isVideo(url) {
 }
 
 function isDocument(url) {
-  return /\.(docx?|pptx?|xlsx?|pdf)$/i.test(url);
+  return /\.(docx?|doc?|pptx?|xlsx?|pdf?|txt)$/i.test(url);
 }
 
 function getIcon(url) {
@@ -61,14 +74,6 @@ function getIcon(url) {
   if (/\.xlsx?$/.test(url)) return new URL('@/assets/icons/xls.png', import.meta.url).href;
   if (/\.pdf$/.test(url)) return new URL('@/assets/icons/pdf.png', import.meta.url).href;
   return new URL('@/assets/icons/file.png', import.meta.url).href;
-}
-
-function parseFileName(fileName) {
-  return fileName;
-  // format like "filename-(size)"
-  const match = fileName?.match(/^(.*)-\(([^)]+)\)$/);
-  if (!match) return { fileName: fileName, fileSize: null };
-  return { fileName: match[1], fileSize: match[2] };
 }
 
 // Office Online 预览文档

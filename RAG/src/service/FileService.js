@@ -15,7 +15,7 @@ const FileService = {
     }
   },
 
-  async addFile(baseId, formData) {
+  async addFile(formData) {
     try {
       // 添加请求头，指定 Content-Type 为 multipart/form-data
       const config = {
@@ -24,7 +24,7 @@ const FileService = {
         }
       };
       
-      const response = await api.post(`/files/upload/${baseId}`, formData, config);
+      const response = await api.post('/files/upload/auto-classify', formData, config);
       return response.data
     } catch (error) {
       console.error('Add base error:', error)

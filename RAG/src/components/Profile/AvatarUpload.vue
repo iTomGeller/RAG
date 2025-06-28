@@ -1,10 +1,8 @@
 <template>
   <el-button color="e5e5e5" @click="dialog = true" alt="Logout Icon" class="act-btn"
-    >修改信息</el-button
-  >
+    > {{ t('profile.edit') }}</el-button>
 
   <el-dialog
-    :before-close="clickCancel"
     v-model="dialog"
     title="上传文件"
     size="80%"
@@ -35,13 +33,15 @@
 </template>
 
 <script setup>
-import { assets } from '@/assets/assets'
 import { ref} from 'vue'
+
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
 import vueFilePond from 'vue-filepond'
 import 'filepond/dist/filepond.min.css'
 import { ElMessage } from 'element-plus'
 import baseURL from '@/config/baseURL.js'
-import FileService from '@/service/FileService.js'
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
 import axios from 'axios'
 

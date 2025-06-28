@@ -10,7 +10,7 @@
       <!-- transition 是动画渐变组件，控制淡出效果 -->
       <transition name="fade-slide" mode="out-in">
         <div v-show="extended" class="recent">
-          <p class="recent-title">最近</p>
+          <p class="recent-title">{{ t('sidebar.recently') }}</p>
           <div
             v-for="(item, index) in prevPrompts"
             :key="index"
@@ -33,7 +33,7 @@
           <ChatDotSquare />
         </el-icon>
         <transition name="fade-slide">
-          <span class="recent-tag" v-show="extended">新建对话</span>
+          <span class="recent-tag" v-show="extended">{{ t('sidebar.newchat')}}</span>
         </transition>
       </div>
 
@@ -43,7 +43,7 @@
           <Clock />
         </el-icon>
         <transition name="fade-slide">
-          <span class="recent-tag" v-show="extended">历史对话</span>
+          <span class="recent-tag" v-show="extended">{{ t('sidebar.history')}}</span>
         </transition>
       </div>
 
@@ -53,7 +53,7 @@
           <Setting />
         </el-icon>
         <transition name="fade-slide">
-          <span class="recent-tag" v-show="extended">设置</span>
+          <span class="recent-tag" v-show="extended">{{ t('sidebar.settings')}}</span>
         </transition>
       </div>
 
@@ -63,7 +63,7 @@
           <Star />
         </el-icon>
         <transition name="fade-slide">
-          <span class="recent-tag" v-show="extended">知识库</span>
+          <span class="recent-tag" v-show="extended">{{ t('sidebar.knowledgebase')}}</span>
         </transition>
       </div>
     </div>
@@ -82,6 +82,9 @@ const router = useRouter()
 const { prevPrompts, newChat } = inject('geminiContext') // Destructure the needed properties and methods
 
 import { gsap } from 'gsap' // 引入GSAP
+
+import { useI18n } from 'vue-i18n' //全局语言切换
+const { t }= useI18n();
 
 const iconSize = 25
 

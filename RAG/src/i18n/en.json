@@ -1,0 +1,33 @@
+ {
+      "login":{
+        "login":"Login",
+        "username":"username",
+        "password":"password",
+        "register":"register"
+    },
+    "sidebar": {
+        "recently": "Recently",
+        "newchat": "New Chat",
+        "history": "History Chat",
+        "knowledgebase":"Knowledge Base",
+        "settings":"Settings"
+
+  },
+    "profile":{
+    "edit":"Edit profile",
+    "logout":"Logout"
+  },
+      "knowledgebase":{
+        "title":"Knowledge Base",
+        "description1":"An investment in knowledge pays the best interest.",
+        "description2":"Knowledge will bring you the opportunity to make a difference.",
+        "categories":{
+            "others":"others",
+            "medical":"medical/health",
+            "science":"scientific",
+            "art":"artistic",
+            "society":"societal",
+            "engineering":"engineering/applied"
+        }
+  }
+}

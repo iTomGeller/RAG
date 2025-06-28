@@ -1,9 +1,9 @@
 <template>
   <div class="main">
     <div class="featured-section">
-      <h1>Knowledge Base</h1>
-      <p>An investment in knowledge pays the best interest.</p>
-      <p>Knowledge will bring you the opportunity to make a difference.</p>
+      <h1>{{ t('knowledgebase.title')}}</h1>
+      <p>{{t('knowledgebase.description1')}}</p>
+      <p>{{t('knowledgebase.description2')}}</p>
     </div>
 
     <div class="file-boxs-grid" :class="{ 'single-item-center': boxList.length === 1 }">
@@ -28,7 +28,10 @@
       </el-pagination>
     </div>
 
-    <AddBaseBtn @addBaseSuccess="handleAddBaseSuccess" />
+    <FileUpload
+        @update:uploaded="handleFileUploaded"
+        @cancel="showUpload = false"
+      />
   </div>
 </template>
 
@@ -36,10 +39,13 @@
 import { ref, computed ,onMounted} from 'vue';
 
 import FileBox from '@/components/FileUpload/FileBox.vue';
-import AddBaseBtn from '@/components/Base/AddBaseBtn.vue';
+import FileUpload from '@/components/FileUpload/FileUpload.vue';
 import { ElPagination,ElNotification } from 'element-plus';
 
 import BaseService from '@/service/BaseService';
+
+import { useI18n } from 'vue-i18n';
+const {t} = useI18n();
 
 const boxList = ref([])
 const totalPage = ref(0)
@@ -75,7 +81,7 @@ const refresh = async () => {
     });
   }
 }
-const handleAddBaseSuccess = async () => {
+const handleFileUploaded = async () => {
   await refresh();
 };
 

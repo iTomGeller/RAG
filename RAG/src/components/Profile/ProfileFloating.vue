@@ -3,7 +3,7 @@
     <el-popover
       popper-class="my-popover"
       placement="bottom-start"
-      trigger="click"
+      trigger="hover"
       width="250px"
       offset="20"
       :popper-style ="{borderRadius: '30px'}"
@@ -24,7 +24,8 @@
           <div class="btn-box">
           <!-- <el-button class="act-btn" @click="editProfile">Update Avatar</el-button> -->
           <AvatarUpload />
-          <el-button  color= "#e5e5e5" class="act-btn" @click="logout">退出</el-button>
+          <!-- 组合式api内部，不需要导入，使用this点取的语法 -->
+          <el-button  color= "#e5e5e5" class="act-btn" @click="logout">{{ this.$t('profile.logout') }}</el-button>
           </div>
         </div>
       </div>
