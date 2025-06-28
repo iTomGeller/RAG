@@ -1,32 +1,32 @@
 <template>
-    <div class="file-card" @click="handlePreview">
-      <div class="file-info">
-        <div class="file-name">{{ props.name }}</div>
-      </div>
-      <img :src="getIcon(props.url)" class="file-icon" />
+  <div class="file-card" @click="handlePreview">
+    <div class="file-info">
+      <div class="file-name">{{ props.name }}</div>
     </div>
+    <img :src="getIcon(props.url)" class="file-icon" />
+  </div>
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, ref } from 'vue'
 
 const props = defineProps({
   url: String,
   name: String,
-});
+})
 function getIcon(url) {
-  if (/\.docx?$/.test(url)) return new URL('@/assets/icons/doc.png', import.meta.url).href;
-  if (/\.xlsx?$/.test(url)) return new URL('@/assets/icons/xls.png', import.meta.url).href;
-  if (/\.txt$/.test(url)) return new URL('@/assets/icons/txt.png', import.meta.url).href;
-  if (/\.md$/.test(url)) return new URL('@/assets/icons/md.png', import.meta.url).href;
-  if (/\.pdf$/.test(url)) return new URL('@/assets/icons/pdf.png', import.meta.url).href;
-  return new URL('@/assets/icons/file.png', import.meta.url).href;
+  if (/\.docx?$/.test(url)) return new URL('@/assets/icons/doc.png', import.meta.url).href
+  if (/\.xlsx?$/.test(url)) return new URL('@/assets/icons/xls.png', import.meta.url).href
+  if (/\.txt$/.test(url)) return new URL('@/assets/icons/txt.png', import.meta.url).href
+  if (/\.md$/.test(url)) return new URL('@/assets/icons/md.png', import.meta.url).href
+  if (/\.pdf$/.test(url)) return new URL('@/assets/icons/pdf.png', import.meta.url).href
+  return new URL('@/assets/icons/file.png', import.meta.url).href
 }
 
 function handlePreview() {
-  const encodedUrl = encodeURIComponent(props.url);
-  const previewUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
-  window.open(previewUrl, '_blank');
+  const encodedUrl = encodeURIComponent(props.url)
+  const previewUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`
+  window.open(previewUrl, '_blank')
 }
 </script>
 
@@ -37,31 +37,10 @@ function handlePreview() {
 </style>
 
 <style scoped>
-
 .chat-image {
   max-width: 200px;
   border-radius: 8px;
   cursor: pointer;
-}
-
-/* 弹出图片预览 */
-.image-preview-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.image-preview {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 8px;
 }
 
 /* 文件卡片样式 */
@@ -115,5 +94,4 @@ function handlePreview() {
   border-radius: 8px;
   cursor: pointer;
 }
-
 </style>

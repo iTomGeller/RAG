@@ -39,19 +39,11 @@
 </template>
 
 <script setup>
-<<<<<<< HEAD
 import { ref, defineProps, computed, onMounted } from 'vue'
 import { assets } from '@/assets/assets'
 import FileCard from './FileCard.vue'
 import FileService from '@/service/FileService'
 import { ElNotification, ElPagination } from 'element-plus'
-=======
-import { ref, computed, onMounted} from 'vue';
-import { assets } from '@/assets/assets';
-import FileCard from './FileCard.vue';
-import FileService from '@/service/FileService';
-import { ElNotification, ElPagination } from 'element-plus';
->>>>>>> 4af32d51606841e7d2fa787db83575efe96d7550
 
 const props = defineProps({
   id: Number,
