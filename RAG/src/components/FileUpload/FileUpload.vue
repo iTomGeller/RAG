@@ -1,18 +1,12 @@
 <template>
   <div class="wolfram-card" @click="dialog = true">
-        <div class="wolfram-card__icon-wrapper">
-            <img :src="iconUrl" :alt="title + ' Icon'" class="wolfram-card__icon" />
-        </div>
-        <div class="wolfram-card__content">
-            <h3 class="wolfram-card__title">{{ title }}</h3>
-        </div>
+    <div class="wolfram-card__icon-wrapper">
+      <img :src="iconUrl" :alt="title + ' Icon'" class="wolfram-card__icon" />
     </div>
-  <img
-    :src="assets.gallery_icon"
-    @click="dialog = true"
-    alt="Gallery Icon"
-    style="cursor: pointer; width: 30px; height: 30px"
-  />
+    <div class="wolfram-card__content">
+      <h3 class="wolfram-card__title">{{ title }}</h3>
+    </div>
+  </div>
   <el-dialog
     :before-close="clickCancel"
     v-model="dialog"
@@ -25,10 +19,12 @@
       <file-pond
         ref="pondRef"
         name="file"
-        label-idle="拖拽文件到这里或点击上传(文件小于10MB)"
+        label-idle="拖放文档文件到这里<br/><span class='file-types'>支持格式: txt, doc, docx, md, pdf, xls, xlsx</span>"
+        max-files="8"
         allow-multiple="false"
         allow-revert="false"
-        accepted-file-types="['text/plain', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/markdown', 'application/pdf']"
+        accepted-file-types="text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/markdown, application/pdf"
+        fileValidateTypeLabelExpectedTypes="文件类型不符合要求"
         instant-upload="false"
         :server="serverOptions"
         @processfile="handleUploadSuccess"
@@ -55,10 +51,11 @@ import 'filepond/dist/filepond.min.css'
 import vueFilePond from 'vue-filepond'
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
 import BaseService from '@/service/BaseService'
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import baseURL from '@/config/baseURL.js'
 
 // 注册插件并创建 FilePond 组件
-const FilePond = vueFilePond(FilePondPluginFileValidateSize)
+const FilePond = vueFilePond(FilePondPluginFileValidateSize, FilePondPluginFileValidateType)
 const token = localStorage.getItem('token')
 const emit = defineEmits(['update:uploaded'])
 // 当前选择的文件列表
@@ -133,45 +130,47 @@ onMounted(async () => {
 
 <style scoped>
 .wolfram-card {
-    display: flex;
-    align-items: center;
-    width: 400px;
-    padding: 16px;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  width: 400px;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
 }
 
 .wolfram-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .wolfram-card__icon-wrapper {
-    flex-shrink: 0;
-    margin-right: 16px;
+  flex-shrink: 0;
+  margin-right: 16px;
 }
 
 .wolfram-card__icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: contain;
-    background-color: #f0f0f0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: contain;
+  background-color: #f0f0f0;
 }
 
 .wolfram-card__content {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .wolfram-card__title {
-    margin: 0 0 4px 0;
-    font-size: 1.2em;
-    color: #333;
-    font-weight: 600;
+  margin: 0 0 4px 0;
+  font-size: 1.2em;
+  color: #333;
+  font-weight: 600;
 }
 
 .upload-container {
