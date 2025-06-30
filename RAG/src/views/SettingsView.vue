@@ -6,6 +6,7 @@
           <h2>主题设置</h2>
         </div>
 
+        <TranslateButton />
         <!-- 主题切换 -->
         <div class="theme-toggle">
           <div class="theme-switch">
@@ -66,6 +67,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { Refresh } from '@element-plus/icons-vue'
+import TranslateButton from '@/components/Main/TranslateButton.vue';
 
 // 主题状态
 const isDarkTheme = ref(false)
