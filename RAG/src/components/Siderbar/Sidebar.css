@@ -28,6 +28,7 @@
 }
 .sidebar .recent-list {
   display: flex;
+  max-width: fit-content;
   gap: 10px;
   padding: 10px;
   border-radius: 50px;
@@ -54,15 +55,11 @@
   cursor: pointer;
 }
 
-.sidebar .recent {
-  display: flex;
-  flex-direction: column;
-  animation: fadeIn 1.5s ease-in-out;
-}
 
 .sidebar .recent-tag{
-  margin-top: 18px;
+  margin-top: 30px;
   margin-left: 10px;
+  margin-bottom: 3px;
   font-size: 13px;
   font-weight: 600;
   color: #555;

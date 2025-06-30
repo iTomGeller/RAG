@@ -18,16 +18,27 @@
         </div>
 
         <transition name="fade-slide">
-          <span class="recent-extended-tag" v-show="extended">{{ t('sidebar.newchat') }}</span>
+          <span class="recent-extended-tag" v-show="extended"
+            >{{ t('sidebar.newchat') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+          >
         </transition>
       </div>
       <transition name="fade-slide">
         <p class="recent-tag" v-show="extended">{{ t('sidebar.recently') }}</p>
       </transition>
+      <transition-group name="fade-slide" mode="out-in">
+        <RecentChat
+          v-show="extended"
+          v-for="item in recentChats"
+          :key="item.memoryId"
+          :memoryId="item.memoryId"
+          :name="item.name"
+        />
+      </transition-group>
 
       <!-- Recent 内容包裹在 transition 中 -->
       <!-- transition 是动画渐变组件，控制淡出效果 -->
-      <transition name="fade-slide" mode="out-in">
+      <!-- <transition name="fade-slide" mode="out-in">
         <div v-show="extended" class="recent">
           <div
             v-for="(item, index) in prevPrompts"
@@ -41,7 +52,7 @@
             <p>{{ item.slice(0, 16) }}</p>
           </div>
         </div>
-      </transition>
+      </transition> -->
     </div>
 
     <div class="bottom">
@@ -83,16 +94,17 @@
           <Star />
         </el-icon>
         <transition name="fade-slide">
-          <span class="recent-extended-tag" v-show="extended">{{ t('sidebar.knowledgebase') }}</span>
+          <span class="recent-extended-tag" v-show="extended">{{
+            t('sidebar.knowledgebase')
+          }}</span>
         </transition>
       </div>
-
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, inject } from 'vue' // Import inject
+import { ref, inject, onMounted } from 'vue' // Import inject
 import RecentChat from './RecentChat.vue'
 
 import {
@@ -117,7 +129,8 @@ import { gsap } from 'gsap' // 引入GSAP
 
 import { useI18n } from 'vue-i18n' //全局语言切换
 const { t } = useI18n()
-const timestamp = Date.now() //时间戳
+
+const recentChats = ref([])
 
 const iconSize = 25
 
@@ -137,7 +150,8 @@ const collectRecentEntry = (el, index) => {
 }
 
 const addNewChat = async () => {
-  console.log('Starting a new chat')
+  const timestamp = Date.now() //时间戳
+  console.log('Starting a new chat' + timestamp)
 }
 const handleRecClick = () => {
   if (extended.value) {
@@ -148,6 +162,9 @@ const handleRecClick = () => {
 }
 const toggleExtended = () => {
   extended.value = !extended.value
+  if (extended.value) {
+    loadPrompt()
+  }
   emit('update:extended', extended.value) // 触发事件并传递当前状态
   if (sidebarRef.value) {
     gsap.to(sidebarRef.value, {
@@ -176,9 +193,17 @@ const toggleExtended = () => {
   }
 }
 
-const loadPrompt = async (prompt) => {
-  console.log('点击历史', prompt)
-  // 加载往期历史，未实现
+const loadPrompt = async () => {
+  try {
+    const res = await ChatService.getChatList()
+    recentChats.value = res.data
+    console.log(recentChats.value)
+  } catch (error) {
+    ElNotification.error({
+      message: '获取历史对话列表失败',
+    })
+  }
+  console.log('chat list get')
 }
 
 const handleChat = () => {
@@ -191,6 +216,10 @@ const handleStore = () => {
 const handleSettings = () => {
   router.push('/home/settings')
 }
+onMounted(() => {
+  loadPrompt()
+  console.log('sidebar updated')
+})
 </script>
 
 <style scoped>
