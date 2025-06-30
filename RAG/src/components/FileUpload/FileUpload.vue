@@ -51,6 +51,10 @@ import 'filepond/dist/filepond.min.css'
 import vueFilePond from 'vue-filepond'
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
 import BaseService from '@/service/BaseService'
+
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import baseURL from '@/config/baseURL.js'
 
@@ -64,8 +68,27 @@ const pondRef = ref(null)
 const baseInfo = ref([])
 //样式语言规定
 const iconUrl = assets.new_box_icon
-const title = '上传文件到您的知识库'
+
+const title = t('knowledgebase.upload')
 const dialog = ref(false)
+
+
+// const visiable = ref(false)
+// const handleClick = () => {
+//   visiable.value = true
+// }
+// const onCancel = () => {
+//   visiable.value = false
+//   clear()
+// }
+// // 添加文件到本地列表
+// const handleAddFile = (error, file) => {
+//   if (!error) {
+//     files.value.push(file)
+//   }
+// }
+// const title = '上传文件到您的知识库'
+
 
 const close = () => {
   dialog.value = false

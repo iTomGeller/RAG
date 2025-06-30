@@ -18,18 +18,34 @@
     "edit":"修改信息",
     "logout":"退出登录"
   },
-    "knowledgebase":{
-        "title":"知识库",
-        "description1":"这里是知识库的描述",
-        "description2":"nothing",
-        "categories":{
-            "others":"其他",
-            "medical":"医学/健康知识",
-            "science":"理科知识库",
-            "art":"文科知识库",
-            "society":"社科知识库",
-            "engineering":"工科/应用知识库"
-        }
+  "knowledgebase":{
+      "title":"知识库",
+      "description1":"识海泛舟，利莫大焉",
+      "description2":"腹有诗书，方能不凡",
+      "categories":{
+          "其他":"其他",
+          "医学/健康知识库":"医学/健康知识",
+          "理科知识库":"理科知识库",
+          "文科知识库":"文科知识库",
+          "社科知识库":"社科知识库",
+          "工科/应用科学知识库":"工科/应用科学知识库"
+      },
+      "upload":"上传文件到您的知识库"      
+  },
+  "settings":{
+    "theme":"主题设置",
+    "light":"浅色主题",
+    "dark":"深色主题",
+    "preview":"主题预览",
+    "nav":"导航栏",
+    "reset":"重置",
+    "content":"卡片内容",
+    "mainBtn":"主要按钮",
+    "secondaryBtn":"次要按钮",
+    "advancedSettings":"高级设置",
+    "mainColor":"主色调",
+    "bgTransparency":"背景透明度"
   }
+
 }
 
