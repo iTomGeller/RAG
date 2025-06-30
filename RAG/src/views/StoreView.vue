@@ -11,7 +11,7 @@
         v-for="box in boxList"
         :key="box.id"
         :id="box.id"
-        :name="box.name"
+        :name=" $t('knowledgebase.categories.'+ box.name,box.name) "
         :type="box.type"
       />
     </div>
@@ -60,6 +60,7 @@ onMounted(async () => {
         totalPage.value = res.totalPage;
 
         console.log(boxList.value);
+        console.log("boxList", boxList)
 
     }catch (error) {
         ElNotification.error({

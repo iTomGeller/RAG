@@ -39,11 +39,14 @@
 </template>
 
 <script setup>
-import { ref, defineProps, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { assets } from '@/assets/assets'
 import FileCard from './FileCard.vue'
 import FileService from '@/service/FileService'
 import { ElNotification, ElPagination } from 'element-plus'
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const props = defineProps({
   id: Number,

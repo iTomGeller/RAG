@@ -39,7 +39,7 @@
 
 <script setup>
 import { assets } from '@/assets/assets'
-import { ref, defineProps } from 'vue'
+import { ref} from 'vue'
 import vueFilePond from 'vue-filepond'
 import 'filepond/dist/filepond.min.css'
 import { ElMessage } from 'element-plus'

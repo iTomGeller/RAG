@@ -13,7 +13,7 @@
       <div class="profile-content">
         <!-- user information -->
         <div class="user-info">
-          <img :src="user.avatarUrl" alt="User Avatar" class="avatar" />
+          <img :src="user.avatarUrl " alt="User Avatar" class="avatar" />
           <div class="user-details">
             <h3>{{ user.username }}</h3>
             <p>{{ user.email }}</p>
@@ -42,6 +42,7 @@
 
 <script>
 import AvatarUpload from './AvatarUpload.vue';
+
 
 export default {
   name: 'ProfileFloating',

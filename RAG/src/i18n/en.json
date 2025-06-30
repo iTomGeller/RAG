@@ -1,33 +1,47 @@
- {
-      "login":{
-        "login":"Login",
-        "username":"username",
-        "password":"password",
-        "register":"register"
+{
+  "login": {
+    "login": "Login",
+    "username": "username",
+    "password": "password",
+    "register": "register"
+  },
+  "sidebar": {
+    "recently": "Recently",
+    "newchat": "New Chat",
+    "history": "History Chat",
+    "knowledgebase": "Knowledge Base",
+    "settings": "Settings"
+  },
+  "profile": {
+    "edit": "Edit profile",
+    "logout": "Logout"
+  },
+  "knowledgebase": {
+    "title": "Knowledge Base",
+    "description1": "An investment in knowledge pays the best interest.",
+    "description2": "Knowledge will bring you the opportunity to make a difference.",
+    "categories": {
+      "其他": "others",
+      "医学/健康知识库": "medical/health",
+      "理科知识库": "scientific",
+      "文科知识库": "artistic",
+      "社科知识库": "societal",
+      "工科/应用科学知识库": "engineering/applied"
     },
-    "sidebar": {
-        "recently": "Recently",
-        "newchat": "New Chat",
-        "history": "History Chat",
-        "knowledgebase":"Knowledge Base",
-        "settings":"Settings"
-
+    "upload": "upload files to the knowledge base"
   },
-    "profile":{
-    "edit":"Edit profile",
-    "logout":"Logout"
-  },
-      "knowledgebase":{
-        "title":"Knowledge Base",
-        "description1":"An investment in knowledge pays the best interest.",
-        "description2":"Knowledge will bring you the opportunity to make a difference.",
-        "categories":{
-            "others":"others",
-            "medical":"medical/health",
-            "science":"scientific",
-            "art":"artistic",
-            "society":"societal",
-            "engineering":"engineering/applied"
-        }
+  "settings": {
+    "theme": "Theme Settings",
+    "light": "Light Theme",
+    "dark": "Dark Theme",
+    "preview": "Theme Preview",
+    "nav": "Navigation Bar",
+    "reset": "Reset",
+    "content": "Card Content",
+    "mainBtn": "Main Button",
+    "secondaryBtn": "Secondary Button",
+    "advancedSettings": "Advanced Settings",
+    "mainColor": "Main Color",
+    "bgTransparency": "Background Transparency"
   }
 }
