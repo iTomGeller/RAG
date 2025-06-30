@@ -8,6 +8,7 @@ import com.cyberlanting.qwen_rag.service.Assistant;
 import com.cyberlanting.qwen_rag.service.ChatService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
@@ -66,6 +67,16 @@ public class ChatController {
     @GetMapping("/list")
     public Result<List<Chat>> getChatList() {
         return chatService.getChatList();
+    }
+
+    @GetMapping("/context")
+    public Result getChatContext(@RequestParam Long memoryId) {
+        return chatService.getChatContext(memoryId);
+    }
+
+    @DeleteMapping("/delete")
+    public Result deleteChat(@RequestParam Long memoryId) {
+        return chatService.deleteChat(memoryId);
     }
 
 }

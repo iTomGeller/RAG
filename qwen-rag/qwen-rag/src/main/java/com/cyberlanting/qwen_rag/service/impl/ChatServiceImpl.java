@@ -1,13 +1,16 @@
 package com.cyberlanting.qwen_rag.service.impl;
 
 
+import com.cyberlanting.qwen_rag.pojo.dto.ChatMessageDTO;
 import com.cyberlanting.qwen_rag.pojo.vo.DocumentInfoVO;
+import com.cyberlanting.qwen_rag.repository.RedisChatMemoryStore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cyberlanting.qwen_rag.common.result.Result;
 import com.cyberlanting.qwen_rag.pojo.entity.Chat;
 import com.cyberlanting.qwen_rag.pojo.entity.DocumentInfo;
 import com.cyberlanting.qwen_rag.service.ChatService;
+import dev.langchain4j.data.message.ChatMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +42,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Value("${qwen-rag.hyj-rag.ip}")
     private String ragServerIp;
+
+    @Autowired
+    private RedisChatMemoryStore redisChatMemoryStore;
 
     @Override
     public Result<List<Chat>> getChatList() {
@@ -132,6 +138,16 @@ public class ChatServiceImpl implements ChatService {
         } else {
             throw new RuntimeException("Query failed: " + response.getBody());
         }
+    }
+
+    public Result getChatContext(Long memoryId) {
+        List<ChatMessage> chatMessages = redisChatMemoryStore.getMessages(memoryId);
+        return Result.success(chatMessages);
+    }
+
+    public Result deleteChat(Long memoryId) {
+        redisChatMemoryStore.deleteMessages(memoryId);
+        return Result.success("删除成功");
     }
 
     private String buildEnhancedPrompt(String originalQuery, List<DocumentInfo> docInfos) {
