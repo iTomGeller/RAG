@@ -6,6 +6,7 @@
           <h2>主题设置</h2>
         </div>
 
+        <TranslateButton />
         <!-- 主题切换 -->
         <div class="theme-toggle">
           <div class="theme-switch">
