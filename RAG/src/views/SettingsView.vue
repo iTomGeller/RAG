@@ -12,13 +12,8 @@
           <div class="theme-switch">
             <span>{{ t('settings.light') }}</span>
             <!-- 动态属性绑定 -->
-            <el-switch
-              v-model="isDarkMode"
-              @change="toggleTheme"
-              :active-text="t('settings.dark')"
-              inactive-color="#f5f7fa"
-              active-color="#1a1a1a"
-            />
+            <el-switch v-model="isDarkMode" @change="applyTheme" :active-text="t('settings.dark')"
+              inactive-color="#f5f7fa" active-color="#1a1a1a" />
           </div>
         </div>
 
@@ -49,14 +44,16 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item :label="t('settings.mainColor')">
-                  <el-color-picker v-model="primaryColor" @change="updatePrimaryColor" />
+                  <el-color-picker v-model="primaryColor" @change="applyTheme()" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item :label="t('settings.bgTransparency')">
-                  <el-slider v-model="bgOpacity" :min="0" :max="100" @change="updateBackground" />
+                  <el-slider v-model="bgOpacity" :min="0" :max="100" @change="applyTheme()" />
                 </el-form-item>
               </el-col>
+
+
             </el-row>
           </el-form>
         </div>
@@ -69,6 +66,7 @@ import { onMounted, ref, watch } from 'vue';
 import { ElButton } from 'element-plus';
 import { useI18n } from 'vue-i18n'
 import TranslateButton from '@/components/Main/TranslateButton.vue';
+import ThemeController from '@/components/utils/themeChange';
 
 //全局翻译
 const { t } = useI18n()
@@ -78,75 +76,45 @@ const primaryColor = ref('#409eff')
 const bgOpacity = ref(100)
 const isDarkMode = ref(false);
 
-onMounted(() => {
+// 初始化isDarkMode
+onMounted(async () => {
   // 1. 尝试从 localStorage 读取用户偏好
   const savedTheme = localStorage.getItem('theme-preference');
+
   if (savedTheme === 'dark') {
     isDarkMode.value = true;
-    console.log('First using dark');
   } else if (savedTheme === 'light') {
     isDarkMode.value = false;
-    console.log('First using light');
   } else {
     // 2. 如果没有保存的偏好，检测系统偏好
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       isDarkMode.value = true;
     }
   }
+
+  const _primaryColor = localStorage.getItem('el-color-primary')
+  if (_primaryColor)
+    primaryColor.value = _primaryColor
+
+  bgOpacity.value = Number(localStorage.getItem('opacity'))
 });
 
-const applyTheme = (dark) => {
-  const body = document.body;
-  if (dark) {
-    body.classList.add('dark');
-  } else {
-    body.classList.remove('dark');
-  }
-
-  const root = document.documentElement
-  if (dark) {
-    root.style.setProperty('--el-bg-color', `#1b1b1b${getOpacityValue()}`)
-    body.style.setProperty('background-color', 'var(--el-bg-color-page)')
-    body.style.setProperty('color', 'white')
-    body.style.setProperty('transition', 'background-color 0.3s ease, color 0.3s ease')
-  } else {
-    root.style.setProperty('--el-bg-color', ``)
-    body.style.setProperty('background-color', '');
-    body.style.setProperty('color', '');
-    body.style.setProperty('transition', '');
-  }
-
-
-  // 应用主色调
-  root.style.setProperty('--el-color-primary', primaryColor.value)
-
-  // 将用户偏好保存到 localStorage
-  console.log('Applied theme:', dark ? 'dark' : 'light');
+const applyTheme = () => {
+  const dark = isDarkMode.value;
   localStorage.setItem('theme-preference', dark ? 'dark' : 'light');
+  localStorage.setItem('el-color-primary', primaryColor.value);
+  localStorage.setItem('opacity', bgOpacity.value);
+  localStorage.setItem('opacity-hex', getOpacityValue());
+  ThemeController.changeTheme();
+  console.log("bgOpacity", bgOpacity.value)
+  console.log('Applied theme:', dark ? 'dark' : 'light');
 };
-
-const toggleTheme = () => {
-  applyTheme(isDarkMode.value);
-};
-
 
 // 获取背景透明度值
 const getOpacityValue = () => {
   const opacity = bgOpacity.value / 100
-  // 转换为十六进制表示（两位）
   const hex = Math.round(opacity * 255).toString(16)
   return hex.length === 1 ? '0' + hex : hex
-}
-
-// 更新主色调
-const updatePrimaryColor = (color) => {
-  primaryColor.value = color
-  applyTheme(isDarkMode.value)
-}
-
-// 更新背景设置
-const updateBackground = () => {
-  applyTheme(isDarkMode.value)
 }
 
 // 重置主题
@@ -154,7 +122,7 @@ const resetTheme = () => {
   isDarkMode.value = false
   primaryColor.value = '#409eff'
   bgOpacity.value = 100
-  applyTheme(false)
+  applyTheme()
   localStorage.removeItem('theme')
 }
 
