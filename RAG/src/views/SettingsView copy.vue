@@ -11,7 +11,7 @@
           <div class="theme-switch">
             <span>浅色主题</span>
             <el-switch
-              v-model="isDarkMode"
+              v-model="isDarkTheme"
               @change="toggleTheme"
               active-text="深色主题"
               inactive-color="#f5f7fa"
@@ -62,65 +62,42 @@
     </div>
   </div>
 </template>
-<script setup>
-import { onMounted, ref, watch } from 'vue';
-import { ElButton } from 'element-plus';
 
-const bgOpacity = ref(100)
-const isDarkMode = ref(false);
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue'
+import { Refresh } from '@element-plus/icons-vue'
+
+// 主题状态
+const isDarkTheme = ref(false)
 const primaryColor = ref('#409eff')
+const bgOpacity = ref(100)
 
-onMounted(() => {
-  // 1. 尝试从 localStorage 读取用户偏好
-  const savedTheme = localStorage.getItem('theme-preference');
-  if (savedTheme === 'dark') {
-    isDarkMode.value = true;
-    console.log('First using dark');
-  } else if (savedTheme === 'light') {
-    isDarkMode.value = false;
-    console.log('First using light');
-  } else {
-    // 2. 如果没有保存的偏好，检测系统偏好
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      isDarkMode.value = true;
-    }
-  }
-});
+// 切换主题模式
+const toggleTheme = (val: boolean) => {
+  updateTheme(val)
+  localStorage.setItem('theme', val ? 'dark' : 'light')
+}
 
-const applyTheme = (dark) => {
-  const body = document.body;
-  if (dark) {
-    body.classList.add('dark');
-  } else {
-    body.classList.remove('dark');
-  }
-
+// 更新主题
+const updateTheme = (isDark: boolean) => {
   const root = document.documentElement
-  if (dark) {
-    root.style.setProperty('--el-bg-color', `#1b1b1b${getOpacityValue()}`)
-    body.style.setProperty('background-color', 'var(--el-bg-color-page)')
-    body.style.setProperty('color', 'white')
-    body.style.setProperty('transition', 'background-color 0.3s ease, color 0.3s ease')
-  } else {
-    root.style.setProperty('--el-bg-color', ``)
-    body.style.setProperty('background-color', '');
-    body.style.setProperty('color', '');
-    body.style.setProperty('transition', '');
-  }
 
+  // 设置基础主题变量
+  if (isDark) {
+    root.style.setProperty('--el-bg-color', `#141414${getOpacityValue()}`)
+    root.style.setProperty('--el-bg-secondary', '#1f1f1f')
+    root.style.setProperty('--el-text-color-primary', '#e5eaf3')
+    root.style.setProperty('--el-border-color-light', '#434343')
+  } else {
+    root.style.setProperty('--el-bg-color', `#ffffff${getOpacityValue()}`)
+    root.style.setProperty('--el-bg-secondary', '#f5f7fa')
+    root.style.setProperty('--el-text-color-primary', '#303133')
+    root.style.setProperty('--el-border-color-light', '#dcdfe6')
+  }
 
   // 应用主色调
   root.style.setProperty('--el-color-primary', primaryColor.value)
-
-  // 将用户偏好保存到 localStorage
-  console.log('Applied theme:', dark ? 'dark' : 'light');
-  localStorage.setItem('theme-preference', dark ? 'dark' : 'light');
-};
-
-const toggleTheme = () => {
-  applyTheme(isDarkMode.value);
-};
-
+}
 
 // 获取背景透明度值
 const getOpacityValue = () => {
@@ -131,41 +108,34 @@ const getOpacityValue = () => {
 }
 
 // 更新主色调
-const updatePrimaryColor = (color) => {
+const updatePrimaryColor = (color: string) => {
   primaryColor.value = color
-  applyTheme(isDarkMode.value)
+  updateTheme(isDarkTheme.value)
 }
 
 // 更新背景设置
 const updateBackground = () => {
-  applyTheme(isDarkMode.value)
+  updateTheme(isDarkTheme.value)
 }
 
 // 重置主题
 const resetTheme = () => {
-  isDarkMode.value = false
+  isDarkTheme.value = false
   primaryColor.value = '#409eff'
   bgOpacity.value = 100
-  applyTheme(false)
+  updateTheme(false)
   localStorage.removeItem('theme')
 }
 
+// 组件挂载后检查本地存储的主题设置
+onMounted(() => {
+  const savedTheme = localStorage.getItem('theme') || 'light'
+  isDarkTheme.value = savedTheme === 'dark'
+  updateTheme(isDarkTheme.value)
+})
 </script>
 
 <style scoped>
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-}
-
-.el-button.is-link {
-  color: var(--font-normal);
-}
-
-.el-button.is-link:hover {
-  color: var(--primary-color);
-}
-
 .settings-container {
   display: flex;
   justify-content: center;
@@ -260,5 +230,23 @@ const resetTheme = () => {
   margin-bottom: 16px;
   font-size: 16px;
   font-weight: 500;
+}
+</style>
+
+<!-- 全局主题样式 -->
+<style>
+:root {
+  --el-bg-color: #ffffff;
+  --el-bg-secondary: #f5f7fa;
+  --el-text-color-primary: #303133;
+  --el-border-color-light: #dcdfe6;
+}
+
+body {
+  background-color: var(--el-bg-color);
+  color: var(--el-text-color-primary);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 </style>

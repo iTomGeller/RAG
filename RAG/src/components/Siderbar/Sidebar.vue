@@ -66,6 +66,7 @@
           <span class="recent-tag" v-show="extended">{{ t('sidebar.knowledgebase')}}</span>
         </transition>
       </div>
+
     </div>
   </div>
 </template>
@@ -84,6 +85,7 @@ const { prevPrompts, newChat } = inject('geminiContext') // Destructure the need
 import { gsap } from 'gsap' // 引入GSAP
 
 import { useI18n } from 'vue-i18n' //全局语言切换
+import Test from '../test.vue'
 const { t }= useI18n();
 
 const iconSize = 25

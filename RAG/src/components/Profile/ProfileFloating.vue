@@ -8,6 +8,7 @@
       offset="20"
       :popper-style ="{borderRadius: '30px'}"
     >
+
       <!-- content goes here -->
       <div class="profile-content">
         <!-- user information -->
@@ -25,14 +26,15 @@
           <!-- <el-button class="act-btn" @click="editProfile">Update Avatar</el-button> -->
           <AvatarUpload />
           <!-- 组合式api内部，不需要导入，使用this点取的语法 -->
-          <el-button  color= "#e5e5e5" class="act-btn" @click="logout">{{ this.$t('profile.logout') }}</el-button>
+          <el-button  class="act-btn" @click="logout">{{ this.$t('profile.logout') }}</el-button>
           </div>
         </div>
       </div>
 
       <!-- avatar popover -->
       <template #reference>
-        <el-avatar :src="user.avatarUrl" class="home-avatar" />
+        <el-avatar :src="user.avatarUrl" class="home-avatar" alt="Avatar"/>
+        <p> helllo </p>
       </template>
     </el-popover>
   </div>
@@ -126,7 +128,7 @@ export default {
 }
 
 .btn-box {
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
   border-radius: 30px;
   display: flex;
   flex-direction: column;
