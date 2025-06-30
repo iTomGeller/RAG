@@ -86,6 +86,7 @@
           <span class="recent-extended-tag" v-show="extended">{{ t('sidebar.knowledgebase') }}</span>
         </transition>
       </div>
+
     </div>
   </div>
 </template>

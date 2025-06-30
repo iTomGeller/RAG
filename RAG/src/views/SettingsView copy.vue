@@ -3,35 +3,38 @@
     <div class="settings-content">
       <el-card class="theme-card">
         <div class="settings-header">
-          <h2>{{ t('settings.theme') }}</h2>
+          <h2>主题设置</h2>
         </div>
 
-        <TranslateButton />
         <!-- 主题切换 -->
         <div class="theme-toggle">
           <div class="theme-switch">
-            <span>{{ t('settings.light') }}</span>
-            <!-- 动态属性绑定 -->
-            <el-switch v-model="isDarkMode" @change="applyTheme" :active-text="t('settings.dark')"
-              inactive-color="#f5f7fa" active-color="#1a1a1a" />
+            <span>浅色主题</span>
+            <el-switch
+              v-model="isDarkTheme"
+              @change="toggleTheme"
+              active-text="深色主题"
+              inactive-color="#f5f7fa"
+              active-color="#1a1a1a"
+            />
           </div>
         </div>
 
         <!-- 主题预览 -->
         <div class="theme-preview">
-          <h3>{{ t('settings.preview') }}</h3>
+          <h3>主题预览</h3>
           <div class="preview-container" :class="{ dark: isDarkTheme }">
             <div class="preview-header">
               <div class="preview-nav">
-                <span>{{ t('settings.nav') }}</span>
-                <el-button size="small" icon="refresh" @click="resetTheme">{{ t('settings.reset') }}</el-button>
+                <span>导航栏</span>
+                <el-button size="small" icon="refresh" @click="resetTheme">重置</el-button>
               </div>
             </div>
             <div class="preview-content">
               <div class="preview-card">
-                <p>{{ t('settings.content') }}</p>
-                <el-button type="primary">{{ t('settings.mainBtn') }}</el-button>
-                <el-button>{{ t('settings.secondaryBtn') }}</el-button>
+                <p>卡片内容</p>
+                <el-button type="primary">主要按钮</el-button>
+                <el-button>次要按钮</el-button>
               </div>
             </div>
           </div>
@@ -39,21 +42,19 @@
 
         <!-- 高级设置 -->
         <div class="advanced-settings">
-          <h3>{{ t('settings.advancedSettings') }}</h3>
+          <h3>高级设置</h3>
           <el-form label-position="top">
             <el-row :gutter="20">
               <el-col :span="12">
-                <el-form-item :label="t('settings.mainColor')">
-                  <el-color-picker v-model="primaryColor" @change="applyTheme()" />
+                <el-form-item label="主色调">
+                  <el-color-picker v-model="primaryColor" @change="updatePrimaryColor" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item :label="t('settings.bgTransparency')">
-                  <el-slider v-model="bgOpacity" :min="0" :max="100" @change="applyTheme()" />
+                <el-form-item label="背景透明度">
+                  <el-slider v-model="bgOpacity" :min="0" :max="100" @change="updateBackground" />
                 </el-form-item>
               </el-col>
-
-
             </el-row>
           </el-form>
         </div>
@@ -61,87 +62,80 @@
     </div>
   </div>
 </template>
-<script setup>
-import { onMounted, ref, watch } from 'vue';
-import { ElButton } from 'element-plus';
-import { useI18n } from 'vue-i18n'
-import TranslateButton from '@/components/Main/TranslateButton.vue';
-import ThemeController from '@/components/utils/themeChange';
 
-//全局翻译
-const { t } = useI18n()
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue'
+import { Refresh } from '@element-plus/icons-vue'
+
 // 主题状态
 const isDarkTheme = ref(false)
 const primaryColor = ref('#409eff')
 const bgOpacity = ref(100)
-const isDarkMode = ref(false);
 
-// 初始化isDarkMode
-onMounted(async () => {
-  // 1. 尝试从 localStorage 读取用户偏好
-  const savedTheme = localStorage.getItem('theme-preference');
+// 切换主题模式
+const toggleTheme = (val: boolean) => {
+  updateTheme(val)
+  localStorage.setItem('theme', val ? 'dark' : 'light')
+}
 
-  if (savedTheme === 'dark') {
-    isDarkMode.value = true;
-  } else if (savedTheme === 'light') {
-    isDarkMode.value = false;
+// 更新主题
+const updateTheme = (isDark: boolean) => {
+  const root = document.documentElement
+
+  // 设置基础主题变量
+  if (isDark) {
+    root.style.setProperty('--el-bg-color', `#141414${getOpacityValue()}`)
+    root.style.setProperty('--el-bg-secondary', '#1f1f1f')
+    root.style.setProperty('--el-text-color-primary', '#e5eaf3')
+    root.style.setProperty('--el-border-color-light', '#434343')
   } else {
-    // 2. 如果没有保存的偏好，检测系统偏好
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      isDarkMode.value = true;
-    }
+    root.style.setProperty('--el-bg-color', `#ffffff${getOpacityValue()}`)
+    root.style.setProperty('--el-bg-secondary', '#f5f7fa')
+    root.style.setProperty('--el-text-color-primary', '#303133')
+    root.style.setProperty('--el-border-color-light', '#dcdfe6')
   }
 
-  const _primaryColor = localStorage.getItem('el-color-primary')
-  if (_primaryColor)
-    primaryColor.value = _primaryColor
-
-  bgOpacity.value = Number(localStorage.getItem('opacity'))
-});
-
-const applyTheme = () => {
-  const dark = isDarkMode.value;
-  localStorage.setItem('theme-preference', dark ? 'dark' : 'light');
-  localStorage.setItem('el-color-primary', primaryColor.value);
-  localStorage.setItem('opacity', bgOpacity.value);
-  localStorage.setItem('opacity-hex', getOpacityValue());
-  ThemeController.changeTheme();
-  console.log("bgOpacity", bgOpacity.value)
-  console.log('Applied theme:', dark ? 'dark' : 'light');
-};
+  // 应用主色调
+  root.style.setProperty('--el-color-primary', primaryColor.value)
+}
 
 // 获取背景透明度值
 const getOpacityValue = () => {
   const opacity = bgOpacity.value / 100
+  // 转换为十六进制表示（两位）
   const hex = Math.round(opacity * 255).toString(16)
   return hex.length === 1 ? '0' + hex : hex
 }
 
+// 更新主色调
+const updatePrimaryColor = (color: string) => {
+  primaryColor.value = color
+  updateTheme(isDarkTheme.value)
+}
+
+// 更新背景设置
+const updateBackground = () => {
+  updateTheme(isDarkTheme.value)
+}
+
 // 重置主题
 const resetTheme = () => {
-  isDarkMode.value = false
+  isDarkTheme.value = false
   primaryColor.value = '#409eff'
   bgOpacity.value = 100
-  applyTheme()
+  updateTheme(false)
   localStorage.removeItem('theme')
 }
 
+// 组件挂载后检查本地存储的主题设置
+onMounted(() => {
+  const savedTheme = localStorage.getItem('theme') || 'light'
+  isDarkTheme.value = savedTheme === 'dark'
+  updateTheme(isDarkTheme.value)
+})
 </script>
 
 <style scoped>
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-}
-
-.el-button.is-link {
-  color: var(--font-normal);
-}
-
-.el-button.is-link:hover {
-  color: var(--primary-color);
-}
-
 .settings-container {
   display: flex;
   justify-content: center;
@@ -236,5 +230,23 @@ const resetTheme = () => {
   margin-bottom: 16px;
   font-size: 16px;
   font-weight: 500;
+}
+</style>
+
+<!-- 全局主题样式 -->
+<style>
+:root {
+  --el-bg-color: #ffffff;
+  --el-bg-secondary: #f5f7fa;
+  --el-text-color-primary: #303133;
+  --el-border-color-light: #dcdfe6;
+}
+
+body {
+  background-color: var(--el-bg-color);
+  color: var(--el-text-color-primary);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 </style>

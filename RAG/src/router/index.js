@@ -4,6 +4,7 @@ import StoreView from '../views/StoreView.vue'
 import LoginView from '../views/LoginView.vue'
 import SettingsView from '../views/SettingsView.vue'
 import MainView from '../views/MainView.vue'
+import test from '../components/test.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,10 @@ const router = createRouter({
     {
       path: '/',
       component: LoginView,
+    },
+    {
+      path:'/test',
+      component: test,
     },
     {
       path: '/home',
