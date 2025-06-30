@@ -34,9 +34,6 @@ function handlePreview() {
 .viewer-container {
   margin-top: 20px;
 }
-</style>
-
-<style scoped>
 .chat-image {
   max-width: 200px;
   border-radius: 8px;

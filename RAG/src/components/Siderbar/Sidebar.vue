@@ -5,14 +5,25 @@
       <el-icon class="menu" :size="iconSize" @click="toggleExtended">
         <Menu />
       </el-icon>
-      <div class="recent-list" ref="recentListRef">
-        <el-icon :size="iconSize" @click="toggleExtended">
-         <Clock />
-        </el-icon>
+      <div class="recent-list" ref="recentListRef" @click="handleRecClick">
+        <div v-if="!extended" class="recent-list-icon">
+          <el-icon :size="iconSize">
+            <Clock />
+          </el-icon>
+        </div>
+        <div v-else class="recent-list-icon">
+          <el-icon :size="iconSize">
+            <CirclePlus />
+          </el-icon>
+        </div>
+
         <transition name="fade-slide">
-          <span class="recent-tag" v-show="extended">{{ t('sidebar.recently') }}</span>
+          <span class="recent-extended-tag" v-show="extended">{{ t('sidebar.newchat') }}</span>
         </transition>
       </div>
+      <transition name="fade-slide">
+        <p class="recent-tag" v-show="extended">{{ t('sidebar.recently') }}</p>
+      </transition>
 
       <!-- Recent 内容包裹在 transition 中 -->
       <!-- transition 是动画渐变组件，控制淡出效果 -->
@@ -34,7 +45,7 @@
     </div>
 
     <div class="bottom">
-      <!-- 创建新对话 -->
+      <!-- 对话页面 -->
       <div
         class="bottom-item recent-entry"
         @click="handleChat"
@@ -44,7 +55,7 @@
           <ChatDotSquare />
         </el-icon>
         <transition name="fade-slide">
-          <span class="recent-tag" v-show="extended">{{ t('sidebar.newchat') }}</span>
+          <span class="recent-extended-tag" v-show="extended">{{ t('sidebar.chat') }}</span>
         </transition>
       </div>
 
@@ -58,7 +69,7 @@
           <Setting />
         </el-icon>
         <transition name="fade-slide">
-          <span class="recent-tag" v-show="extended">{{ t('sidebar.settings') }}</span>
+          <span class="recent-extended-tag" v-show="extended">{{ t('sidebar.settings') }}</span>
         </transition>
       </div>
 
@@ -72,7 +83,7 @@
           <Star />
         </el-icon>
         <transition name="fade-slide">
-          <span class="recent-tag" v-show="extended">{{ t('sidebar.knowledgebase') }}</span>
+          <span class="recent-extended-tag" v-show="extended">{{ t('sidebar.knowledgebase') }}</span>
         </transition>
       </div>
     </div>
@@ -81,10 +92,21 @@
 
 <script setup>
 import { ref, inject } from 'vue' // Import inject
+import RecentChat from './RecentChat.vue'
 
-import { Menu, ChatSquare, ChatDotSquare, Clock, Setting, Star } from '@element-plus/icons-vue'
+import {
+  Menu,
+  ChatSquare,
+  ChatDotSquare,
+  Clock,
+  Setting,
+  Star,
+  CirclePlus,
+} from '@element-plus/icons-vue'
 
 import { useRouter } from 'vue-router'
+
+import ChatService from '@/service/ChatService'
 
 const router = useRouter()
 
@@ -94,17 +116,17 @@ import { gsap } from 'gsap' // 引入GSAP
 
 import { useI18n } from 'vue-i18n' //全局语言切换
 const { t } = useI18n()
+const timestamp = Date.now() //时间戳
 
 const iconSize = 25
 
 const extended = ref(false)
-const sidebarRef = ref(null)
-const recentListRef = ref(null)
 
 const emit = defineEmits(['update:extended']) // 定义自定义事件
 
-// 创建一个数组来保存.recent-entry元素的引用
-const recentEntries = ref([])
+const sidebarRef = ref(null)
+const recentListRef = ref(null)
+const recentEntries = ref([]) //动画相关
 
 // 收集每个.recent-entry到数组中
 const collectRecentEntry = (el, index) => {
@@ -113,6 +135,16 @@ const collectRecentEntry = (el, index) => {
   }
 }
 
+const addNewChat = async () => {
+  console.log('Starting a new chat')
+}
+const handleRecClick = () => {
+  if (extended.value) {
+    addNewChat()
+  } else {
+    toggleExtended()
+  }
+}
 const toggleExtended = () => {
   extended.value = !extended.value
   emit('update:extended', extended.value) // 触发事件并传递当前状态

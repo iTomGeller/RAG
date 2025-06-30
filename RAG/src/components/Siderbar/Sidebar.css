@@ -28,16 +28,17 @@
 }
 .sidebar .recent-list {
   display: flex;
-  align-items: center;
   gap: 10px;
   padding: 10px;
   border-radius: 50px;
   color: #282828;
+  background-color: #e2e6eb;
   cursor: pointer;
   margin-top: 20px;
+  padding-bottom: 5px;
 }
 .sidebar .recent-list:hover {
-  background-color: #e2e6eb;
+  background-color: #d5d8dc;
 }
 
 .sidebar .new-chat {
@@ -59,7 +60,15 @@
   animation: fadeIn 1.5s ease-in-out;
 }
 
-.sidebar .recent-tag {
+.sidebar .recent-tag{
+  margin-top: 18px;
+  margin-left: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  white-space: nowrap;
+}
+.sidebar .recent-extended-tag {
   white-space: nowrap;
 }
 

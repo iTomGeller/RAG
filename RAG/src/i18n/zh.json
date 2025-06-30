@@ -8,6 +8,7 @@
     },
     "sidebar":{
         "recently":"最近聊天",
+        "chat":"聊天",
         "newchat":"新建对话",
         "history":"历史对话",
         "knowledgebase":"知识库",
