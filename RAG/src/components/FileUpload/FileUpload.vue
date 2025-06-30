@@ -49,6 +49,9 @@ import vueFilePond from 'vue-filepond'
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
 import FileService from '@/service/FileService'
 import BaseService from '@/service/BaseService'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 注册插件并创建 FilePond 组件
 const FilePond = vueFilePond(FilePondPluginFileValidateSize)
@@ -61,7 +64,9 @@ const baseInfo = ref([])
 const isUploading = ref(false)
 //显示相关
 const iconUrl = assets.new_box_icon
-const title = '上传文件到您的知识库'
+// const title = '上传文件到您的知识库'
+const title = t('knowledgebase.upload')
+
 const visiable = ref(false)
 const handleClick = () => {
   visiable.value = true

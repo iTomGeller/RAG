@@ -3,17 +3,18 @@
     <div class="settings-content">
       <el-card class="theme-card">
         <div class="settings-header">
-          <h2>主题设置</h2>
+          <h2>{{ t('settings.theme') }}</h2>
         </div>
 
         <!-- 主题切换 -->
         <div class="theme-toggle">
           <div class="theme-switch">
-            <span>浅色主题</span>
+            <span>{{ t('settings.light') }}</span>
+            <!-- 动态属性绑定 -->
             <el-switch
               v-model="isDarkTheme"
               @change="toggleTheme"
-              active-text="深色主题"
+              :active-text="t('settings.dark')"
               inactive-color="#f5f7fa"
               active-color="#1a1a1a"
             />
@@ -22,19 +23,19 @@
 
         <!-- 主题预览 -->
         <div class="theme-preview">
-          <h3>主题预览</h3>
+          <h3>{{ t('settings.preview') }}</h3>
           <div class="preview-container" :class="{ dark: isDarkTheme }">
             <div class="preview-header">
               <div class="preview-nav">
-                <span>导航栏</span>
-                <el-button size="small" icon="refresh" @click="resetTheme">重置</el-button>
+                <span>{{ t('settings.nav') }}</span>
+                <el-button size="small" icon="refresh" @click="resetTheme">{{ t('settings.reset') }}</el-button>
               </div>
             </div>
             <div class="preview-content">
               <div class="preview-card">
-                <p>卡片内容</p>
-                <el-button type="primary">主要按钮</el-button>
-                <el-button>次要按钮</el-button>
+                <p>{{ t('settings.content') }}</p>
+                <el-button type="primary">{{ t('settings.mainBtn') }}</el-button>
+                <el-button>{{ t('settings.secondaryBtn') }}</el-button>
               </div>
             </div>
           </div>
@@ -42,16 +43,16 @@
 
         <!-- 高级设置 -->
         <div class="advanced-settings">
-          <h3>高级设置</h3>
+          <h3>{{ t('settings.advancedSettings') }}</h3>
           <el-form label-position="top">
             <el-row :gutter="20">
               <el-col :span="12">
-                <el-form-item label="主色调">
+                <el-form-item :label="t('settings.mainColor')">
                   <el-color-picker v-model="primaryColor" @change="updatePrimaryColor" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="背景透明度">
+                <el-form-item :label="t('settings.bgTransparency')">
                   <el-slider v-model="bgOpacity" :min="0" :max="100" @change="updateBackground" />
                 </el-form-item>
               </el-col>
@@ -65,8 +66,10 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { Refresh } from '@element-plus/icons-vue'
+import { useI18n } from 'vue-i18n'
 
+//全局翻译
+const { t } = useI18n()
 // 主题状态
 const isDarkTheme = ref(false)
 const primaryColor = ref('#409eff')

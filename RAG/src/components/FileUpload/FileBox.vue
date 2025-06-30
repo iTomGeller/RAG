@@ -44,6 +44,9 @@ import FileCard from './FileCard.vue';
 import FileService from '@/service/FileService';
 import { ElNotification, ElPagination } from 'element-plus';
 
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
 const props = defineProps({
   id: Number,
   name: String,
