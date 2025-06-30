@@ -1,122 +1,46 @@
 <template>
-  <!-- <el-icon v-if="deleteAble" size="20" style="color:red" @click="handleDelete">
-    <Delete />
-  </el-icon> -->
-
-  <!-- 图片类型 -->
-  <template v-if="isImage(props.file.url)">
-    <!-- <img :src="props.url" alt="image" class="chat-image" @click="showImagePreview = true" />
-    <div v-if="showImagePreview" class="image-preview-overlay" @click="showImagePreview = false">
-      <img :src="props.url" class="image-preview" />
-    </div> -->
-    <div class="file-card" @click="handlePreview">
-      <div class="file-info">
-        <div class="file-name">{{ props.file.name }}</div>
-      </div>
-      <img :src="getIcon(props.url)" class="file-icon" />
+  <div class="file-card" @click="handlePreview">
+    <div class="file-info">
+      <div class="file-name">{{ props.name }}</div>
     </div>
-  </template>
-
-  <!-- 视频类型 -->
-  <template v-else-if="isVideo(props.file.url)">
-    <!-- <video controls :src="props.url" class="chat-video" /> -->
-    <div class="file-card" @click="handlePreview">
-      <div class="file-info">
-        <div class="file-name">{{ parsed.fileName }}</div>
-        <div class="file-size">{{ parsed.fileSize }}</div>
-      </div>
-      <img :src="getIcon(props.file.url)" class="file-icon" />
-    </div>
-  </template>
-
-
-  <!-- 文档类型 -->
-  <template v-else-if="isDocument(props.url)">
-    <div class="file-card" @click="handlePreview">
-      <div class="file-info">
-        <div class="file-name">{{ parsed.fileName }}</div>
-        <!-- <div class="file-size">{{ parsed.fileSize }}</div> -->
-      </div>
-      <img :src="getIcon(props.url)" class="file-icon" />
-    </div>
-  </template>
-
-  <!-- 其他类型 -->
-  <template v-else>
-    <a :href="props.url" target="_blank">{{ props.file.url }}</a>
-  </template>
+    <img :src="getIcon(props.url)" class="file-icon" />
+  </div>
 </template>
 
 <script setup>
-import {  ref, computed, onMounted } from 'vue';
-import { Delete } from '@element-plus/icons-vue'
+import {  ref } from 'vue'
 
-const props = defineProps(['file']);
-const showImagePreview = ref(false);
-
-const parsed = computed(() => parseFileName(props.fileName));
-
-function isImage(url) {
-  return /\.(png|jpe?g|gif|bmp|webp)$/i.test(url);
-}
-
-function isVideo(url) {
-  return /\.(mp4|webm|ogg)$/i.test(url);
-}
-
-function isDocument(url) {
-  return /\.(docx?|doc?|pptx?|xlsx?|pdf?|txt)$/i.test(url);
-}
-
+const props = defineProps({
+  url: String,
+  name: String,
+})
 function getIcon(url) {
-  if (/\.docx?$/.test(url)) return new URL('@/assets/icons/doc.png', import.meta.url).href;
-  if (/\.pptx?$/.test(url)) return new URL('@/assets/icons/ppt.png', import.meta.url).href;
-  if (/\.xlsx?$/.test(url)) return new URL('@/assets/icons/xls.png', import.meta.url).href;
-  if (/\.pdf$/.test(url)) return new URL('@/assets/icons/pdf.png', import.meta.url).href;
-  return new URL('@/assets/icons/file.png', import.meta.url).href;
+  if (/\.docx?$/.test(url)) return new URL('@/assets/icons/doc.png', import.meta.url).href
+  if (/\.xlsx?$/.test(url)) return new URL('@/assets/icons/xls.png', import.meta.url).href
+  if (/\.txt$/.test(url)) return new URL('@/assets/icons/txt.png', import.meta.url).href
+  if (/\.md$/.test(url)) return new URL('@/assets/icons/md.png', import.meta.url).href
+  if (/\.pdf$/.test(url)) return new URL('@/assets/icons/pdf.png', import.meta.url).href
+  return new URL('@/assets/icons/file.png', import.meta.url).href
 }
 
-// Office Online 预览文档
 function handlePreview() {
-  const encodedUrl = encodeURIComponent(props.url);
-  const previewUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
-  window.open(previewUrl, '_blank');
+  const encodedUrl = encodeURIComponent(props.url)
+  const previewUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`
+  window.open(previewUrl, '_blank')
 }
-
-const handleDelete = async () => {
-  await signalRService.deleteMessage(props.messageId)
-};
-
-onMounted(() => { 
-});
 </script>
 
 <style scoped>
+.viewer-container {
+  margin-top: 20px;
+}
+</style>
 
+<style scoped>
 .chat-image {
   max-width: 200px;
   border-radius: 8px;
   cursor: pointer;
-}
-
-/* 弹出图片预览 */
-.image-preview-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.image-preview {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 8px;
 }
 
 /* 文件卡片样式 */
@@ -170,5 +94,4 @@ onMounted(() => {
   border-radius: 8px;
   cursor: pointer;
 }
-
 </style>

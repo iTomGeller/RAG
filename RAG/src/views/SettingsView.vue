@@ -6,6 +6,7 @@
           <h2>{{ t('settings.theme') }}</h2>
         </div>
 
+        <TranslateButton />
         <!-- 主题切换 -->
         <div class="theme-toggle">
           <div class="theme-switch">
@@ -67,6 +68,8 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Refresh } from '@element-plus/icons-vue'
+import TranslateButton from '@/components/Main/TranslateButton.vue';
 
 //全局翻译
 const { t } = useI18n()

@@ -16,7 +16,12 @@
     :with-header="false"
   >
     <div class="file-cards-grid">
-      <FileCard v-for="file in files" :key="file.id" :file="file" />
+      <FileCard
+        v-for="file in files"
+        :key="file.id"
+        :url="file.url"
+        :name="file.name"
+      />
     </div>
 
     <!-- 分页控件 -->
@@ -30,19 +35,15 @@
         background
       />
     </div>
-
-    <div v-if="!showUpload" class="upload-button-container">
-      <el-button @click="showUpload = true" type="primary">上传文件</el-button>
-    </div>
   </el-dialog>
 </template>
 
 <script setup>
-import { ref, computed, onMounted} from 'vue';
-import { assets } from '@/assets/assets';
-import FileCard from './FileCard.vue';
-import FileService from '@/service/FileService';
-import { ElNotification, ElPagination } from 'element-plus';
+import { ref, computed, onMounted } from 'vue'
+import { assets } from '@/assets/assets'
+import FileCard from './FileCard.vue'
+import FileService from '@/service/FileService'
+import { ElNotification, ElPagination } from 'element-plus'
 
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
@@ -51,51 +52,55 @@ const props = defineProps({
   id: Number,
   name: String,
   type: String,
-});
+})
 
-const visiable = ref(false);
-const files = ref([]);
+const visiable = ref(false)
+const files = ref([])
 
 // --- 分页相关状态 ---
-const currentPage = ref(1); // 当前页码，默认为第一页
-const pageSize = ref(4); // 每页显示的文件数量，固定为4
-const total = ref(0); // 总文件数
+const currentPage = ref(1) // 当前页码，默认为第一页
+const pageSize = ref(4) // 每页显示的文件数量，固定为4
+const total = ref(0) // 总文件数
 
 const iconUrl = computed(() => {
-  const iconName = `${props.type}_icon`;
-  return assets[iconName] || assets.Engineer_icon;
-});
+  const iconName = `${props.type}_icon`
+  return assets[iconName] || assets.Engineer_icon
+})
 
-const title = props.title || 'Engineer';
-const description = props.description || 'Engineer is great science';
+const title = props.title || 'Engineer'
+const description = props.description || 'Engineer is great science'
 
 onMounted(() => {
-  refresh();
-});
+  refresh()
+})
 
 const handleClick = () => {
-  refresh();
-  visiable.value = true;
-};
+  refresh()
+  visiable.value = true
+}
 
 const refresh = async () => {
   try {
-    const res = await FileService.getBaseFiles({ baseNum: props.id, page: currentPage.value, pageSize: pageSize.value });
-    files.value = res.list;
-    total.value = res.total;
-    console.log(files.value);
+    const res = await FileService.getBaseFiles({
+      baseNum: props.id,
+      page: currentPage.value,
+      pageSize: pageSize.value,
+    })
+    files.value = res.list
+    total.value = res.total
+    console.log(files.value)
   } catch (error) {
     ElNotification.error({
       message: '获取知识库列表失败',
-    });
+    })
   }
-  console.log('updated');
-};
+  console.log('updated')
+}
 
 const handleCurrentChange = async (newPage) => {
-  currentPage.value = newPage;
-  await refresh();
-};
+  currentPage.value = newPage
+  await refresh()
+}
 </script>
 
 <style scoped>

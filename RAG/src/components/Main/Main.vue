@@ -3,7 +3,6 @@
     <div class="nav">
       <p>Otter AI</p>
       <!-- User Profile -->
-      <TranslateButton />
       <ProfileFloating />
    </div>
 
@@ -55,7 +54,6 @@ import { computed, inject } from 'vue';
 import { assets } from '@/assets/assets'; 
 import SuggestCards from './SuggestCards.vue'; 
 import ProfileFloating from '../Profile/ProfileFloating.vue';
-import TranslateButton from './TranslateButton.vue';
 
 const {
   onSent,
