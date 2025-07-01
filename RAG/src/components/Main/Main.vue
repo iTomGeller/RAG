@@ -125,7 +125,8 @@ const getRecentPrompt = async () => {
 }
 const handleSuggest = (suggestinput) => {
   addNewChat()
-  chatOnSent(suggestinput)
+  input.value = suggestinput
+  sendMessage()
 }
 const addNewChat = async () => {
   currentChatId.value = Date.now()
