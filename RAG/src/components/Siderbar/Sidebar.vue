@@ -26,6 +26,9 @@
       <transition name="fade-slide">
         <p class="recent-tag" v-show="extended">{{ t('sidebar.recently') }}</p>
       </transition>
+    </div>
+
+    <div class="scroll-container">
       <transition-group name="fade-slide" mode="out-in">
         <RecentChat
           v-show="extended"
@@ -35,24 +38,6 @@
           :name="item.name"
         />
       </transition-group>
-
-      <!-- Recent 内容包裹在 transition 中 -->
-      <!-- transition 是动画渐变组件，控制淡出效果 -->
-      <!-- <transition name="fade-slide" mode="out-in">
-        <div v-show="extended" class="recent">
-          <div
-            v-for="(item, index) in prevPrompts"
-            :key="index"
-            @click="loadPrompt(item)"
-            class="recent-entry"
-          >
-            <el-icon :size="iconSize">
-              <ChatSquare />
-            </el-icon>
-            <p>{{ item.slice(0, 16) }}</p>
-          </div>
-        </div>
-      </transition> -->
     </div>
 
     <div class="bottom">
@@ -121,8 +106,8 @@ import { useRouter } from 'vue-router'
 
 import ChatService from '@/service/ChatService'
 
-const currentChatId = inject('currentChatId');
-const showResult = inject('showResult');
+const currentChatId = inject('currentChatId')
+const showResult = inject('showResult')
 
 const router = useRouter()
 

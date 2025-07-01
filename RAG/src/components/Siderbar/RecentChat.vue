@@ -15,20 +15,18 @@ import ChatService from '@/service/ChatService'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
-const currentChatId = inject('currentChatId');
-const showResult = inject('showResult');
+const currentChatId = inject('currentChatId')
+const showResult = inject('showResult')
 
 const props = defineProps({
   memoryId: String,
   name: String,
 })
 const handleClick = async () => {
-  // const res = await inisiateChat({ memoryId: props.memoryId, message: '你好' })
-  currentChatId.value = props.memoryId;
-  showResult.value = true;
-  router.push('/home/chat')//跳转到chat页面
+  currentChatId.value = props.memoryId
+  showResult.value = true
+  router.push('/home/chat') //跳转到chat页面
   console.log('turn to chat' + props.name + ', memoryID=' + currentChatId.value)
-  console.log(props.memoryId === currentChatId.value)
 }
 onMounted(() => {
   console.log(props.memoryId === currentChatId.value)
@@ -48,11 +46,24 @@ onMounted(() => {
 }
 .chat-info {
   padding-left: 5px;
+  width: 70%;
   display: flex;
 }
 .chat-card-title {
   font-size: 15px;
   font-weight: 350;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    black 0%,
+    black 50%,
+    rgba(0, 0, 0, 0.5) 90%,
+    transparent 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
 }
 .chat-card:hover {
   background-color: #d5d8dc;
