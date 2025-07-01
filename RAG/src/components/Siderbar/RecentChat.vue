@@ -9,8 +9,14 @@
   </div>
 </template>
 <script setup>
+import { inject, onMounted } from 'vue'
 import { MoreFilled } from '@element-plus/icons-vue'
 import ChatService from '@/service/ChatService'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const currentChatId = inject('currentChatId');
+const showResult = inject('showResult');
 
 const props = defineProps({
   memoryId: String,
@@ -18,8 +24,15 @@ const props = defineProps({
 })
 const handleClick = async () => {
   // const res = await inisiateChat({ memoryId: props.memoryId, message: '你好' })
-  console.log('turn to chat' + props.name)
+  currentChatId.value = props.memoryId;
+  showResult.value = true;
+  router.push('/home/chat')//跳转到chat页面
+  console.log('turn to chat' + props.name + ', memoryID=' + currentChatId.value)
+  console.log(props.memoryId === currentChatId.value)
 }
+onMounted(() => {
+  console.log(props.memoryId === currentChatId.value)
+})
 </script>
 <style scoped>
 .chat-card {
@@ -33,9 +46,6 @@ const handleClick = async () => {
   background-color: #e2e6eb;
   cursor: pointer;
 }
-.chat-card:hover {
-  background-color: #d5d8dc;
-}
 .chat-info {
   padding-left: 5px;
   display: flex;
@@ -43,5 +53,8 @@ const handleClick = async () => {
 .chat-card-title {
   font-size: 15px;
   font-weight: 350;
+}
+.chat-card:hover {
+  background-color: #d5d8dc;
 }
 </style>

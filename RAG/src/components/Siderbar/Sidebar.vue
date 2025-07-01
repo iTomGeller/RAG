@@ -121,9 +121,12 @@ import { useRouter } from 'vue-router'
 
 import ChatService from '@/service/ChatService'
 
+const currentChatId = inject('currentChatId');
+const showResult = inject('showResult');
+
 const router = useRouter()
 
-const { prevPrompts, newChat } = inject('geminiContext') // Destructure the needed properties and methods
+// const { prevPrompts, newChat } = inject('geminiContext') // Destructure the needed properties and methods
 
 import { gsap } from 'gsap' // 引入GSAP
 
@@ -150,8 +153,10 @@ const collectRecentEntry = (el, index) => {
 }
 
 const addNewChat = async () => {
-  const timestamp = Date.now() //时间戳
-  console.log('Starting a new chat' + timestamp)
+  currentChatId.value = Date.now()
+  showResult.value = false
+  router.push('/home/chat')
+  console.log('Starting a new chat' + currentChatId.value)
 }
 const handleRecClick = () => {
   if (extended.value) {
@@ -203,7 +208,7 @@ const loadPrompt = async () => {
       message: '获取历史对话列表失败',
     })
   }
-  console.log('chat list get')
+  console.log('chat list got')
 }
 
 const handleChat = () => {

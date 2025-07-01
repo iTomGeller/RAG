@@ -23,12 +23,12 @@
 <script setup>
 import { assets } from '@/assets/assets'; // Assuming assets path remains the same
 import { inject } from 'vue';
-const {
-    onSent,
-} = inject('geminiContext');
+import ChatService from '@/service/ChatService'
 
-const handleCardClick = (prompt) => {
-    onSent(prompt);
+const emit = defineEmits(['update:suggestCardsOnSent'])
+
+const handleCardClick = (suggestinput) => {
+    emit('update:suggestCardsOnSent',suggestinput)
 };
 
 </script>
