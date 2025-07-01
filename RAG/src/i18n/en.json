@@ -5,6 +5,28 @@
     "password": "password",
     "register": "register"
   },
+  "suggestions": {
+    "S001": "Suggest beautiful sights for an upcoming road trip",
+    "S002": "Briefly summarize key points of a text: urban planning",
+    "S003": "Brainstorm team-building activities for our work retreat",
+    "S004": "Improve the readability of the following code",
+    "S005": "Draft a thank-you note to an interviewer",
+    "S006": "Explain the basics of quantum computing",
+    "S007": "Write a short story about a futuristic city",
+    "S008": "Provide tips for boosting productivity",
+    "S009": "Create a healthy meal plan for a week",
+    "S010": "Analyze the impact of social media on society",
+    "S011": "Generate a unique product name and slogan",
+    "S012": "Suggest a science experiment for kids",
+    "S013": "Write a poem about the beauty of nature",
+    "S014": "Summarize the latest tech news",
+    "S015": "Offer strategies for learning new skills",
+    "S016": "Draft a formal meeting invitation",
+    "S017": "Explain how the stock market works",
+    "S018": "Propose a sustainable home renovation project",
+    "S019": "Brainstorm ideas for a digital marketing campaign",
+    "S020": "Write resume bullet points highlighting achievements"
+  },
   "sidebar": {
     "recently": "Recently",
     "chat": "Chat",

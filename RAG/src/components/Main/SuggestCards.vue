@@ -1,36 +1,45 @@
 <template>
-    <div class="cards">
-        <div class="card" @click="handleCardClick('建议即将到来的公路旅行中值得看的美丽景点')">
-            <p>建议即将到来的公路旅行中值得看的美丽景点</p>
-            <img :src="assets.compass_icon" alt="指南针图标" />
-        </div>
-        <div class="card" @click="handleCardClick('简要总结一段文本的要点：城市规划')">
-            <p>简要总结一段文本的要点：城市规划</p>
-            <img :src="assets.bulb_icon" alt="灯泡图标" />
-        </div>
-        <div class="card" @click="handleCardClick('为我们的工作静修会集思广益团队建设活动')">
-            <p>为我们的工作静修会集思广益团队建设活动</p>
-            <img :src="assets.message_icon" alt="消息图标" />
-        </div>
-        <div class="card" @click="handleCardClick('提高以下代码的可读性')">
-            <p>提高以下代码的可读性</p>
-            <img :src="assets.code_icon" alt="代码图标" />
-        </div>
+  <div class="cards">
+    <div
+      class="card"
+      v-for="(item, index) in selectedSuggestions"
+      :key="index"
+      @click="handleCardClick(t(`suggestions.S${item.toString().padStart(3, '0')}`))"
+    >
+      <p>{{ t(`suggestions.S${item.toString().padStart(3, '0')}`) }}</p>
+      <!-- <img :src="assets.compass_icon" alt="指南针图标" /> -->
     </div>
-
+  </div>
 </template>
 
 <script setup>
-import { assets } from '@/assets/assets'; // Assuming assets path remains the same
+import { ref, onMounted } from 'vue';
 import { inject } from 'vue';
-const {
-    onSent,
-} = inject('geminiContext');
+import { useI18n } from 'vue-i18n';
+import { assets } from '@/assets/assets';
+
+const { t } = useI18n();
+const { onSent } = inject('geminiContext');
+
+const selectedSuggestions = ref([]);
 
 const handleCardClick = (prompt) => {
-    onSent(prompt);
+  onSent(prompt);
 };
 
+// 从 1 到 20 中随机抽取 4 个不重复的编号
+function getRandomSuggestions() {
+  const arr = Array.from({ length: 20 }, (_, i) => i + 1);
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.slice(0, 4);
+}
+
+onMounted(() => {
+  selectedSuggestions.value = getRandomSuggestions();
+});
 </script>
 
 <style scoped>
