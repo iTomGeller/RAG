@@ -17,12 +17,17 @@
         <SuggestCards @update:suggestCardsOnSent="handleSuggest" />
       </div>
       <div v-else class="result">
-        <div class="result-title">
+        <div class="chat-container">
+          <!-- 消息列表 -->
+          <div v-for="(msg, index) in chatMessages" :key="index" :class="['message', msg.sender]">
+            <div class="bubble">{{ msg.text }}</div>
+          </div>
+        </div>
+        <!-- <div class="result-title">
           <img :src="assets.user_icon" alt="User Icon" />
           <p>{{ recentPrompt }}</p>
         </div>
         <div class="result-data">
-          <!-- <img :src="assets.gemini_icon" alt="Gemini Icon" /> -->
           <img :src="assets.otter_icon" alt="Otter Icon" />
           <div v-if="loading" class="loader">
             <hr />
@@ -30,7 +35,7 @@
             <hr />
           </div>
           <p v-else v-html="resultData"></p>
-        </div>
+        </div> -->
       </div>
 
       <div class="main-bottom">
@@ -66,7 +71,7 @@ import { assets } from '@/assets/assets'
 import SuggestCards from './SuggestCards.vue'
 import ProfileFloating from '../Profile/ProfileFloating.vue'
 import ChatService from '@/service/ChatService'
-import { startSSEChat } from '@/service/apiChat';
+import { startSSEChat } from '@/service/apiChat'
 
 // const {
 //   onSent,
@@ -82,20 +87,27 @@ const loading = ref(false)
 const recentPrompt = ref('')
 const currentChatId = inject('currentChatId')
 const showResult = inject('showResult')
-const chatMessages = ref([]);
+// const chatMessages = ref([])
+const chatMessages = ref([
+  { id: 1, sender: 'USER', text: '' },
+  { id: 2, sender: 'AI', text: '' },
+])
 
 const router = useRouter()
 
 const sendButtonVisible = computed(() => input.value.trim() !== '')
-let closeConnection = null;
+let closeConnection = null
 
 const sendMessage = () => {
-  if (!input.value.trim()) return;
-  
+  if (!input.value.trim()) return
+
   console.log('Sending message: ' + input.value)
 
   // 添加用户消息到聊天记录
-  chatMessages.value.push({ type: 'USER', text: input.value });
+  // chatMessages.value.push({ type: 'USER', text: input.value })
+  chatMessages.value.find((msg) => msg.sender === 'USER').text = input.value
+  chatMessages.value.find((msg) => msg.sender === 'AI').text = '' // 清空 AI 消息
+  let isFirstLine = true
 
   showResult.value = true //显示结果
 
@@ -104,19 +116,26 @@ const sendMessage = () => {
     currentChatId.value,
     input.value,
     (data) => {
-      chatMessages.value.push({ type: 'AI', text: data });
-      console.log('SSE 数据:', data);
+      console.log('SSE 数据:', data)
+      // chatMessages.value.push({ type: 'AI', text: data })
+      if (!isFirstLine) {
+        chatMessages.value.find((msg) => msg.sender === 'AI').text += data
+      }
+      if (isFirstLine) {
+        isFirstLine = false
+      }
     },
     (error) => {
-      console.error('SSE 错误:', error);
+      console.error('SSE 错误:', error)
       if (error.message.includes('401')) {
-        alert('登录已过期，请重新登录');
-        router.push('/login');
+        alert('登录已过期，请重新登录')
+        router.push('/login')
       }
-    }
-  );
+    },
+  )
+  // console.log(chatMessages.value);
   input.value = ''
-};
+}
 const getRecentPrompt = async () => {
   const res = await ChatService.getChatPrompt()
   recentPrompt.value = res
@@ -129,6 +148,7 @@ const handleSuggest = (suggestinput) => {
   sendMessage()
 }
 const addNewChat = async () => {
+  closeConnection() // 关闭当前 SSE 连接
   currentChatId.value = Date.now()
   showResult.value = false
   router.push('/home/chat')
@@ -150,7 +170,6 @@ const getUserName = () => {
   return user?.username || 'User'
 }
 onMounted(() => {
-  getRecentPrompt()
 })
 </script>
 
@@ -175,6 +194,51 @@ onMounted(() => {
   background: linear-gradient(to right, #9ed7ff, #ffffff, #9ed7ff);
   background-size: 800px 50px;
   animation: loader 3s infinite linear;
+}
+.chat-container {
+  max-width: 500px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 消息列表区域（可滚动） */
+.message {
+  margin: 8px 0;
+  display: flex;
+}
+
+/* 用户消息靠右 */
+.message.USER {
+  justify-content: flex-end;
+}
+
+/* 机器人消息靠左 */
+.message.AI {
+  justify-content: flex-start;
+}
+
+/* 消息气泡样式 */
+.bubble {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 18px;
+}
+
+/* 用户气泡（蓝色右对齐） */
+.USER .bubble {
+  background: #1890ff;
+  color: white;
+}
+
+/* 机器人气泡（灰色左对齐） */
+.AI .bubble {
+  background: #f0f0f0;
+  color: #333;
 }
 
 @keyframes loader {
