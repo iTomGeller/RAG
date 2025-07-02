@@ -105,9 +105,8 @@ const sendMessage = () => {
 
   // 添加用户消息到聊天记录
   // chatMessages.value.push({ type: 'USER', text: input.value })
-  chatMessages.value.find((msg) => msg.sender === 'USER').text = input.value
-  chatMessages.value.find((msg) => msg.sender === 'AI').text = '' // 清空 AI 消息
-  let isFirstLine = true
+  chatMessages.value[0].text = input.value
+  chatMessages.value[1].text = '' // 清空 AI 消息
 
   showResult.value = true //显示结果
 
@@ -118,12 +117,7 @@ const sendMessage = () => {
     (data) => {
       console.log('SSE 数据:', data)
       // chatMessages.value.push({ type: 'AI', text: data })
-      if (!isFirstLine) {
-        chatMessages.value.find((msg) => msg.sender === 'AI').text += data
-      }
-      if (isFirstLine) {
-        isFirstLine = false
-      }
+      chatMessages.value[1].text += data
     },
     (error) => {
       console.error('SSE 错误:', error)
@@ -148,7 +142,9 @@ const handleSuggest = (suggestinput) => {
   sendMessage()
 }
 const addNewChat = async () => {
-  closeConnection() // 关闭当前 SSE 连接
+  if (!closeConnection == null) {
+    closeConnection() // 关闭当前 SSE 连接
+  }
   currentChatId.value = Date.now()
   showResult.value = false
   router.push('/home/chat')
@@ -168,6 +164,10 @@ const getUserName = () => {
   return user?.username || 'User'
 }
 onMounted(() => {
+  console.log('刷新')
+  if (!closeConnection == null) {
+    closeConnection() // 关闭当前 SSE 连接
+  }
 })
 </script>
 
@@ -196,8 +196,6 @@ onMounted(() => {
 .chat-container {
   max-width: 500px;
   margin: 0 auto;
-  border: 1px solid #ddd;
-  border-radius: 8px;
   padding: 10px;
   height: 80vh;
   display: flex;

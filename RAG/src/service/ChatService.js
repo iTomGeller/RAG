@@ -11,14 +11,6 @@ const ChatService = {
       throw error
     }
   },
-  async initiateChat({ memoryId, message }) {
-    try {
-      console.log('initiateChat')
-    } catch (error) {
-      console.error('Initiate Chat error:', error)
-      throw error
-    }
-  },
   async getChatPrompt() {
     try {
       return '这里是otterAI，你可以向我提问任何问题，我会尽可能的回答。'
