@@ -42,8 +42,11 @@ onMounted(() => {
   padding: 10px;
   border-radius: 20px;
   color: #282828;
-  /* background-color: #e2e6eb; */
   cursor: pointer;
+}
+
+body.dark .chat-card{
+  background-color: #e2e6eb;
 }
 .chat-info {
   padding-left: 5px;
