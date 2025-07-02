@@ -35,13 +35,14 @@ onMounted(() => {
 <style scoped>
 .chat-card {
   margin-top: 5px;
+  margin-right: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px;
   border-radius: 20px;
   color: #282828;
-  background-color: #e2e6eb;
+  /* background-color: #e2e6eb; */
   cursor: pointer;
 }
 .chat-info {

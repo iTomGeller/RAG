@@ -28,7 +28,8 @@
       </transition>
     </div>
 
-    <div class="scroll-container">
+    <div class="center-container">
+    <simplebar class="scroll-container">
       <transition-group name="fade-slide" mode="out-in">
         <RecentChat
           v-show="extended"
@@ -38,6 +39,7 @@
           :name="item.name"
         />
       </transition-group>
+    </simplebar>
     </div>
 
     <div class="bottom">
@@ -91,6 +93,8 @@
 <script setup>
 import { ref, inject, onMounted } from 'vue' // Import inject
 import RecentChat from './RecentChat.vue'
+import simplebar from 'simplebar-vue'; // 引入 SimpleBar 组件
+import 'simplebar-core/dist/simplebar.css'; // 引入默认样式
 
 import {
   Menu,

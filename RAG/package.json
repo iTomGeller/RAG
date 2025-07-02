@@ -19,6 +19,7 @@
     "filepond-plugin-file-validate-type": "^1.2.9",
     "gsap": "^3.13.0",
     "pinia": "^3.0.3",
+    "simplebar-vue": "^2.4.1",
     "vue": "^3.5.13",
     "vue-filepond": "^7.0.4",
     "vue-i18n": "^11.1.7",
