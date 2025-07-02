@@ -51,7 +51,7 @@
 
 .main .cards .card {
     height: auto;
-    min-height: calc(100px + 5vh); /* 高度随视口高度增长 */
+    min-height: calc(50px + 5vh); /* 高度随视口高度增长 */
     padding: 10px;
     background-color: #f0f4f9;
     border-radius: 10px;
@@ -110,6 +110,10 @@
     outline: none;
     padding: 8px;
     font-size: 18px;
+}
+
+body.dark .search-box input {
+    color: #585858;
 }
 
 .search-box div {

@@ -9,6 +9,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { createI18n } from 'vue-i18n'
 import zh from './i18n/zh.json'
 import en from './i18n/en.json'
+import '@/assets/global.css'
 
 
 const messages = {

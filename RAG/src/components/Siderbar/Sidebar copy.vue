@@ -1,17 +1,12 @@
 <template>
-  <div
-    class="sidebar"
-    ref="sidebarRef"
-    @mouseenter="expandSidebar"
-    @mouseleave="collapseSidebar"
-  >
+  <div class="sidebar" ref="sidebarRef">
     <div class="top">
-      <el-icon class="menu" :size="iconSize">
+      <!-- 菜单图标 -->
+      <el-icon class="menu" :size="iconSize" @click="toggleExtended">
         <Menu />
       </el-icon>
-
       <div class="recent-list" ref="recentListRef" @click="handleRecClick">
-        <div v-if="!extended" class="recent-list-icon ">
+        <div v-if="!extended" class="recent-list-icon">
           <el-icon :size="iconSize">
             <Clock />
           </el-icon>
@@ -31,10 +26,6 @@
       <transition name="fade-slide">
         <p class="recent-tag" v-show="extended">{{ t('sidebar.recently') }}</p>
       </transition>
-    </div>
-
-    <div class="center-container">
-    <simplebar class="scroll-container">
       <transition-group name="fade-slide" mode="out-in">
         <RecentChat
           v-show="extended"
@@ -44,12 +35,30 @@
           :name="item.name"
         />
       </transition-group>
-    </simplebar>
+
+      <!-- Recent 内容包裹在 transition 中 -->
+      <!-- transition 是动画渐变组件，控制淡出效果 -->
+      <!-- <transition name="fade-slide" mode="out-in">
+        <div v-show="extended" class="recent">
+          <div
+            v-for="(item, index) in prevPrompts"
+            :key="index"
+            @click="loadPrompt(item)"
+            class="recent-entry"
+          >
+            <el-icon :size="iconSize">
+              <ChatSquare />
+            </el-icon>
+            <p>{{ item.slice(0, 16) }}</p>
+          </div>
+        </div>
+      </transition> -->
     </div>
 
     <div class="bottom">
+      <!-- 对话页面 -->
       <div
-        class="bottom-item recent-entry icon-box"
+        class="bottom-item recent-entry"
         @click="handleChat"
         :ref="(el) => collectRecentEntry(el, 0)"
       >
@@ -61,12 +70,13 @@
         </transition>
       </div>
 
+      <!-- 设置 -->
       <div
-        class="bottom-item recent-entry icon-box"
+        class="bottom-item recent-entry"
         @click="handleSettings"
         :ref="(el) => collectRecentEntry(el, 1)"
       >
-        <el-icon :size="iconSize" >
+        <el-icon :size="iconSize">
           <Setting />
         </el-icon>
         <transition name="fade-slide">
@@ -74,8 +84,9 @@
         </transition>
       </div>
 
+      <!-- 知识库 -->
       <div
-        class="bottom-item recent-entry icon-box"
+        class="bottom-item recent-entry"
         @click="handleStore"
         :ref="(el) => collectRecentEntry(el, 2)"
       >
@@ -95,8 +106,6 @@
 <script setup>
 import { ref, inject, onMounted } from 'vue' // Import inject
 import RecentChat from './RecentChat.vue'
-import simplebar from 'simplebar-vue'; // 引入 SimpleBar 组件
-import 'simplebar-core/dist/simplebar.css'; // 引入默认样式
 
 import {
   Menu,
@@ -112,8 +121,8 @@ import { useRouter } from 'vue-router'
 
 import ChatService from '@/service/ChatService'
 
-const currentChatId = inject('currentChatId')
-const showResult = inject('showResult')
+const currentChatId = inject('currentChatId');
+const showResult = inject('showResult');
 
 const router = useRouter()
 
@@ -152,85 +161,70 @@ const addNewChat = async () => {
 const handleRecClick = () => {
   if (extended.value) {
     addNewChat()
+  } else {
+    toggleExtended()
   }
 }
-
-const setExtendedState = (isExtended) => {
-  extended.value = isExtended;
+const toggleExtended = () => {
+  extended.value = !extended.value
   if (extended.value) {
-    loadPrompt();
+    loadPrompt()
   }
-  emit('update:extended', extended.value);
-
+  emit('update:extended', extended.value) // 触发事件并传递当前状态
   if (sidebarRef.value) {
     gsap.to(sidebarRef.value, {
       duration: 0.1,
       width: extended.value ? '200px' : '75px',
       ease: 'power2.out',
       transformOrigin: 'right center',
-    });
+    })
   }
   if (recentListRef.value) {
     gsap.to(recentListRef.value, {
       duration: 0.3,
       marginTop: extended.value ? '30px' : '20px',
       ease: 'power2.out',
-    });
+    })
   }
 
+  // 对所有.recent-entry应用margin-top动画
   if (recentEntries.value && recentEntries.value.length > 0) {
     gsap.to(recentEntries.value, {
       duration: 0.3,
       marginTop: extended.value ? '20px' : '0px',
       ease: 'power2.out',
       stagger: 0.05,
-    });
+    })
   }
-};
-
-const toggleExtended = () => {
-  setExtendedState(!extended.value);
-};
-
-const expandSidebar = () => {
-  setExtendedState(true);
-};
-
-const collapseSidebar = () => {
-  setExtendedState(false);
-};
+}
 
 const loadPrompt = async () => {
   try {
-    const res = await ChatService.getChatList();
-    recentChats.value = res.data;
-    console.log(recentChats.value);
+    const res = await ChatService.getChatList()
+    recentChats.value = res.data
+    console.log(recentChats.value)
   } catch (error) {
-    // Make sure ElNotification is imported or defined
-    // If not, you might need to import it from 'element-plus' or define a similar notification system.
-    // For now, I'll add a simple console error.
-    console.error('获取历史对话列表失败', error);
-    // ElNotification.error({
-    //   message: '获取历史对话列表失败',
-    // });
+    ElNotification.error({
+      message: '获取历史对话列表失败',
+    })
   }
-  console.log('chat list got');
-};
+  console.log('chat list got')
+}
 
 const handleChat = () => {
-  router.push('/home/chat');
-};
+  router.push('/home/chat')
+}
 
 const handleStore = () => {
-  router.push('/home/store');
-};
+  router.push('/home/store')
+}
 const handleSettings = () => {
-  router.push('/home/settings');
-};
+  router.push('/home/settings')
+}
 onMounted(() => {
-  loadPrompt();
-  console.log('sidebar updated');
-});
+  loadPrompt()
+  console.log('sidebar updated')
+})
 </script>
 
 <style scoped>
@@ -252,28 +246,4 @@ onMounted(() => {
 .fade-slide-leave-to {
   opacity: 0;
 }
-
-.sidebar{
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, var(--opacity));
-}
-
-.sidebar .icon-box{
-  display: flex;
-  /* min-width: fit-content; */
-  /* padding: 10px; */
-  border-radius: 50px;
-  color: #282828;
-  background-color: #e2e6eb;
-  cursor: pointer;
-  /* margin-top: 20px; */
-  /* padding-bottom: 5px; */
-  /* margin-right: 15px; */
-  margin-bottom: 3px;
-}
-
-.sidebar .icon-box:hover {
-  background-color: #d5d8dc;
-}
-
 </style>

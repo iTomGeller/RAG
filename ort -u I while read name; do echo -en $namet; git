@@ -1,0 +1,351 @@
+7906f6257ee13cfcd0d906a535957e15ddaf5d1b Kikii84 2025-06-28
+1	0	RAG/package.json
+
+d77b72e25dbeb0e5e1889f2e8c39892d2f1bfba6 Kikii84 2025-06-28
+10	0	RAG/package-lock.json
+
+335d33a1ff5a4374b06adc2c522048939cbf9028 Kikii84 2025-06-28
+0	8	RAG/src/components/FileUpload/FileBox.vue
+16	38	RAG/src/components/FileUpload/FileCard.vue
+
+42a58f9df45ffd666974a24b0463151bc18a1dfb Kikii84 2025-06-28
+efdaf3f99e322146035a7919cf9c5a62bd0c18ec Kikii84 2025-06-28
+-	-	RAG/src/assets/icons/md.png
+-	-	RAG/src/assets/icons/txt.png
+41	36	RAG/src/components/FileUpload/FileBox.vue
+14	69	RAG/src/components/FileUpload/FileCard.vue
+38	39	RAG/src/components/FileUpload/FileUpload.vue
+
+4af32d51606841e7d2fa787db83575efe96d7550 riy 2025-06-28
+9abefb6343e5c4d9c70de9a016a8ebb33fc619f1 riy 2025-06-28
+f87fd9a31dd57adab7e6c8dd693b06f539a4608c Kikii84 2025-06-28
+138	130	RAG/src/components/FileUpload/FileUpload.vue
+
+1d29c42ff624eaee387e8a04e8df2942e91df213 Kikii84 2025-06-28
+34	21	RAG/src/components/FileUpload/FileUpload.vue
+1	0	RAG/src/service/BaseService.js
+1	1	RAG/src/service/api.js
+
+205ce82ab8cbbd95760fd82b2dbced2159fa7a23 riy 2025-06-27
+1	1	RAG/src/components/Base/AddBaseBtn.vue
+1	1	RAG/src/components/FileUpload/FileBox.vue
+1	1	RAG/src/components/FileUpload/FileCard.vue
+8	1	RAG/src/components/Profile/AvatarUpload.vue
+0	1	RAG/src/components/Siderbar/Sidebar.vue
+
+a5ffe52a1bc80b3ead331a8aa763b0119760b12a Kikii84 2025-06-27
+2	15	RAG/src/components/FileUpload/FileBox.vue
+6	15	RAG/src/components/FileUpload/FileCard.vue
+129	42	RAG/src/components/FileUpload/FileUpload.vue
+2	2	RAG/src/service/FileService.js
+6	3	RAG/src/views/StoreView.vue
+
+01e901266e95aafe3421e73a75865998c4e2f494 Kikii84 2025-06-27
+2	7	RAG/src/components/FileUpload/FileBox.vue
+
+e10d76d74c12ff884751cb00401a8de0afd5b21b Kikii84 2025-06-27
+79	41	RAG/src/components/FileUpload/FileBox.vue
+18	4	RAG/src/components/FileUpload/FileCard.vue
+
+e5f4bbee48a18f8af236ad90ac1c555a9e7aa3d4 Kikii84 2025-06-27
+114	136	RAG/src/components/FileUpload/FileBox.vue
+36	50	RAG/src/components/FileUpload/FileUpload.vue
+
+d37c6b794f93b30ff5aabde65e30c5a380718eb4 Kikii84 2025-06-27
+1	0	RAG/src/components/Main/Main.css
+4	4	RAG/src/components/Profile/ProfileFloating.vue
+
+d3cad2b670312df1eb9cd52cfc65775ae7916169 riy 2025-06-27
+463a9584a61b42116308df82000be6511fab4fac Kikii84 2025-06-27
+1e429752a8cf0b0cbdffe01483c7186fe0e3466e Kikii84 2025-06-27
+55	47	RAG/src/components/FileUpload/FileBox.vue
+6	5	RAG/src/components/FileUpload/FileCard.vue
+120	0	RAG/src/components/FileUpload/FileUpload.vue
+166	155	RAG/src/components/FileUpload/FileUploadButton.vue
+0	2	RAG/src/components/Main/Main.vue
+0	11	RAG/src/service/BaseService.js
+28	1	RAG/src/service/FileService.js
+
+103b6eb3768f9d03518edbc58c7b5c32f1ecfcce Kikii84 2025-06-27
+0	1	RAG/src/App.vue
+2	1	RAG/src/components/Siderbar/Sidebar.css
+29	9	RAG/src/components/Siderbar/Sidebar.vue
+0	1	RAG/src/views/SettingsView.vue
+
+934c89a2cfcb51645057f319cebf0f4d009ca470 riy 2025-06-27
+-	-	RAG/src/assets/loginBg.jpg
+87	44	RAG/src/components/Landing/LoginRegister.vue
+0	17	RAG/src/components/Profile/AvatarUpload.vue
+0	56	RAG/src/views/LoginView copy.vue
+17	0	RAG/src/views/LoginView-Old.vue
+33	0	RAG/src/views/LoginView.vue
+
+1c263a94c329efc31b36dc1eaab1bc193592699e riy 2025-06-26
+166	155	RAG/src/components/FileUpload/FileUploadButton.vue
+74	77	RAG/src/components/Profile/AvatarUpload.vue
+
+2e01aa766ac7cf5f07982ebb69702d47e7272d2c riy 2025-06-26
+3	0	RAG/src/assets/assets.js
+-	-	RAG/src/assets/loginBg.jpg
+16	16	RAG/src/components/Landing/{LoginRegister copy.vue => LoginRegister-new.vue}
+56	0	RAG/src/views/LoginView copy.vue
+6	7	RAG/src/views/LoginView.vue
+
+e0b93b2f3fbb002405049a9f7afa8b3823dde973 Kikii84 2025-06-26
+5896ccd1d9d9b1b0462a5e1579ccf68b2e14c065 Kikii84 2025-06-26
+5	0	RAG/index.html
+
+2ad284386bdedec681d8fb7ec3217d50aaf13ded riy 2025-06-26
+29483475542507d68a2473bcfbf10260fbe3e7a8 riy 2025-06-26
+16	15	RAG/src/components/Profile/AvatarUpload.vue
+6	8	RAG/src/components/Profile/ProfileFloating.vue
+
+ca19aad7d3018e16e823eb7bd8e51a1e2e5ef8e2 Roadinforest 2025-06-26
+8078fc977548177190c7014dd48646bc02203a81 Roadinforest 2025-06-26
+3	4	RAG/src/components/FileUpload/FileBox.vue
+39	37	RAG/src/components/FileUpload/FileUploadButton.vue
+0	3	RAG/src/service/BaseService.js
+14	13	RAG/src/service/FileService.js
+88	17	RAG/src/service/api.js
+1	0	RAG/src/views/StoreView.vue
+
+4b3c48eefb87246ab479fad4ab18765c20b89c8f riy 2025-06-26
+67e756d2249b570aead2960c0ab211efd5cd9d84 riy 2025-06-26
+937013fe1b57c360858f13498192e742a9ff9637 Kikii84 2025-06-25
+6e023c803806b8677fb1c8f677348db11594e208 Kikii84 2025-06-25
+1	4	RAG/src/components/Main/Main.css
+7	4	RAG/src/views/MainView.vue
+
+5090e0e576f90b64454c9ead59d4eed4638bd896 Kikii84 2025-06-25
+3	2	RAG/src/components/Siderbar/Sidebar.vue
+0	1	RAG/src/views/HomeView.vue
+17	14	RAG/src/views/MainView.vue
+
+5d703d838d4f5f6c60dd406ec6fe56eb76876103 riy 2025-06-25
+6	10	RAG/src/components/Landing/LoginRegister.vue
+34	6	RAG/src/components/Profile/ProfileFloating.vue
+8	16	RAG/src/router/index.js
+
+8e3705d9626b88ad221fbe99540e7b3937952aba Roadinforest 2025-06-25
+6	20	RAG/src/views/StoreView.vue
+
+e993c64a0399bcc2f0c069a18b16e40008ae7870 Roadinforest 2025-06-25
+3	2	RAG/src/assets/assets.js
+4	2	RAG/src/components/Base/AddBaseBtn.vue
+3	6	RAG/src/service/BaseService.js
+1	1	RAG/src/service/api.js
+60	20	RAG/src/views/StoreView.vue
+
+b5a103e28082b9d49fbbba768ff7ef2d618a0db2 Roadinforest 2025-06-25
+28	45	RAG/src/service/api.js
+
+57b24dde427cab2450a2ff726e433e19badaea85 Roadinforest 2025-06-25
+51	0	RAG/src/service/api.js
+
+097c131bfd7b93cf1056207e1d1f704467de2689 Roadinforest 2025-06-25
+72b9dbbaaa4973f4057cc923071525467503f4ad Roadinforest 2025-06-25
+10	11	RAG/src/assets/assets.js
+25	3	RAG/src/components/{Store/AddKnowledgeBtn.vue => Base/AddBaseBtn.vue}
+25	11	RAG/src/components/FileUpload/FileBox.vue
+0	2	RAG/src/components/FileUpload/FileCard.vue
+5	5	RAG/src/components/FileUpload/FileUploadButton.vue
+3	0	RAG/src/router/index.js
+41	0	RAG/src/service/BaseService.js
+2	4	RAG/src/service/api.js
+29	11	RAG/src/views/StoreView.vue
+
+1666dc5012dba432b917bddb895070e60e798e17 Kikii84 2025-06-25
+4	1	RAG/src/components/Main/Main.css
+4	0	RAG/src/components/Siderbar/Sidebar.css
+5	6	RAG/src/components/Siderbar/Sidebar.vue
+
+cbb75fc182be6fc97b7408ccd4b496df21b0539b Kikii84 2025-06-25
+16	16	RAG/src/components/Siderbar/Sidebar.css
+68	58	RAG/src/components/Siderbar/Sidebar.vue
+
+cea5ab4a93755c09aef284293c70a1fa53ee0fa1 Kikii84 2025-06-25
+37	28	RAG/src/components/Siderbar/Sidebar.css
+2	2	RAG/src/components/Siderbar/Sidebar.vue
+
+05221e4df8bfbb861b761c3eb89cbc3e75bb674f Kikii84 2025-06-25
+221c37c37148b177e93f8620805f9886a73e4120 Kikii84 2025-06-25
+119	0	Verification_mail/mail.html
+
+85c3e5fd533371523bfc24488ebfde60a87fdf68 Kikii84 2025-06-25
+7	0	RAG/package-lock.json
+1	0	RAG/package.json
+16	3	RAG/src/components/Siderbar/Sidebar.vue
+
+f58103dbba67eaab0294d0a0b9c22e83b165261b Roadinforest 2025-06-25
+4	1	RAG/src/api/useAuth.js
+245	0	RAG/src/components/Landing/LoginRegister copy.vue
+2	2	RAG/src/components/Landing/LoginRegister.vue
+16	10	RAG/src/router/index.js
+
+118c08a46b8436c7ec924cac3acdac8d9eaca246 Roadinforest 2025-06-24
+1	8	RAG/src/App.vue
+3	3	RAG/src/components/Siderbar/Sidebar.vue
+24	12	RAG/src/router/index.js
+0	1	RAG/src/views/HomeView.vue
+33	0	RAG/src/views/MainView.vue
+
+ab9676e6928dc7486be6b7da113ab94532015754 Roadinforest 2025-06-24
+b6f03a725e9065ea5d109182aa294824ab3f6f31 Roadinforest 2025-06-24
+13	1	RAG/src/assets/assets.js
+-	-	RAG/src/assets/box-icons/engineer.png
+-	-	RAG/src/assets/box-icons/healthcare.png
+-	-	RAG/src/assets/box-icons/humanities.png
+-	-	RAG/src/assets/box-icons/new-box.png
+-	-	RAG/src/assets/box-icons/science.png
+-	-	RAG/src/assets/box-icons/social.png
+156	0	RAG/src/components/FileUpload/FileBox.vue
+159	0	RAG/src/components/Store/AddKnowledgeBtn.vue
+124	92	RAG/src/views/StoreView.vue
+
+9f89cce595a4933af7a0ad0789e737efb5901ff4 riy 2025-06-24
+77036791acc6b4220759b695937fc676b32ed021 riy 2025-06-24
+3	3	RAG/src/App.vue
+20	0	RAG/src/api/auth.js
+88	0	RAG/src/api/axios-api.js
+119	0	RAG/src/api/useAuth.js
+18	0	RAG/src/api/userinfo-api.js
+260	0	RAG/src/components/Landing/LoginRegister.vue
+25	0	RAG/src/router/index.js
+2	0	RAG/src/views/HomeView.vue
+18	0	RAG/src/views/LoginView.vue
+
+6aa0622af56f7923318fc16f996f9105fcdd4960 Kikii84 2025-06-24
+47	44	RAG/src/views/SettingsView.vue
+
+c57950e371ea30681438d04e9275da6d6e0c91db Kikii84 2025-06-24
+7	6	RAG/src/components/Main/Main.css
+
+00e61be77fa4cf2c0f7c2f061634f16ee116d4da Kikii84 2025-06-24
+138	65	RAG/src/views/SettingsView.vue
+
+332b51538bc901763772b0b2a57d63d09feafa15 Kikii84 2025-06-24
+5	1	RAG/src/components/Siderbar/Sidebar.vue
+5	3	RAG/src/main.js
+6	0	RAG/src/router/index.js
+177	0	RAG/src/views/SettingsView.vue
+
+2b502534d4aa0b15772620a9696dd97cfe93b748 Kikii84 2025-06-24
+85	85	RAG/src/views/StoreView.vue
+
+62dc534b98a3633e8dcbe0b68af1142e5fadbf0b riy 2025-06-24
+4	2	RAG/src/components/Main/Main.vue
+84	0	RAG/src/components/Profile/PopOver.vue
+93	0	RAG/src/components/Profile/ProfileFloating.vue
+
+e3be8c32e853cbf31b568a4e139c4a9b0fc6da65 Roadinforest 2025-06-23
+cca1491ec8de83db4fc530c7dcfd5f78aed45f9e Roadinforest 2025-06-23
+308	0	RAG/package-lock.json
+3	0	RAG/package.json
+14	4	RAG/src/App.vue
+3	1	RAG/src/assets/assets.js
+-	-	RAG/src/assets/icons/doc.png
+-	-	RAG/src/assets/icons/file.png
+-	-	RAG/src/assets/icons/pdf.png
+-	-	RAG/src/assets/icons/ppt.png
+-	-	RAG/src/assets/icons/video.png
+-	-	RAG/src/assets/icons/xls.png
+-	-	RAG/src/assets/otter.png
+170	0	RAG/src/components/FileUpload/FileCard.vue
+201	0	RAG/src/components/FileUpload/FileUploadButton.vue
+12	6	RAG/src/components/Main/Main.vue
+2	1	RAG/src/components/Siderbar/Sidebar.css
+39	8	RAG/src/components/Siderbar/Sidebar.vue
+11	0	RAG/src/router/index.js
+18	0	RAG/src/service/FileService.js
+26	0	RAG/src/service/api.js
+3	18	RAG/src/views/HomeView.vue
+120	0	RAG/src/views/StoreView.vue
+
+f06a1014c59d8fbac16301b22d0122a8e8b49b8d Roadinforest 2025-06-23
+1	1	README.md
+
+024c80890d1507e48264311e19cc2b80e2dd4902 Roadinforest 2025-06-23
+1	1	RAG/.gitignore
+7	5	RAG/src/App.vue
+109	0	RAG/src/components/Main/Main-noGemini.vue
+12	24	RAG/src/components/Main/Main.vue
+18	18	RAG/src/components/Main/SuggestCards.vue
+85	0	RAG/src/components/Siderbar/Sidebar-noGemini.vue
+16	15	RAG/src/components/Siderbar/Sidebar.vue
+14	0	RAG/src/components/context/GeminiProvider.vue
+78	0	RAG/src/service/userGemini.js
+
+c64b9ab29a30289d45bfb00bde2ceaec9927d158 Roadinforest 2025-06-23
+2	0	RAG/.gitignore
+0	36	RAG/src/config/gemini.js
+
+d85dbec161704cf87c89ee8730e586eae5855750 Roadinforest 2025-06-23
+02c81b17ede65522dfe57c154e154923b91d9fdb Roadinforest 2025-06-23
+243	0	RAG/package-lock.json
+1	0	RAG/package.json
+11	43	RAG/src/components/Main/Main.vue
+38	0	RAG/src/components/Main/SuggestCards.vue
+25	13	RAG/src/components/Siderbar/Sidebar.vue
+8	0	RAG/src/main.js
+21	0	package-lock.json
+5	0	package.json
+
+44da76fc1a1f9861403ff69eccc0c40d4c30e9d2 Roadinforest 2025-06-23
+1	0	README.md
+
+eab98c8fbfd2f5e75ce8aa626ef2b99e170999f2 Roadinforest 2025-06-23
+1	1	README.md
+
+cd503df5dd1cd09e2bb7173ef92aa714d32f23e1 Roadinforest 2025-06-23
+-	-	README.md
+
+62735d59ae5eadcebf133d393bb385745f7b4a18 Roadinforest 2025-06-23
+1	0	RAG/.gitattributes
+30	0	RAG/.gitignore
+6	0	RAG/.prettierrc.json
+6	0	RAG/.vscode/extensions.json
+29	0	RAG/README.md
+13	0	RAG/index.html
+8	0	RAG/jsconfig.json
+2877	0	RAG/package-lock.json
+24	0	RAG/package.json
+-	-	RAG/public/favicon.ico
+11	0	RAG/src/App.vue
+33	0	RAG/src/assets/assets.js
+86	0	RAG/src/assets/base.css
+-	-	RAG/src/assets/bulb_icon.png
+-	-	RAG/src/assets/code_icon.png
+-	-	RAG/src/assets/compass_icon.png
+-	-	RAG/src/assets/gallery_icon.png
+-	-	RAG/src/assets/gallery_icon2.png
+-	-	RAG/src/assets/gemini_icon.png
+-	-	RAG/src/assets/history_icon.png
+1	0	RAG/src/assets/logo.svg
+-	-	RAG/src/assets/menu_icon.png
+-	-	RAG/src/assets/message_icon.png
+-	-	RAG/src/assets/mic_icon.png
+-	-	RAG/src/assets/plus_icon.png
+-	-	RAG/src/assets/question_icon.png
+-	-	RAG/src/assets/send_icon.png
+-	-	RAG/src/assets/setting_icon.png
+-	-	RAG/src/assets/user_icon.png
+-	-	RAG/src/assets/user_iconme copy.png
+-	-	RAG/src/assets/user_iconme.png
+-	-	RAG/src/assets/youtube_icon.png
+202	0	RAG/src/components/Main/Main.css
+140	0	RAG/src/components/Main/Main.vue
+74	0	RAG/src/components/Siderbar/Sidebar.css
+71	0	RAG/src/components/Siderbar/Sidebar.vue
+7	0	RAG/src/components/icons/IconCommunity.vue
+7	0	RAG/src/components/icons/IconDocumentation.vue
+7	0	RAG/src/components/icons/IconEcosystem.vue
+7	0	RAG/src/components/icons/IconSupport.vue
+19	0	RAG/src/components/icons/IconTooling.vue
+36	0	RAG/src/config/gemini.js
+11	0	RAG/src/main.js
+15	0	RAG/src/router/index.js
+33	0	RAG/src/views/HomeView.vue
+20	0	RAG/vite.config.js
+
+60e91b997b61b395915a0b6ca87ed58277e3087e Roadinforest 2025-06-23
+-	-	README.md
