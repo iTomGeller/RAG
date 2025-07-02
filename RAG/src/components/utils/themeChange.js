@@ -9,7 +9,10 @@ const ThemeController = {
     // 设置el-color-primary的参数
     const primaryColor = localStorage.getItem('el-color-primary')
     root.style.setProperty('--el-color-primary', primaryColor)
-    const opacity= localStorage.getItem('opacity-hex')
+    const opacityHex= localStorage.getItem('opacity-hex')
+    const opacity = localStorage.getItem('opacity')
+    root.style.setProperty('--opacity', opacity/100)
+
 
     const isDarkMode = ref(false)
     // 1. 尝试从 localStorage 读取用户偏好
@@ -17,7 +20,7 @@ const ThemeController = {
     if (savedTheme === 'dark') {
       isDarkMode.value = true
       body.classList.add('dark')
-      root.style.setProperty('--el-bg-color', `#1b1b1b${opacity}`)
+      root.style.setProperty('--el-bg-color', `#1b1b1b${opacityHex}`)
       body.style.setProperty('background-color', 'var(--el-bg-color-page)')
       body.style.setProperty('color', 'white')
       body.style.setProperty('transition', 'background-color 0.3s ease, color 0.3s ease')

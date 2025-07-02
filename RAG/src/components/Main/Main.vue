@@ -150,6 +150,7 @@ const addNewChat = async () => {
   router.push('/home/chat')
   console.log('Starting a new chat' + currentChatId.value)
 }
+
 // const chatOnSent = async () => {
 //   console.log('Sending message: ' + input.value)
 //   showResult.value = true //显示结果
@@ -159,6 +160,7 @@ const addNewChat = async () => {
 //   console.log(res)
 //   loading.value = false
 // }
+
 const getUserName = () => {
   const user = JSON.parse(localStorage.getItem('userInfo'))
   return user?.username || 'User'
@@ -245,5 +247,18 @@ onMounted(() => {
   100% {
     background-position: 800px 0px;
   }
+}
+
+.result-title{
+  border-radius: 10px;
+  background-color: white;
+  background-color: rgba(255, 255, 255, var(--opacity));
+}
+
+
+.result-data{
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, var(--opacity));
 }
 </style>
