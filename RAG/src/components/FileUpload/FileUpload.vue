@@ -19,11 +19,11 @@
       <file-pond
         ref="pondRef"
         name="file"
-        label-idle="拖放文档文件到这里<br/><span class='file-types'>支持格式: txt, doc, docx, md, pdf, xls, xlsx</span>"
+        label-idle="拖放文档文件到这里<br/><span class='file-types'>支持格式: txt, doc, docx, pdf</span>"
         max-files="8"
         allow-multiple="false"
         allow-revert="false"
-        accepted-file-types="text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/markdown, application/pdf"
+        accepted-file-types="text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf"
         fileValidateTypeLabelExpectedTypes="文件类型不符合要求"
         instant-upload="false"
         :server="serverOptions"

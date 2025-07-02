@@ -253,8 +253,7 @@ onMounted(() => {
   opacity: 0;
 }
 
-.sidebar{
-  border-radius: 10px;
+body.dark  .sidebar{
   background-color: rgba(255, 255, 255, var(--opacity));
 }
 

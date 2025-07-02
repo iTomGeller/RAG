@@ -8,6 +8,7 @@
 </template>
 
 <script setup>
+import { ElNotification } from 'element-plus'
 import {  ref } from 'vue'
 
 const props = defineProps({
@@ -24,16 +25,44 @@ function getIcon(url) {
 }
 
 function handlePreview() {
-  const encodedUrl = encodeURIComponent(props.url)
-  const previewUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`
-  window.open(previewUrl, '_blank')
+  console.log("Original URL:", props.url);
+  const fileExtension = props.url.split('.').pop().toLowerCase();
+  let previewUrl = '';
+
+  switch (fileExtension) {
+    case 'docx':
+      previewUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(props.url)}`;
+      break;
+    case 'pdf':
+      // 方案 A: 使用 Google Docs Viewer
+        // previewUrl = `https://docs.google.com/viewerng/viewer?url=${encodeURIComponent(props.url)}`;
+      // 方案 B: 直接在浏览器中打开（现代浏览器通常内置PDF阅读器）
+      previewUrl = props.url;
+      break;
+    case 'txt':
+      previewUrl = props.url;
+      break;
+    default:
+      console.warn("Unsupported file type for preview:", fileExtension);
+      ElNotification({
+        message: "此文件类型不支持在线预览。将尝试直接打开。",
+      });
+      previewUrl = props.url; // 直接打开原始URL
+      break;
+  }
+
+  if (previewUrl) {
+    window.open(previewUrl, '_blank');
+  }
 }
 </script>
+
 
 <style scoped>
 .viewer-container {
   margin-top: 20px;
 }
+
 .chat-image {
   max-width: 200px;
   border-radius: 8px;
