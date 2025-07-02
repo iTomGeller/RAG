@@ -9,8 +9,9 @@
       <el-icon class="menu" :size="iconSize" @click="toggleExtended">
         <Menu />
       </el-icon>
+
       <div class="recent-list" ref="recentListRef" @click="handleRecClick">
-        <div v-if="!extended" class="recent-list-icon">
+        <div v-if="!extended" class="recent-list-icon ">
           <el-icon :size="iconSize">
             <Clock />
           </el-icon>
@@ -46,7 +47,7 @@
 
     <div class="bottom">
       <div
-        class="bottom-item recent-entry"
+        class="bottom-item recent-entry icon-box"
         @click="handleChat"
         :ref="(el) => collectRecentEntry(el, 0)"
       >
@@ -59,11 +60,11 @@
       </div>
 
       <div
-        class="bottom-item recent-entry"
+        class="bottom-item recent-entry icon-box"
         @click="handleSettings"
         :ref="(el) => collectRecentEntry(el, 1)"
       >
-        <el-icon :size="iconSize">
+        <el-icon :size="iconSize" >
           <Setting />
         </el-icon>
         <transition name="fade-slide">
@@ -72,7 +73,7 @@
       </div>
 
       <div
-        class="bottom-item recent-entry"
+        class="bottom-item recent-entry icon-box"
         @click="handleStore"
         :ref="(el) => collectRecentEntry(el, 2)"
       >
@@ -249,4 +250,28 @@ onMounted(() => {
 .fade-slide-leave-to {
   opacity: 0;
 }
+
+.sidebar{
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, var(--opacity));
+}
+
+.sidebar .icon-box{
+  display: flex;
+  /* min-width: fit-content; */
+  /* padding: 10px; */
+  border-radius: 50px;
+  color: #282828;
+  background-color: #e2e6eb;
+  cursor: pointer;
+  /* margin-top: 20px; */
+  /* padding-bottom: 5px; */
+  /* margin-right: 15px; */
+  margin-bottom: 3px;
+}
+
+.sidebar .icon-box:hover {
+  background-color: #d5d8dc;
+}
+
 </style>

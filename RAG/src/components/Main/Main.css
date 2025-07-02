@@ -112,6 +112,10 @@
     font-size: 18px;
 }
 
+body.dark .search-box input {
+    color: #585858;
+}
+
 .search-box div {
     display: flex;
     align-items: center;
