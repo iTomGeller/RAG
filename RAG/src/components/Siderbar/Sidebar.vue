@@ -30,6 +30,9 @@
       <transition name="fade-slide">
         <p class="recent-tag" v-show="extended">{{ t('sidebar.recently') }}</p>
       </transition>
+    </div>
+
+    <div class="scroll-container">
       <transition-group name="fade-slide" mode="out-in">
         <RecentChat
           v-show="extended"
@@ -39,8 +42,7 @@
           :name="item.name"
         />
       </transition-group>
-
-      </div>
+    </div>
 
     <div class="bottom">
       <div
