@@ -43,5 +43,11 @@
     "advancedSettings": "Advanced Settings",
     "mainColor": "Main Color",
     "bgTransparency": "Background Transparency"
+  },
+  "fileUpload": {
+    "categorize": "Drop a file here and I'll automatically categorize it for you...",
+    "upload": "Drag and drop a document file here<br/><span class='file-types'>Supported formats: txt, doc, docx, md, pdf, xls, xlsx</span>",
+    "support": "Supported formats: txt, doc, docx, md, pdf, xls, xlsx",
+    "invalidate": "Invalid file type."
   }
 }

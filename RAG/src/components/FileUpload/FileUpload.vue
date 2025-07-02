@@ -11,7 +11,7 @@
     :before-close="clickCancel"
     v-model="dialog"
     size="80%"
-    title="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;放入文件，我会帮你自动分类..."
+    :title="t('fileUpload.categorize')"
     :with-header="false"
   >
     <div class="upload-container">
@@ -19,12 +19,12 @@
       <file-pond
         ref="pondRef"
         name="file"
-        label-idle="拖放文档文件到这里<br/><span class='file-types'>支持格式: txt, doc, docx, md, pdf, xls, xlsx</span>"
+        :label-idle="t('fileUpload.upload')"
         max-files="8"
         allow-multiple="false"
         allow-revert="false"
         accepted-file-types="text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/markdown, application/pdf"
-        fileValidateTypeLabelExpectedTypes="文件类型不符合要求"
+        :fileValidateTypeLabelExpectedTypes="t('fileUpload.invalidate')"
         instant-upload="false"
         :server="serverOptions"
         @processfile="handleUploadSuccess"

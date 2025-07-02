@@ -1,51 +1,53 @@
- {
-    "login":{
-        "login":"登录",
-        "username":"用户名",
-        "password":"密码",
-        "register":"注册"
-
+{
+  "login": {
+    "login": "登录",
+    "username": "用户名",
+    "password": "密码",
+    "register": "注册"
+  },
+  "sidebar": {
+    "recently": "最近聊天",
+    "newchat": "新建对话",
+    "history": "历史对话",
+    "knowledgebase": "知识库",
+    "settings": "设置"
+  },
+  "profile": {
+    "edit": "修改信息",
+    "logout": "退出登录"
+  },
+  "knowledgebase": {
+    "title": "知识库",
+    "description1": "识海泛舟，利莫大焉",
+    "description2": "腹有诗书，方能不凡",
+    "categories": {
+      "其他": "其他",
+      "医学/健康知识库": "医学/健康知识",
+      "理科知识库": "理科知识库",
+      "文科知识库": "文科知识库",
+      "社科知识库": "社科知识库",
+      "工科/应用科学知识库": "工科/应用科学知识库"
     },
-    "sidebar":{
-        "recently":"最近聊天",
-        "newchat":"新建对话",
-        "history":"历史对话",
-        "knowledgebase":"知识库",
-        "settings":"设置"
-
+    "upload": "上传文件到您的知识库"
   },
-  "profile":{
-    "edit":"修改信息",
-    "logout":"退出登录"
+  "settings": {
+    "theme": "主题设置",
+    "light": "浅色主题",
+    "dark": "深色主题",
+    "preview": "主题预览",
+    "nav": "导航栏",
+    "reset": "重置",
+    "content": "卡片内容",
+    "mainBtn": "主要按钮",
+    "secondaryBtn": "次要按钮",
+    "advancedSettings": "高级设置",
+    "mainColor": "主色调",
+    "bgTransparency": "背景透明度"
   },
-  "knowledgebase":{
-      "title":"知识库",
-      "description1":"识海泛舟，利莫大焉",
-      "description2":"腹有诗书，方能不凡",
-      "categories":{
-          "其他":"其他",
-          "医学/健康知识库":"医学/健康知识",
-          "理科知识库":"理科知识库",
-          "文科知识库":"文科知识库",
-          "社科知识库":"社科知识库",
-          "工科/应用科学知识库":"工科/应用科学知识库"
-      },
-      "upload":"上传文件到您的知识库"      
-  },
-  "settings":{
-    "theme":"主题设置",
-    "light":"浅色主题",
-    "dark":"深色主题",
-    "preview":"主题预览",
-    "nav":"导航栏",
-    "reset":"重置",
-    "content":"卡片内容",
-    "mainBtn":"主要按钮",
-    "secondaryBtn":"次要按钮",
-    "advancedSettings":"高级设置",
-    "mainColor":"主色调",
-    "bgTransparency":"背景透明度"
+  "fileUpload": {
+    "categorize": "放入文件，我会帮你自动分类...",
+    "upload": "拖放文档文件到这里<br/><span class='file-types'>支持格式: txt, doc, docx, md, pdf, xls, xlsx</span>",
+    "support": "支持格式：txt,doc,docx,md,pdf,xls,xlsx",
+    "invalidate":"文件类型不符合要求"
   }
-
 }
-
