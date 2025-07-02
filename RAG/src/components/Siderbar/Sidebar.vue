@@ -6,7 +6,7 @@
     @mouseleave="collapseSidebar"
   >
     <div class="top">
-      <el-icon class="menu" :size="iconSize" @click="toggleExtended">
+      <el-icon class="menu" :size="iconSize">
         <Menu />
       </el-icon>
       <div class="recent-list" ref="recentListRef" @click="handleRecClick">
@@ -151,8 +151,6 @@ const addNewChat = async () => {
 const handleRecClick = () => {
   if (extended.value) {
     addNewChat()
-  } else {
-    toggleExtended()
   }
 }
 
