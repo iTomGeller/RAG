@@ -90,11 +90,6 @@ import {
 //   loading
 // } = inject('geminiContext');
 
-// const messageContent = ref([
-//   { type: 'AI', text: 'no' },
-//   { type: 'USER', text: 'yes' },
-// ])
-
 const input = ref('')
 const sendButtonVisible = computed(() => input.value.trim() !== '')
 const sendMessage = () => {
@@ -113,16 +108,6 @@ const addNewChat = async () => {
 const stopChat = () => {
   ChatService.stopChat()
 }
-
-// const chatOnSent = async () => {
-//   console.log('Sending message: ' + input.value)
-//   showResult.value = true //显示结果
-//   loading.value = true //加载动画
-//   const res = await ChatService.initiateChat({ memoryId: currentChatId.value, message: input.value })
-//   input.value = ''
-//   console.log(res)
-//   loading.value = false
-// }
 
 const getUserName = () => {
   const user = JSON.parse(localStorage.getItem('userInfo'))
@@ -166,41 +151,6 @@ onUnmounted(() => {})
   height: 80vh;
   display: flex;
   flex-direction: column;
-}
-
-/* 消息列表区域（可滚动） */
-.message {
-  margin: 8px 0;
-  display: flex;
-}
-
-/* 用户消息靠右 */
-.message.USER {
-  justify-content: flex-end;
-}
-
-/* 机器人消息靠左 */
-.message.AI {
-  justify-content: flex-start;
-}
-
-/* 消息气泡样式 */
-.bubble {
-  max-width: 70%;
-  padding: 10px 15px;
-  border-radius: 18px;
-}
-
-/* 用户气泡（蓝色右对齐） */
-.USER .bubble {
-  background: #1890ff;
-  color: white;
-}
-
-/* 机器人气泡（灰色左对齐） */
-.AI .bubble {
-  background: #f0f0f0;
-  color: #333;
 }
 
 @keyframes loader {
