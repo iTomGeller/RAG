@@ -34,7 +34,6 @@
       <!-- avatar popover -->
       <template #reference>
         <el-avatar :src="user.avatarUrl" class="home-avatar" alt="Avatar"/>
-        <p> helllo </p>
       </template>
     </el-popover>
   </div>
