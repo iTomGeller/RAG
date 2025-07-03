@@ -17,12 +17,12 @@
         <SuggestCards @update:suggestCardsOnSent="handleSuggest" />
       </div>
       <div v-else class="result">
-        <div class="chat-container">
-          <!-- 消息列表 -->
-          <div v-for="(msg, index) in chatMessages" :key="index" :class="['message', msg.sender]">
-            <div class="bubble">{{ msg.text }}</div>
-          </div>
-        </div>
+        <Message
+            v-for="(item, index) in messageContent"
+            :key="index"
+            :type="item.type"
+            :text="item.text"
+          />
         <!-- <div class="result-title">
           <img :src="assets.user_icon" alt="User Icon" />
           <p>{{ recentPrompt }}</p>
@@ -34,7 +34,6 @@
             <hr />
             <hr />
           </div>
-          <p v-else v-html="resultData"></p>
         </div> -->
       </div>
 
@@ -48,7 +47,6 @@
           />
 
           <div>
-            <!-- <img :src="assets.gallery_icon" alt="Gallery Icon" /> -->
             <img
               v-if="sendButtonVisible"
               @click="sendMessage()"
@@ -56,6 +54,9 @@
               alt="Send Icon"
               class="send-icon"
             />
+            <el-icon v-if="showResult" @click="stopChat()" class="stop-icon">
+              <RemoveFilled />
+            </el-icon>
           </div>
         </div>
         <p class="bottom-info">Otter AI can make mistakes. Check important info.</p>
@@ -65,13 +66,20 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { assets } from '@/assets/assets'
 import SuggestCards from './SuggestCards.vue'
 import ProfileFloating from '../Profile/ProfileFloating.vue'
-import ChatService from '@/service/ChatService'
-import { startSSEChat } from '@/service/apiChat'
+import { RemoveFilled } from '@element-plus/icons-vue'
+import Message from './Message.vue'
+import {
+  ChatService,
+  messageContent,
+  sources,
+  showResult,
+  loading,
+} from '@/service/ChatService'
 
 // const {
 //   onSent,
@@ -81,60 +89,18 @@ import { startSSEChat } from '@/service/apiChat'
 //   input,
 //   loading
 // } = inject('geminiContext');
+
+// const messageContent = ref([
+//   { type: 'AI', text: 'no' },
+//   { type: 'USER', text: 'yes' },
+// ])
+
 const input = ref('')
-const resultData = ref(`<span style="color: red">红色文字</span>`)
-const loading = ref(false)
-const recentPrompt = ref('')
-const currentChatId = inject('currentChatId')
-const showResult = inject('showResult')
-// const chatMessages = ref([])
-const chatMessages = ref([
-  { id: 1, sender: 'USER', text: '' },
-  { id: 2, sender: 'AI', text: '' },
-])
-
-const router = useRouter()
-
 const sendButtonVisible = computed(() => input.value.trim() !== '')
-let closeConnection = null
-
 const sendMessage = () => {
-  if (!input.value.trim()) return
-
-  console.log('Sending message: ' + input.value)
-
-  // 添加用户消息到聊天记录
-  // chatMessages.value.push({ type: 'USER', text: input.value })
-  chatMessages.value[0].text = input.value
-  chatMessages.value[1].text = '' // 清空 AI 消息
-
-  showResult.value = true //显示结果
-
-  // 发起 SSE 请求（携带 token）
-  closeConnection = startSSEChat(
-    currentChatId.value,
-    input.value,
-    (data) => {
-      console.log('SSE 数据:', data)
-      // chatMessages.value.push({ type: 'AI', text: data })
-      chatMessages.value[1].text += data
-    },
-    (error) => {
-      console.error('SSE 错误:', error)
-      if (error.message.includes('401')) {
-        alert('登录已过期，请重新登录')
-        router.push('/login')
-      }
-    },
-  )
-  // console.log(chatMessages.value);
-  input.value = ''
-}
-const getRecentPrompt = async () => {
-  const res = await ChatService.getChatPrompt()
-  recentPrompt.value = res
-  console.log(res)
-  console.log(recentPrompt.value)
+  ChatService.setInput(input.value)
+  ChatService.sendMessage()
+  input.value = '' // 清空输入框
 }
 const handleSuggest = (suggestinput) => {
   addNewChat()
@@ -142,13 +108,10 @@ const handleSuggest = (suggestinput) => {
   sendMessage()
 }
 const addNewChat = async () => {
-  if (!closeConnection == null) {
-    closeConnection() // 关闭当前 SSE 连接
-  }
-  currentChatId.value = Date.now()
-  showResult.value = false
-  router.push('/home/chat')
-  console.log('Starting a new chat' + currentChatId.value)
+  ChatService.addNewChat()
+}
+const stopChat = () => {
+  ChatService.stopChat()
 }
 
 // const chatOnSent = async () => {
@@ -167,16 +130,17 @@ const getUserName = () => {
 }
 onMounted(() => {
   console.log('刷新')
-  if (!closeConnection == null) {
-    closeConnection() // 关闭当前 SSE 连接
-  }
 })
+onUnmounted(() => {})
 </script>
 
 <style scoped>
 @import './Main.css';
 
 .send-icon {
+  cursor: pointer;
+}
+.stop-icon {
   cursor: pointer;
 }
 
@@ -249,14 +213,13 @@ onMounted(() => {
   }
 }
 
-.result-title{
+.result-title {
   border-radius: 10px;
   background-color: white;
   background-color: rgba(255, 255, 255, var(--opacity));
 }
 
-
-.result-data{
+.result-data {
   border-radius: 10px;
   background-color: rgb(255, 255, 255);
   background-color: rgba(255, 255, 255, var(--opacity));

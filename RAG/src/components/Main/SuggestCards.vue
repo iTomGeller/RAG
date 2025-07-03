@@ -13,34 +13,34 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { inject } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { assets } from '@/assets/assets';
-import ChatService from '@/service/ChatService'
+import { ref, onMounted } from 'vue'
+import { inject } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { assets } from '@/assets/assets'
+import { ChatService } from '@/service/ChatService'
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const selectedSuggestions = ref([]);
+const selectedSuggestions = ref([])
 
 const emit = defineEmits(['update:suggestCardsOnSent'])
 const handleCardClick = (suggestinput) => {
-    emit('update:suggestCardsOnSent',suggestinput)
-};
+  emit('update:suggestCardsOnSent', suggestinput)
+}
 
 // 从 1 到 20 中随机抽取 4 个不重复的编号
 function getRandomSuggestions() {
-  const arr = Array.from({ length: 20 }, (_, i) => i + 1);
+  const arr = Array.from({ length: 20 }, (_, i) => i + 1)
   for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
   }
-  return arr.slice(0, 4);
+  return arr.slice(0, 4)
 }
 
 onMounted(() => {
-  selectedSuggestions.value = getRandomSuggestions();
-});
+  selectedSuggestions.value = getRandomSuggestions()
+})
 </script>
 
 <style scoped>

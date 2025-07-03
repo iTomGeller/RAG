@@ -1,36 +1,49 @@
 <template>
-  <div class="chat-card" @click="handleClick">
-    <div class="chat-info">
+  <div class="chat-card">
+    <div class="chat-info"  @click="handleClick">
       <div class="chat-card-title">{{ props.name }}</div>
     </div>
-    <el-icon>
-      <MoreFilled />
-    </el-icon>
+    <el-dropdown  trigger="click" @command="handleCommand">
+      <div class="chat-card-icon">
+        <el-icon>
+          <MoreFilled />
+        </el-icon>
+      </div>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item command="delete">删除</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
   </div>
 </template>
 <script setup>
+import { ElDropdown, ElDropdownMenu, ElDropdownItem, ElIcon } from 'element-plus'
 import { inject, onMounted } from 'vue'
 import { MoreFilled } from '@element-plus/icons-vue'
-import ChatService from '@/service/ChatService'
 import { useRouter } from 'vue-router'
-const router = useRouter()
-
-const currentChatId = inject('currentChatId')
-const showResult = inject('showResult')
+import { ChatService } from '@/service/ChatService'
+import { ElMessage } from 'element-plus'
 
 const props = defineProps({
   memoryId: String,
   name: String,
 })
-const handleClick = async () => {
-  currentChatId.value = props.memoryId
-  showResult.value = true
-  router.push('/home/chat') //跳转到chat页面
-  console.log('turn to chat' + props.name + ', memoryID=' + currentChatId.value)
+const handleCommand = (command) => {
+  if (command === 'delete') {
+    ChatService.deleteChat(props.memoryId)
+      .then(() => {
+        ElMessage.success('删除成功')
+      })
+      .catch((error) => {
+        ElMessage.error('删除失败: ' + error.message)
+      })
+  }
 }
-onMounted(() => {
-  console.log(props.memoryId === currentChatId.value)
-})
+const handleClick = async () => {
+  ChatService.changeCurrentChat(props.memoryId)
+}
+onMounted(() => {})
 </script>
 <style scoped>
 .chat-card {
@@ -45,9 +58,15 @@ onMounted(() => {
   /* background-color: #e2e6eb; */
   cursor: pointer;
 }
+.chat-card-icon {
+  border-radius: 50%;
+}
+.chat-card-icon:hover {
+  background-color: #d5d8dc;
+}
 .chat-info {
   padding-left: 5px;
-  width: 70%;
+  width: 85%;
   display: flex;
 }
 .chat-card-title {

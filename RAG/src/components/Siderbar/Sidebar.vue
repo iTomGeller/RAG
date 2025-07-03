@@ -3,7 +3,6 @@
     class="sidebar"
     ref="sidebarRef"
     @mouseenter="expandSidebar"
-    @mouseleave="collapseSidebar"
   >
     <div class="top">
       <el-icon class="menu" :size="iconSize">
@@ -11,7 +10,7 @@
       </el-icon>
 
       <div class="recent-list" ref="recentListRef" @click="handleRecClick">
-        <div v-if="!extended" class="recent-list-icon ">
+        <div v-if="!extended" class="recent-list-icon">
           <el-icon :size="iconSize">
             <Clock />
           </el-icon>
@@ -34,17 +33,17 @@
     </div>
 
     <div class="center-container">
-    <simplebar class="scroll-container">
-      <transition-group name="fade-slide" mode="out-in">
-        <RecentChat
-          v-show="extended"
-          v-for="item in recentChats"
-          :key="item.memoryId"
-          :memoryId="item.memoryId"
-          :name="item.name"
-        />
-      </transition-group>
-    </simplebar>
+      <simplebar class="scroll-container">
+        <transition-group name="fade-slide" mode="out-in">
+          <RecentChat
+            v-show="extended"
+            v-for="item in recentChats"
+            :key="item.memoryId"
+            :memoryId="item.memoryId"
+            :name="item.name"
+          />
+        </transition-group>
+      </simplebar>
     </div>
 
     <div class="bottom">
@@ -66,7 +65,7 @@
         @click="handleSettings"
         :ref="(el) => collectRecentEntry(el, 1)"
       >
-        <el-icon :size="iconSize" >
+        <el-icon :size="iconSize">
           <Setting />
         </el-icon>
         <transition name="fade-slide">
@@ -93,10 +92,10 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted } from 'vue' // Import inject
+import { ref, inject, onMounted, onUnmounted, computed } from 'vue' // Import inject
 import RecentChat from './RecentChat.vue'
-import simplebar from 'simplebar-vue'; // 引入 SimpleBar 组件
-import 'simplebar-core/dist/simplebar.css'; // 引入默认样式
+import simplebar from 'simplebar-vue' // 引入 SimpleBar 组件
+import 'simplebar-core/dist/simplebar.css' // 引入默认样式
 
 import {
   Menu,
@@ -110,12 +109,10 @@ import {
 
 import { useRouter } from 'vue-router'
 
-import ChatService from '@/service/ChatService'
-
-const currentChatId = inject('currentChatId')
-const showResult = inject('showResult')
+import { ChatService } from '@/service/ChatService'
 
 const router = useRouter()
+
 
 // const { prevPrompts, newChat } = inject('geminiContext') // Destructure the needed properties and methods
 
@@ -123,6 +120,8 @@ import { gsap } from 'gsap' // 引入GSAP
 
 import { useI18n } from 'vue-i18n' //全局语言切换
 const { t } = useI18n()
+
+
 
 const recentChats = ref([])
 
@@ -142,25 +141,18 @@ const collectRecentEntry = (el, index) => {
     recentEntries.value[index] = el
   }
 }
-
-const addNewChat = async () => {
-  currentChatId.value = Date.now()
-  showResult.value = false
-  router.push('/home/chat')
-  console.log('Starting a new chat' + currentChatId.value)
-}
 const handleRecClick = () => {
   if (extended.value) {
-    addNewChat()
+    ChatService.addNewChat()
   }
 }
 
 const setExtendedState = (isExtended) => {
-  extended.value = isExtended;
+  extended.value = isExtended
   if (extended.value) {
-    loadPrompt();
+    loadPrompt()
   }
-  emit('update:extended', extended.value);
+  emit('update:extended', extended.value)
 
   if (sidebarRef.value) {
     gsap.to(sidebarRef.value, {
@@ -168,14 +160,14 @@ const setExtendedState = (isExtended) => {
       width: extended.value ? '200px' : '75px',
       ease: 'power2.out',
       transformOrigin: 'right center',
-    });
+    })
   }
   if (recentListRef.value) {
     gsap.to(recentListRef.value, {
       duration: 0.3,
       marginTop: extended.value ? '30px' : '20px',
       ease: 'power2.out',
-    });
+    })
   }
 
   if (recentEntries.value && recentEntries.value.length > 0) {
@@ -184,52 +176,70 @@ const setExtendedState = (isExtended) => {
       marginTop: extended.value ? '20px' : '0px',
       ease: 'power2.out',
       stagger: 0.05,
-    });
+    })
   }
-};
+}
 
 const toggleExtended = () => {
-  setExtendedState(!extended.value);
-};
+  setExtendedState(!extended.value)
+}
 
 const expandSidebar = () => {
-  setExtendedState(true);
-};
+  setExtendedState(true)
+  document.addEventListener('mousemove', updateMousePosition);
+}
 
 const collapseSidebar = () => {
-  setExtendedState(false);
-};
+  setExtendedState(false)
+  document.removeEventListener('mousemove', updateMousePosition);
+}
 
 const loadPrompt = async () => {
   try {
-    const res = await ChatService.getChatList();
-    recentChats.value = res.data;
-    console.log(recentChats.value);
+    const res = await ChatService.getChatList()
+    recentChats.value = res.data
+    console.log(recentChats.value)
   } catch (error) {
     // Make sure ElNotification is imported or defined
     // If not, you might need to import it from 'element-plus' or define a similar notification system.
     // For now, I'll add a simple console error.
-    console.error('获取历史对话列表失败', error);
+    console.error('获取历史对话列表失败', error)
     // ElNotification.error({
     //   message: '获取历史对话列表失败',
     // });
   }
-  console.log('chat list got');
-};
+  console.log('chat list got')
+}
 
 const handleChat = () => {
-  router.push('/home/chat');
-};
+  router.push('/home/chat')
+}
 
 const handleStore = () => {
-  router.push('/home/store');
-};
+  router.push('/home/store')
+}
 const handleSettings = () => {
-  router.push('/home/settings');
+  router.push('/home/settings')
+}
+
+const mousePosition = ref({ x: 0, y: 0 });//检测鼠标位置是否处于侧边栏内
+const COLLAPSE_THRESHOLD = 250; // 根据实际侧边栏宽度调整
+const updateMousePosition = (e) => {
+  mousePosition.value = {
+    x: e.clientX,
+    y: e.clientY
+  };
+  if (extended.value && mousePosition.value.x > COLLAPSE_THRESHOLD) {
+    collapseSidebar();
+  }
 };
+
 onMounted(() => {
-  loadPrompt();
-  console.log('sidebar updated');
+  loadPrompt()
+  console.log('sidebar updated')
+})
+onUnmounted(() => {
+  // 清理事件监听器
 });
 </script>
 
@@ -253,12 +263,12 @@ onMounted(() => {
   opacity: 0;
 }
 
-.sidebar{
+.sidebar {
   border-radius: 10px;
   background-color: rgba(255, 255, 255, var(--opacity));
 }
 
-.sidebar .icon-box{
+.sidebar .icon-box {
   display: flex;
   /* min-width: fit-content; */
   /* padding: 10px; */
@@ -275,5 +285,4 @@ onMounted(() => {
 .sidebar .icon-box:hover {
   background-color: #d5d8dc;
 }
-
 </style>
