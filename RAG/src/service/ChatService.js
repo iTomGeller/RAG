@@ -132,6 +132,8 @@ export const ChatService = {
           } catch (e) {
             console.error('解析 SOURCES 失败:', e)
           }
+        } else if(data.startsWith('CONTENT:')){
+          console.log('开始')
         } else {
           loading.value = false // 停止加载状态
           // 直接累积 rawMarkdown（包含非 CONTENT: 和 SOURCES: 的所有内容）
@@ -188,7 +190,6 @@ export const ChatService = {
   async changeCurrentChat(id) {
     stopChatSys() // 停止当前聊天
     currentId.value = id
-
     messageContent.value = [] // 清空当前消息内容
     const res = await getPrevPrompt() //获取历史对话内容
     res.data.forEach((item) => {
