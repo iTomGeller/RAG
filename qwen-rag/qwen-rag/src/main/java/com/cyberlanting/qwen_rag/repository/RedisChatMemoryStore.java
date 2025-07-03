@@ -33,7 +33,6 @@ public class RedisChatMemoryStore implements ChatMemoryStore {
         // 如果 Redis 中没有数据，json 会是 null，Deserializer 会返回空列表，这是正常的首次聊天情况
         List<ChatMessage> list = ChatMessageDeserializer.messagesFromJson(json);
         // 为了调试，可以打印出获取到的消息
-        System.out.println("GET Messages for " + memoryId + ": " + (list != null ? list.size() : 0) + " messages");
         return list;
     }
 

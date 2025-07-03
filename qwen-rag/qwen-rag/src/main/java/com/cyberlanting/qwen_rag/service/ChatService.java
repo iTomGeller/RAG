@@ -17,4 +17,6 @@ public interface ChatService {
     Result getChatContext(Long memoryId);
 
     Result deleteChat(Long memoryId);
+
+    String getUserFeedback();
 }

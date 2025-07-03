@@ -1,9 +1,15 @@
 package com.cyberlanting.qwen_rag.service.impl;
 
 
+import com.cyberlanting.qwen_rag.common.context.BaseContext;
+import com.cyberlanting.qwen_rag.common.exception.NotLoginException;
 import com.cyberlanting.qwen_rag.pojo.dto.ChatMessageDTO;
+import com.cyberlanting.qwen_rag.pojo.entity.Feedback;
 import com.cyberlanting.qwen_rag.pojo.vo.DocumentInfoVO;
+import com.cyberlanting.qwen_rag.pojo.vo.FeedbackVO;
+import com.cyberlanting.qwen_rag.pojo.vo.FileVO;
 import com.cyberlanting.qwen_rag.repository.RedisChatMemoryStore;
+import com.cyberlanting.qwen_rag.service.FeedbackService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cyberlanting.qwen_rag.common.result.Result;
@@ -45,6 +51,17 @@ public class ChatServiceImpl implements ChatService {
 
     @Autowired
     private RedisChatMemoryStore redisChatMemoryStore;
+
+    @Autowired
+    private FeedbackService feedbackService;
+
+    public Long getUserId() {
+        Long userId = BaseContext.getCurrentId();
+        if (userId == null) {
+            throw new NotLoginException("用户未登录");
+        }
+        return userId;
+    }
 
     @Override
     public Result<List<Chat>> getChatList() {
@@ -148,6 +165,16 @@ public class ChatServiceImpl implements ChatService {
     public Result deleteChat(Long memoryId) {
         redisChatMemoryStore.deleteMessages(memoryId);
         return Result.success("删除成功");
+    }
+
+    @Override
+    public String getUserFeedback() {
+        StringBuilder sb = new StringBuilder();
+        List<FeedbackVO> feedbackVOList = feedbackService.getFeedbackList(1, 10).getList();
+        for (FeedbackVO feedbackVO : feedbackVOList) {
+            sb.append("- ").append(feedbackVO.getContent()).append("\n");
+        }
+        return sb.toString();
     }
 
     private String buildEnhancedPrompt(String originalQuery, List<DocumentInfo> docInfos) {

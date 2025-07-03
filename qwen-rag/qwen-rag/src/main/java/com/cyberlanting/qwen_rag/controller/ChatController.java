@@ -53,15 +53,16 @@ public class ChatController {
         String sourcesJson = objectMapper.writeValueAsString(documentInfos);
         log.info("sources: {}", sourcesJson);
 
-        // 阶段2：
+        // 阶段2：结合用户反馈生成系统提示词
+        String userFeedback = chatService.getUserFeedback();
 
         // 阶段3：流式生成回复内容
-        Flux<String> contentStream = assistant.chat(memoryId, message);
+        Flux<String> contentStream = assistant.chat(memoryId, message, userFeedback);
 
         return Flux.concat(
                 Flux.just("SOURCES:" + sourcesJson + "\n"),  // 数据源标记
                 Flux.just("CONTENT:\n"),                     // 内容开始标记（只出现一次）
-                contentStream,                               // 原始内容流（无额外标记）
+                contentStream,                                    // 原始内容流（无额外标记）
                 Flux.just("END\n")                           // 结束标记
         );
     }
