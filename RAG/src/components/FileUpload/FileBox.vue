@@ -88,13 +88,13 @@ const refresh = async () => {
     })
     files.value = res.list
     total.value = res.total
-    console.log(files.value)
+    // console.log(files.value)
   } catch (error) {
     ElNotification.error({
       message: '获取知识库列表失败',
     })
   }
-  console.log('updated')
+  // console.log('updated')
 }
 
 const handleCurrentChange = async (newPage) => {

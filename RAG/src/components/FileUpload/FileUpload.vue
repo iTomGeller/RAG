@@ -23,7 +23,7 @@
         max-files="8"
         allow-multiple="false"
         allow-revert="false"
-        accepted-file-types="text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/markdown, application/pdf"
+        accepted-file-types="text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"
         :fileValidateTypeLabelExpectedTypes="t('fileUpload.invalidate')"
         instant-upload="false"
         :server="serverOptions"
@@ -67,7 +67,7 @@ const pondRef = ref(null)
 //提前获得知识库信息
 const baseInfo = ref([])
 //样式语言规定
-const iconUrl = assets.new_box_icon
+const iconUrl = assets.folder_icon
 
 const title = t('knowledgebase.upload')
 const dialog = ref(false)

@@ -80,5 +80,38 @@
   "button":{
     "cancel": "取消",
     "confirm": "确认"
-  }
+  },
+  "addBaseBtn":{
+    "btnTitle": "新增知识库",
+    "baseName":"知识库名称",
+    "baseType": "知识库类别",
+    "check": "确认",
+    "cancel": "取消"
+  },
+  "baseType":[
+    {
+        "value": "Default",
+        "label": "Default"
+    },
+    {
+        "value": "Humanities",
+        "label": "Humanities"
+    },
+    {
+        "value": "Science",
+        "label": "Science"
+    },
+    {
+        "value": "Engineering",
+        "label": "Engineering"
+    },
+    {
+        "value": "Health",
+        "label": "Health"
+    },
+    {
+        "value": "Social",
+        "label": "Social"
+    }
+  ]
 }

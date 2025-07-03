@@ -1,7 +1,82 @@
 import api from './api'
 import { ref } from 'vue'
+import { startSSEChat } from '@/service/apiChat'
+import { marked } from 'marked'
+import DOMPurify from 'dompurify'
+import router from '@/router'
 
-const ChatService = {
+/**
+ * 将 Markdown 文本安全地转换为可用于 v-html 的 HTML 字符串
+ */
+function safeMarkdownToHtml(text) {
+  if (!text || typeof text !== 'string') return ''
+
+  // 使用 marked 解析 Markdown
+  const dirtyHtml = marked.parse(text)
+
+  // 使用 DOMPurify 清理 HTML，防止 XSS
+  const cleanHtml = DOMPurify.sanitize(dirtyHtml)
+
+  return cleanHtml
+}
+
+const input = ref('')
+const currentId = ref(null)
+const messageContent = ref([])
+const sources = ref([])
+const loading = ref(false)
+const showResult = ref(false) // 控制是否显示结果
+let abortChat = null
+
+function init() {
+  stopChatSys()
+  messageContent.value = []
+  currentId.value = Date.now()
+  input.value = ''
+  sources.value = []
+  loading.value = false
+  showResult.value = false // 控制是否显示结果
+}
+
+init()
+
+async function getPrevPrompt() {
+  try {
+    const response = await api.get(`/chat/context?memoryId=${currentId.value}`)
+    return response.data
+  } catch (error) {
+    console.error('获取上次对话内容失败:', error)
+    throw error
+  }
+}
+
+function stopChatSys() {
+  if (abortChat) {
+    abortChat() //中止SSE请求
+    abortChat = null
+    console.log('Chat stopped.')
+  }
+}
+
+// function formatTextForVHtml(text) {
+//   let html = text.replace(/\n/g, '<br>')
+//   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+//   html = html.replace(/\*(.+?)\*/g, '<em>$1</em>')
+//   html = html.replace(/^-\s(.+)$/gm, '• $1')
+//   html = html.replace(/```[\w]*\n([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+//   return html
+// }
+
+export const ChatService = {
+  async deleteChat(id) {
+    try {
+      const response = await api.delete(`/chat/delete?memoryId=${id}`)
+      console.log(response.msg)
+    } catch (error) {
+      console.error('Delete chat error:', error)
+      throw error
+    }
+  },
   async getChatList() {
     try {
       const response = await api.get('/chat/list')
@@ -11,30 +86,132 @@ const ChatService = {
       throw error
     }
   },
-  async initiateChat({ memoryId, message }) {
+  addNewChat() {
+    showResult.value = false
+    router.push('/home/chat')
+    init() // 初始化聊天内容
+    messageContent.value = [] // 初始化当前聊天的历史内容
+    console.log('Starting a new chat' + currentId.value)
+  },
+
+  sendMessage() {
+    showResult.value = true
+    loading.value = true // 开始加载状态
+    // 输入内容放入历史中
+    messageContent.value.push({ type: 'USER', text: safeMarkdownToHtml(input.value) })
+
+    let rawMarkdown = '' // 存储原始 Markdown 内容
+    let displayIndex = 0 // 当前显示到第几个字符
+    const typingSpeed = 15 // 打字速度（毫秒/字符）
+
+    // 添加一个空的 AI 消息用于后续填充（原始文本）
+    messageContent.value.push({ type: 'AI', text: '' })
+
+    abortChat = startSSEChat(
+      currentId.value,
+      input.value,
+      (data) => {
+        if (data.startsWith('END')) {
+          // 收到结束信号，统一转为 HTML
+          const htmlContent = safeMarkdownToHtml(rawMarkdown)
+
+          // 替换为最终 HTML 展示
+          messageContent.value[messageContent.value.length - 1] = {
+            type: 'AI',
+            text: htmlContent,
+          }
+          console.log('结束')
+          console.log(messageContent.value[messageContent.value.length - 1].text)
+        } else if (data.startsWith('SOURCES:')) {
+          // 提取 SOURCES 部分并解析 JSON
+          try {
+            const sourceJson = data.replace('SOURCES:', '').trim()
+            sources.value = JSON.parse(sourceJson)
+            console.log('提取到 SOURCES:', sources.value)
+          } catch (e) {
+            console.error('解析 SOURCES 失败:', e)
+          }
+        } else if(data.startsWith('CONTENT:')){
+          console.log('开始')
+        } else {
+          loading.value = false // 停止加载状态
+          // 直接累积 rawMarkdown（包含非 CONTENT: 和 SOURCES: 的所有内容）
+          rawMarkdown += data
+          console.log(data)
+
+          // 递归函数：逐字显示原始文本
+          const showNextChar = () => {
+            if (displayIndex < rawMarkdown.length) {
+              displayIndex++
+              messageContent.value[messageContent.value.length - 1] = {
+                type: 'AI',
+                text: rawMarkdown.substring(0, displayIndex),
+              }
+              setTimeout(showNextChar, typingSpeed)
+            }
+          }
+
+          // 第一次进入时启动显示
+          if (displayIndex === 0) {
+            showNextChar()
+          }
+        }
+      },
+      (error) => {
+        console.error('SSE 错误:', error)
+        if (error.message.includes('401')) {
+          alert('登录已过期，请重新登录')
+          router.push('/login')
+        }
+      },
+    )
+
+    input.value = '' // 清空输入框
+  },
+  stopChat() {
     try {
-      console.log('initiateChat')
+      stopChatSys()
     } catch (error) {
-      console.error('Initiate Chat error:', error)
+      console.error('Error stopping chat:', error)
       throw error
     }
   },
-  async getChatPrompt() {
-    try {
-      return '这里是otterAI，你可以向我提问任何问题，我会尽可能的回答。'
-    } catch (error) {
-      console.error('Get Chat Prompt error:', error)
-      throw error
-    }
+  async getPrevContent() {
+    messageContent.value = [] // 清空当前消息内容
+    const res = await getPrevPrompt() //获取历史对话内容
+    res.data.forEach((item) => {
+      messageContent.value.push({
+        type: item.type === 'USER' ? 'USER' : 'AI',
+        text: safeMarkdownToHtml(item.text),
+      })
+    })
   },
-  async chatTest() {
-    try {
-      
-    } catch (error) {
-      console.error('Chat Test error:', error)
-      throw error
-    }
+  async changeCurrentChat(id) {
+    stopChatSys() // 停止当前聊天
+    currentId.value = id
+    messageContent.value = [] // 清空当前消息内容
+    const res = await getPrevPrompt() //获取历史对话内容
+    res.data.forEach((item) => {
+      messageContent.value.push({
+        type: item.type === 'USER' ? 'USER' : 'AI',
+        text: safeMarkdownToHtml(item.text),
+      })
+    })
+
+    sources.value = []
+    showResult.value = true
+    loading.value = false
+    input.value = ''
+    router.push('/home/chat')
+    console.log('Switched to chat with ID:', id)
+  },
+
+  setInput(text) {
+    input.value = text
+  },
+  setCurrentChat(id) {
+    currentId.value = id
   },
 }
 
-export default ChatService
+export { messageContent, sources, loading, showResult }

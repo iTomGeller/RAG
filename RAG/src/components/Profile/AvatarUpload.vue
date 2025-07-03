@@ -1,5 +1,5 @@
 <template>
-  <el-button color="e5e5e5" @click="dialog = true" alt="Logout Icon" class="act-btn"
+  <el-button  @click="dialog = true" alt="Logout Icon" class="act-btn"
     > {{ t('profile.edit') }}</el-button>
 
   <el-dialog
