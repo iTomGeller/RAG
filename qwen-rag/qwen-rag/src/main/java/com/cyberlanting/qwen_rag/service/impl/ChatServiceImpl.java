@@ -63,10 +63,41 @@ public class ChatServiceImpl implements ChatService {
         return userId;
     }
 
+//    @Override
+//    public Result<List<Chat>> getChatList() {
+//        Set<String> keys = new HashSet<>();
+//        Cursor<byte[]> cursor = redisTemplate.getConnectionFactory().getConnection().scan(ScanOptions.scanOptions().match("OTTAR:MEMORY:*").build());
+//        while (cursor.hasNext()) {
+//            keys.add(new String(cursor.next()));
+//        }
+//
+//        List<Chat> chatList = new ArrayList<>();
+//
+//        for (String key : keys) {
+//            // 提取 memoryId
+//            String memoryIdStr = key.replace("OTTAR:MEMORY:", "");
+//            Long memoryId = Long.valueOf(memoryIdStr);
+//
+//            // 构造 Chat 对象，name 可能需要额外处理，比如从数据库或其他缓存中查
+//            Chat chat = new Chat();
+//            chat.setMemoryId(memoryId);
+//            chat.setName("会话" + memoryId); // 示例默认名，可根据业务逻辑替换
+//            chatList.add(chat);
+//        }
+//
+//        return Result.success(chatList); // 使用你自己的 Result 工具类
+//    }
+
     @Override
     public Result<List<Chat>> getChatList() {
+        Long userId = getUserId();
         Set<String> keys = new HashSet<>();
-        Cursor<byte[]> cursor = redisTemplate.getConnectionFactory().getConnection().scan(ScanOptions.scanOptions().match("OTTAR:MEMORY:*").build());
+
+        // Modify the scan pattern to include the user ID
+        String scanPattern = "OTTAR:MEMORY:" + userId + ":*";
+        Cursor<byte[]> cursor = redisTemplate.getConnectionFactory().getConnection()
+                .scan(ScanOptions.scanOptions().match(scanPattern).build());
+
         while (cursor.hasNext()) {
             keys.add(new String(cursor.next()));
         }
@@ -74,18 +105,24 @@ public class ChatServiceImpl implements ChatService {
         List<Chat> chatList = new ArrayList<>();
 
         for (String key : keys) {
-            // 提取 memoryId
-            String memoryIdStr = key.replace("OTTAR:MEMORY:", "");
-            Long memoryId = Long.valueOf(memoryIdStr);
+            // Extract memoryId from the key (format: OTTAR:MEMORY:userId:memoryId)
+            String[] parts = key.split(":");
+            if (parts.length >= 4) {
+                try {
+                    Long memoryId = Long.valueOf(parts[3]);
 
-            // 构造 Chat 对象，name 可能需要额外处理，比如从数据库或其他缓存中查
-            Chat chat = new Chat();
-            chat.setMemoryId(memoryId);
-            chat.setName("会话" + memoryId); // 示例默认名，可根据业务逻辑替换
-            chatList.add(chat);
+                    Chat chat = new Chat();
+                    chat.setMemoryId(memoryId);
+                    chat.setName("会话" + memoryId); // You can customize this as needed
+                    chatList.add(chat);
+                } catch (NumberFormatException e) {
+                    // Handle invalid memoryId format if needed
+                    continue;
+                }
+            }
         }
 
-        return Result.success(chatList); // 使用你自己的 Result 工具类
+        return Result.success(chatList);
     }
 
     @Override

@@ -17,7 +17,8 @@ import dev.langchain4j.service.spring.AiServiceWiringMode;
 public interface Assistant {
 
     @SystemMessage("""
-    请根据用户提供的多条内容（{{userFeedback}}）执行智能过滤和学习：
+    请根据用户提供的多条内容，执行智能过滤和学习, 用户反馈如下：
+    {{userFeedback}}
 
     【反馈识别规则】
     1. 有效反馈特征：

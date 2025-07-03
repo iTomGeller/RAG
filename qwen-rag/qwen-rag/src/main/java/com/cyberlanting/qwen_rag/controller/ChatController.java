@@ -1,5 +1,6 @@
 package com.cyberlanting.qwen_rag.controller;
 
+import com.cyberlanting.qwen_rag.common.context.BaseContext;
 import com.cyberlanting.qwen_rag.common.result.Result;
 import com.cyberlanting.qwen_rag.pojo.entity.Chat;
 import com.cyberlanting.qwen_rag.pojo.entity.DocumentInfo;
@@ -48,7 +49,6 @@ public class ChatController {
     public Flux<String> chat(String memoryId, String message) throws JsonProcessingException {
         // 阶段1：RAG准备数据源
         List<DocumentInfoVO> documentInfos = chatService.queryAndEnhancedPrompt(message);
-
 
         String sourcesJson = objectMapper.writeValueAsString(documentInfos);
         log.info("sources: {}", sourcesJson);
