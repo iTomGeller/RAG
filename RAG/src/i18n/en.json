@@ -72,5 +72,13 @@
     "upload": "Drag and drop a document file here<br/><span class='file-types'>Supported formats: txt, doc, docx, md, pdf, xls, xlsx</span>",
     "support": "Supported formats: txt, doc, docx, md, pdf, xls, xlsx",
     "invalidate": "Invalid file type."
+  },
+    "avatarUpload":{
+    "title":"Upload Avatar",
+    "upload": "Drag and drop an image here or click to upload (image size should be less than 10MB)"
+  },
+  "button":{
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   }
 }

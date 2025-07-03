@@ -4,7 +4,7 @@
 
   <el-dialog
     v-model="dialog"
-    title="上传文件"
+    :title= "t('avatarUpload.title')"
     size="80%"
     :with-header="false"
   >
@@ -12,7 +12,7 @@
       <file-pond
         ref="pondRef"
         name="file"
-        label-idle="拖拽图片到这里或点击上传(图片小于10MB)"
+        :label-idle="t('avatarUpload.upload')"
         allow-multiple="false"
         accepted-file-types="image/jpeg, image/png"
         :server="serverOptions"
@@ -22,10 +22,10 @@
       />
       <div v-if="fileLink != null" class="result-container">
         <el-button @click="confirmUpdate" class="button">
-          {{ '确认' }}
+          {{ t('button.confirm') }}
         </el-button>
         <el-button @click="onCancel" class="button">
-          {{ '取消' }}
+          {{ t('button.cancel') }}
         </el-button>
       </div>
     </div>

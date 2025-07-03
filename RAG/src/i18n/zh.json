@@ -72,5 +72,13 @@
     "upload": "拖放文档文件到这里<br/><span class='file-types'>支持格式: txt, doc, docx, md, pdf, xls, xlsx</span>",
     "support": "支持格式：txt,doc,docx,md,pdf,xls,xlsx",
     "invalidate":"文件类型不符合要求"
+  },
+  "avatarUpload":{
+    "title":"上传文件",
+    "upload": "拖拽图片到这里或点击上传(图片小于10MB)"
+  },
+  "button":{
+    "cancel": "取消",
+    "confirm": "确认"
   }
 }
