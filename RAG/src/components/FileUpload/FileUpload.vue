@@ -67,7 +67,7 @@ const pondRef = ref(null)
 //提前获得知识库信息
 const baseInfo = ref([])
 //样式语言规定
-const iconUrl = assets.new_box_icon
+const iconUrl = assets.folder_icon
 
 const title = t('knowledgebase.upload')
 const dialog = ref(false)
