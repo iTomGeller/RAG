@@ -46,14 +46,16 @@ public class ChatController {
 
     @PostMapping(produces = "text/event-stream")
     public Flux<String> chat(String memoryId, String message) throws JsonProcessingException {
-        // 阶段1：准备数据源
+        // 阶段1：RAG准备数据源
         List<DocumentInfoVO> documentInfos = chatService.queryAndEnhancedPrompt(message);
 
 
         String sourcesJson = objectMapper.writeValueAsString(documentInfos);
         log.info("sources: {}", sourcesJson);
 
-        // 阶段2：流式生成回复内容
+        // 阶段2：
+
+        // 阶段3：流式生成回复内容
         Flux<String> contentStream = assistant.chat(memoryId, message);
 
         return Flux.concat(
