@@ -1,6 +1,7 @@
 package com.cyberlanting.qwen_rag.controller;
 
 import com.cyberlanting.qwen_rag.common.context.BaseContext;
+import com.cyberlanting.qwen_rag.common.exception.NotLoginException;
 import com.cyberlanting.qwen_rag.common.result.Result;
 import com.cyberlanting.qwen_rag.pojo.entity.Chat;
 import com.cyberlanting.qwen_rag.pojo.entity.DocumentInfo;
@@ -45,6 +46,14 @@ public class ChatController {
 //        return result;
 //    }
 
+    private String processMemoryId (String memoryId) {
+        Long userId = BaseContext.getCurrentId();
+        if (userId == null) {
+            throw new NotLoginException("用户未登录");
+        }
+        return userId + ":" + memoryId;
+    }
+
     @PostMapping(produces = "text/event-stream")
     public Flux<String> chat(String memoryId, String message) throws JsonProcessingException {
         // 阶段1：RAG准备数据源
@@ -57,6 +66,7 @@ public class ChatController {
         String userFeedback = chatService.getUserFeedback();
 
         // 阶段3：流式生成回复内容
+        memoryId = processMemoryId(memoryId);
         Flux<String> contentStream = assistant.chat(memoryId, message, userFeedback);
 
         return Flux.concat(
@@ -73,12 +83,14 @@ public class ChatController {
     }
 
     @GetMapping("/context")
-    public Result getChatContext(@RequestParam Long memoryId) {
+    public Result getChatContext(@RequestParam String memoryId) {
+        memoryId = processMemoryId(memoryId);
         return chatService.getChatContext(memoryId);
     }
 
     @DeleteMapping("/delete")
-    public Result deleteChat(@RequestParam Long memoryId) {
+    public Result deleteChat(@RequestParam String memoryId) {
+        memoryId = processMemoryId(memoryId);
         return chatService.deleteChat(memoryId);
     }
 

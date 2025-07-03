@@ -14,9 +14,9 @@ public interface ChatService {
 
     List<DocumentInfoVO> queryAndEnhancedPrompt(String message) throws JsonProcessingException;
 
-    Result getChatContext(Long memoryId);
+    Result getChatContext(String memoryId);
 
-    Result deleteChat(Long memoryId);
+    Result deleteChat(String memoryId);
 
     String getUserFeedback();
 }

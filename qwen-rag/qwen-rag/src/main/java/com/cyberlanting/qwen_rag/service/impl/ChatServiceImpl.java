@@ -94,7 +94,7 @@ public class ChatServiceImpl implements ChatService {
         Set<String> keys = new HashSet<>();
 
         // Modify the scan pattern to include the user ID
-        String scanPattern = "OTTAR:MEMORY:" + userId + ":*";
+        String scanPattern = "OTTER:MEMORY:" + userId + ":*";
         Cursor<byte[]> cursor = redisTemplate.getConnectionFactory().getConnection()
                 .scan(ScanOptions.scanOptions().match(scanPattern).build());
 
@@ -194,12 +194,12 @@ public class ChatServiceImpl implements ChatService {
         }
     }
 
-    public Result getChatContext(Long memoryId) {
+    public Result getChatContext(String memoryId) {
         List<ChatMessage> chatMessages = redisChatMemoryStore.getMessages(memoryId);
         return Result.success(chatMessages);
     }
 
-    public Result deleteChat(Long memoryId) {
+    public Result deleteChat(String memoryId) {
         redisChatMemoryStore.deleteMessages(memoryId);
         return Result.success("删除成功");
     }

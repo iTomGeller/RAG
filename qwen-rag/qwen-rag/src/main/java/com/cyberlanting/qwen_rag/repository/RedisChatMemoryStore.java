@@ -20,7 +20,7 @@ public class RedisChatMemoryStore implements ChatMemoryStore {
     private StringRedisTemplate redisTemplate;
 
     // 统一管理 Key 前缀
-    private static final String MEMORY_KEY_PREFIX = "OTTAR:MEMORY:";
+    private static final String MEMORY_KEY_PREFIX = "OTTER:MEMORY:";
 
     private String getMemoryKey(Object memoryId) {
         return MEMORY_KEY_PREFIX + memoryId.toString();
