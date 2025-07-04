@@ -137,7 +137,13 @@ function getMessage() {
 export const ChatService = {
   async deleteChat(id) {
     try {
+      if(currentId.value === id) {
+        this.changeCurrentChat(Date.now())
+      }
+      router.push('/home/chat') // 跳转到聊天页面
       const response = await api.delete(`/chat/delete?memoryId=${id}`)
+      // 重新获取聊天列表
+      await this.getChatList()
       console.log(response.msg)
     } catch (error) {
       console.error('Delete chat error:', error)
@@ -161,6 +167,7 @@ export const ChatService = {
   },
 
   sendMessage() {
+    sources.value = [] // 清空之前的 sources
     showResult.value = true
     // 输入内容放入历史中
     messageContent.value.push({ type: 'USER', text: safeMarkdownToHtml(input.value) })
@@ -210,9 +217,9 @@ export const ChatService = {
   setInput(text) {
     input.value = text
   },
-  setCurrentChat(id) {
-    currentId.value = id
-  },
+  getCurrentChatId() {
+    return currentId.value
+  }
 }
 
 export { messageContent, sources, loading, showResult }

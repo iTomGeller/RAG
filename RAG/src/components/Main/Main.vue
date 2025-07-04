@@ -23,18 +23,24 @@
           :type="item.type"
           :text="item.text"
         />
-        <!-- <div class="result-title">
-          <img :src="assets.user_icon" alt="User Icon" />
-          <p>{{ recentPrompt }}</p>
-        </div>
-        <div class="result-data">
-          <img :src="assets.otter_icon" alt="Otter Icon" />
-          <div v-if="loading" class="loader">
-            <hr />
-            <hr />
-            <hr />
-          </div>
-        </div> -->
+        <transition name="scale">
+          <div v-show="hasSource" class="source" ref="sourceRef">
+            <div class="source-title-box" @click="handleSourceCardClick">
+              <span class="source-title">我为你整理了一些资料...</span>
+              <el-icon color="#ffffff" class="source-icon"><ArrowDownBold /></el-icon>
+            </div>
+            <span class="source-cards" v-show="sourceExtended">
+              <transition-group name="scale" mode="out-in">
+                <FileCard
+                  v-for="(file, index) in sources"
+                  :key="index"
+                  :url="file.url"
+                  :name="file.title"
+                  class="source-card"
+                  v-show="sourceExtended"
+              /></transition-group>
+            </span></div
+        ></transition>
       </div>
 
       <div class="main-bottom">
@@ -68,11 +74,14 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { assets } from '@/assets/assets'
+import { ArrowDownBold } from '@element-plus/icons-vue'
 import SuggestCards from './SuggestCards.vue'
 import ProfileFloating from '../Profile/ProfileFloating.vue'
 import { RemoveFilled } from '@element-plus/icons-vue'
 import Message from './Message.vue'
 import { ChatService, messageContent, sources, showResult, loading } from '@/service/ChatService'
+import FileCard from '../FileUpload/FileCard.vue'
+import { gsap } from 'gsap' // 引入GSAP
 
 // const {
 //   onSent,
@@ -86,6 +95,7 @@ import { ChatService, messageContent, sources, showResult, loading } from '@/ser
 const input = ref('')
 const sendButtonVisible = computed(() => input.value.trim() !== '')
 const sendMessage = () => {
+  sourceExtended.value = false //发送消息时，让source列表回归默认状态
   ChatService.setInput(input.value)
   ChatService.sendMessage()
   input.value = '' // 清空输入框
@@ -94,6 +104,19 @@ const handleSuggest = (suggestinput) => {
   addNewChat()
   input.value = suggestinput
   sendMessage()
+}
+const sourceRef = ref(null)
+const handleSourceCardClick = async () => {
+  sourceExtended.value = !sourceExtended.value
+  if (sourceRef.value) {
+    gsap.to(sourceRef.value, {
+      duration: 0.1,
+      width: sourceExtended.value ? '600px' : '300px',
+      height: sourceExtended.value ? '300px' : '45px',
+      ease: 'power2.out',
+      transformOrigin: 'top center',
+    })
+  }
 }
 const addNewChat = async () => {
   ChatService.addNewChat()
@@ -106,6 +129,8 @@ const getUserName = () => {
   const user = JSON.parse(localStorage.getItem('userInfo'))
   return user?.username || 'User'
 }
+const hasSource = computed(() => sources.value.length > 0)
+const sourceExtended = ref(false)
 onMounted(() => {
   console.log('刷新')
 })
@@ -114,11 +139,61 @@ onUnmounted(() => {})
 
 <style scoped>
 @import './Main.css';
+.source {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  justify-self: center;
+  width: 300px;
+  height: 45px;
+  margin-top: 20px;
+  border-radius: 15px;
+  background-color: #67C23A;
+  margin-bottom: 100px;
+}
+.source-title-box {
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px 32px;
+  border-radius: 10px;
+  width: auto;
+  display: flex;
+  justify-content: space-between;
+}
+.source:hover {
+  background-color: #69ae47;
+}
+.source-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+}
+.source-icon{
+  font-size: 18px;
+}
+.source-cards {
+  padding: 4px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0px 15px;
+  display: grid;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.source-card {
+  justify-self: center;
+  margin: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
 
 .send-icon {
   cursor: pointer;
 }
 .stop-icon {
+  font-size: 24px;
   cursor: pointer;
 }
 
@@ -145,6 +220,34 @@ onUnmounted(() => {})
   display: flex;
   flex-direction: column;
 }
+/* 缩放渐变 */
+.scale-enter-active,
+.scale-leave-active {
+  transition: all 0.5s ease;
+}
+.scale-enter-from,
+.scale-leave-to {
+  transform: scale(0);
+  opacity: 0;
+}
+/*淡出渐变*/
+.fade-slide-enter-active {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease 0.2s;
+}
+.fade-slide-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+.fade-slide-leave-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.2s ease;
+}
+.fade-slide-leave-to {
+  opacity: 0;
+}
 
 @keyframes loader {
   0% {
@@ -154,17 +257,5 @@ onUnmounted(() => {})
   100% {
     background-position: 800px 0px;
   }
-}
-
-.result-title {
-  border-radius: 10px;
-  background-color: white;
-  background-color: rgba(255, 255, 255, var(--opacity));
-}
-
-.result-data {
-  border-radius: 10px;
-  background-color: rgb(255, 255, 255);
-  background-color: rgba(255, 255, 255, var(--opacity));
 }
 </style>

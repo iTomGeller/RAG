@@ -1,7 +1,9 @@
 <template>
-  <div class="chat-card">
+  <div class="chat-card" :class=" {
+    'current-chat': isCurrentChat,
+  }">
     <div class="chat-info" @click="handleClick">
-      <div class="chat-card-title">{{ props.name }}</div>
+      <div class="chat-card-title">{{ formattedDate }}</div>
     </div>
     <el-dropdown trigger="click" @command="handleCommand">
       <div class="chat-card-icon">
@@ -44,6 +46,19 @@ const handleClick = async () => {
   ChatService.changeCurrentChat(props.memoryId)
   router.push('/home/chat')
 }
+const formattedDate = computed(() => {
+  return new Date(props.memoryId).toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  }).replace(/\//g, '-');
+})
+const isCurrentChat = computed(() => {
+  return ChatService.getCurrentChatId() === props.memoryId
+})
 onMounted(() => {})
 </script>
 <style scoped>
@@ -58,9 +73,16 @@ onMounted(() => {})
   color: #282828;
   cursor: pointer;
 }
+.chat-card.current-chat {
+  background-color: #d5d8dc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
 body.dark .chat-card {
   background-color: #e2e6eb;
+}
+body.dark .chat-card.current-chat {
+  background-color: #6f8096;
 }
 .chat-card-icon {
   border-radius: 50%;
@@ -88,6 +110,14 @@ body.dark .chat-card {
   background-clip: text;
   color: transparent;
   white-space: nowrap;
+}
+.current-chat .chat-card-title {
+  color: #000;
+  background: none;
+}
+body.dark .current-chat .chat-card-title {
+  color: #ffffff;
+  background: none;
 }
 .chat-card:hover {
   background-color: #d5d8dc;
