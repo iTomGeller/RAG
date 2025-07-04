@@ -29,7 +29,7 @@ api.interceptors.request.use((config) => {
 // 响应拦截器
 api.interceptors.response.use((response) => {
   // console.log("hello"); // 调试信息
-  console.log("响应成功:", response);
+  // console.log("响应成功:", response);
 
   // 这里的 response.status 应该是 2xx 范围内的成功状态码
   // 例如 200, 201, 204 等

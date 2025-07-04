@@ -66,5 +66,37 @@
     "advancedSettings": "Advanced Settings",
     "mainColor": "Main Color",
     "bgTransparency": "Background Transparency"
-  }
+  },
+  "addBaseBtn":{
+    "btnTitle": "Create new knowledge base",
+    "baseName":" Base Name",
+    "baseType": "Base Description",
+    "check": "Check",
+    "cancel": "Cancel"
+  },
+  "baseType":[
+    {
+        "value": "Default",
+        "label": "Default"
+    },
+    {
+        "value": "Humanities",
+        "label": "Humanities"
+    },
+    {
+        "value": "Science",
+        "label": "Science"
+    },
+    {
+        "value": "Engineering",
+        "label": "Engineering"
+    },
+    {
+        "value": "Health",
+        "label": "Health"
+    },
+    {
+        "value": "Social",
+        "label": "Social"
+    }]
 }

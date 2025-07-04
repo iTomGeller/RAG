@@ -28,10 +28,14 @@
       </el-pagination>
     </div>
 
+    <div class="btnGroup">
     <FileUpload
         @update:uploaded="handleFileUploaded"
         @cancel="showUpload = false"
       />
+
+      <AddBaseBtn @add-base-success="refresh"/>
+      </div>
   </div>
 </template>
 
@@ -45,6 +49,7 @@ import { ElPagination,ElNotification } from 'element-plus';
 import BaseService from '@/service/BaseService';
 
 import { useI18n } from 'vue-i18n';
+import AddBaseBtn from '@/components/Base/AddBaseBtn.vue';
 const {t} = useI18n();
 
 const boxList = ref([])
@@ -200,5 +205,10 @@ h1 {
 .file-boxs-grid.single-item-center {
   grid-template-columns: 1fr; 
   justify-items: center; 
+}
+
+.btnGroup{
+  display: flex;
+  gap: 30px;
 }
 </style>

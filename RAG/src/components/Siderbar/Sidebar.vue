@@ -199,7 +199,7 @@ const loadPrompt = async () => {
   try {
     const res = await ChatService.getChatList()
     recentChats.value = res.data
-    console.log(recentChats.value)
+    // console.log(recentChats.value)
   } catch (error) {
     // Make sure ElNotification is imported or defined
     // If not, you might need to import it from 'element-plus' or define a similar notification system.

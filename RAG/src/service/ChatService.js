@@ -37,7 +37,6 @@ function init() {
   sources.value = []
   loading.value = false
   showResult.value = false // 控制是否显示结果
-  console.log('init')
 }
 
 init()
