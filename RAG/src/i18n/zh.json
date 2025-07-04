@@ -55,6 +55,9 @@
     "upload": "上传文件到您的知识库"
   },
   "settings": {
+    "title": "设置",
+    "user": "用户",
+    "language": "语言设置",
     "theme": "主题设置",
     "light": "浅色主题",
     "dark": "深色主题",

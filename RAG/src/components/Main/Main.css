@@ -1,18 +1,16 @@
 .main {
-  flex: 1;
   max-height: 100vh;
   padding-bottom: 15vh;
-  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .main .nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   font-size: 22px;
   padding: 20px;
   padding-right: 50px;
   color: #585858;
+  white-space: nowrap;
 }
 
 .main .nav img {
@@ -23,8 +21,12 @@
 }
 
 .main-container {
-  max-width: 900px;
+  width: 900px;
   margin: auto;
+}
+.main .user-container {
+  justify-self: right;
+  margin-right: 20px;
 }
 
 .main .greet {
@@ -132,7 +134,8 @@ body.dark .search-box input {
 
 .result {
   padding: 0px 5%;
-  max-height: 70vh;
+  margin-top: 5vh;
+  height: 80vh;
   overflow-y: scroll;
 }
 

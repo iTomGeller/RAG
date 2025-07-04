@@ -55,6 +55,9 @@
     "upload": "upload files to the knowledge base"
   },
   "settings": {
+    "title": "Settings",
+    "user": "User",
+    "language": "Language Settings",
     "theme": "Theme Settings",
     "light": "Light Theme",
     "dark": "Dark Theme",

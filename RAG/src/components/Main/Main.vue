@@ -2,8 +2,6 @@
   <div class="main">
     <div class="nav">
       <p>Otter AI</p>
-      <!-- User Profile -->
-      <ProfileFloating />
     </div>
 
     <div class="main-container">
@@ -43,7 +41,7 @@
         ></transition>
       </div>
 
-            <FeedbackDrawer v-model:visible="isDrawerVisible" />
+      <FeedbackDrawer v-model:visible="isDrawerVisible" />
 
       <div class="main-bottom">
         <div class="search-box">
@@ -70,6 +68,9 @@
         <p class="bottom-info">{{ t('chat.aiTip') }}</p>
       </div>
     </div>
+    <div class="user-container">
+      <ProfileFloating />
+    </div>
   </div>
 </template>
 
@@ -82,16 +83,10 @@ import ProfileFloating from '../Profile/ProfileFloating.vue'
 import { RemoveFilled } from '@element-plus/icons-vue'
 import Message from './Message.vue'
 import FeedbackDrawer from '../Siderbar/FeedbackDrawer.vue'
-import {
-  ChatService,
-  messageContent,
-  showResult,
-  loading,
-  sources,
-} from '@/service/ChatService'
+import { ChatService, messageContent, showResult, loading, sources } from '@/service/ChatService'
 import FileCard from '../FileUpload/FileCard.vue'
 import { gsap } from 'gsap' // 引入GSAP
-import { useI18n } from 'vue-i18n'//全局语言切换
+import { useI18n } from 'vue-i18n' //全局语言切换
 const { t } = useI18n()
 
 // const {
@@ -102,7 +97,6 @@ const { t } = useI18n()
 //   input,
 //   loading
 // } = inject('geminiContext');
-
 
 const input = ref('')
 const sendButtonVisible = computed(() => input.value.trim() !== '')
@@ -159,7 +153,7 @@ onUnmounted(() => {})
   height: 45px;
   margin-top: 20px;
   border-radius: 15px;
-  background-color: #67C23A;
+  background-color: #67c23a;
   margin-bottom: 100px;
 }
 .source-title-box {
@@ -179,7 +173,7 @@ onUnmounted(() => {})
   font-weight: bold;
   color: #ffffff;
 }
-.source-icon{
+.source-icon {
   font-size: 18px;
 }
 .source-cards {
