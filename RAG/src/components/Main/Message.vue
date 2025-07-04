@@ -58,10 +58,8 @@ onMounted(() => {
 
 .avatar {
   width: 35px;
-  height: 35px;
   border-radius: 50%;
-  border: 5px;
-  border-color: #e0e0e0;
+  border: 10px solid rgb(227, 247, 255);
   margin: 0 8px;
 }
 

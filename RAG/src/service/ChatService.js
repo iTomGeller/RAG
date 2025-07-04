@@ -64,7 +64,7 @@ function getMessage() {
   loading.value = true // 开始加载状态
   let rawMarkdown = '' // 存储原始 Markdown 内容
   let displayIndex = 0 // 当前显示到第几个字符
-  const typingSpeed = 15 // 打字速度（毫秒/字符）
+  const typingSpeed = 20 // 打字速度（毫秒/字符）
 
   // 添加一个空的 AI 消息用于后续填充（原始文本）
   messageContent.value.push({ type: 'AI', text: '' })
@@ -193,10 +193,12 @@ export const ChatService = {
     messageContent.value = [] // 清空当前消息内容
     const res = await getPrevPrompt() //获取历史对话内容
     res.data.forEach((item) => {
-      messageContent.value.push({
-        type: item.type === 'USER' ? 'USER' : 'AI',
-        text: safeMarkdownToHtml(item.text),
-      })
+      if(item.type!=='SYSTEM'){
+        messageContent.value.push({
+          type: item.type === 'USER' ? 'USER' : 'AI',
+          text: safeMarkdownToHtml(item.text),
+        })
+      }
     })
 
     sources.value = []
