@@ -6,6 +6,7 @@ import SettingsView from '../views/SettingsView.vue'
 import MainView from '../views/MainView.vue'
 import test from '../components/test.vue'
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -14,7 +15,7 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path:'/test',
+      path: '/test',
       component: test,
     },
     {
@@ -38,6 +39,7 @@ const router = createRouter({
           path: 'settings',
           component: SettingsView,
         },
+
       ],
     },
     {
@@ -65,19 +67,17 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
   console.log(isLoggedIn)
   console.log(token)
-  
+
   const publicPages = ['/login']
   const isPublic = publicPages.includes(to.path)
 
-  if(!isLoggedIn && !isPublic)
-    {
-      console.log("拦截！！")
-      return next('/login')
-    } 
+  if (!isLoggedIn && !isPublic) {
+    console.log('拦截！！')
+    return next('/login')
+  }
 
-  if(isLoggedIn && isPublic) return next('/')
-    next()
-
+  if (isLoggedIn && isPublic) return next('/')
+  next()
 })
 
 export default router

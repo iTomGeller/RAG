@@ -33,7 +33,8 @@
     "newchat": "新建对话",
     "history": "历史对话",
     "knowledgebase": "知识库",
-    "settings": "设置"
+    "settings": "设置",
+    "feedback": "用户反馈"
   },
   "profile": {
     "edit": "修改信息",
@@ -71,47 +72,57 @@
     "categorize": "放入文件，我会帮你自动分类...",
     "upload": "拖放文档文件到这里<br/><span class='file-types'>支持格式: txt, doc, docx, md, pdf, xls, xlsx</span>",
     "support": "支持格式：txt,doc,docx,md,pdf,xls,xlsx",
-    "invalidate":"文件类型不符合要求"
+    "invalidate": "文件类型不符合要求"
   },
-  "avatarUpload":{
-    "title":"上传文件",
+  "avatarUpload": {
+    "title": "上传文件",
     "upload": "拖拽图片到这里或点击上传(图片小于10MB)"
   },
-  "button":{
+  "button": {
     "cancel": "取消",
     "confirm": "确认"
   },
-  "addBaseBtn":{
+  "addBaseBtn": {
     "btnTitle": "新增知识库",
-    "baseName":"知识库名称",
+    "baseName": "知识库名称",
     "baseType": "知识库类别",
     "check": "确认",
     "cancel": "取消"
   },
-  "baseType":[
+  "baseType": [
     {
-        "value": "Default",
-        "label": "Default"
+      "value": "Default",
+      "label": "Default"
     },
     {
-        "value": "Humanities",
-        "label": "Humanities"
+      "value": "Humanities",
+      "label": "Humanities"
     },
     {
-        "value": "Science",
-        "label": "Science"
+      "value": "Science",
+      "label": "Science"
     },
     {
-        "value": "Engineering",
-        "label": "Engineering"
+      "value": "Engineering",
+      "label": "Engineering"
     },
     {
-        "value": "Health",
-        "label": "Health"
+      "value": "Health",
+      "label": "Health"
     },
     {
-        "value": "Social",
-        "label": "Social"
+      "value": "Social",
+      "label": "Social"
     }
-  ]
+  ],
+  "feedback": {
+    "title": "向Otter AI发送反馈",
+    "content": "请描述您的反馈内容(必填）",
+    "placeholder": "请告诉我们是什么原因促使您提供此反馈...",
+    "emptyWarning":"反馈内容不能为空",
+    "success": "感谢您的反馈，我们会尽快处理。",
+    "error": "提交失败，请稍后再试。",
+    "submit": "提交",
+    "cancel": "取消"
+  }
 }

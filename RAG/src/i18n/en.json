@@ -33,7 +33,8 @@
     "newchat": "New Chat",
     "history": "History Chat",
     "knowledgebase": "Store Base",
-    "settings": "Settings"
+    "settings": "Settings",
+    "feedback": "User Feedback"
   },
   "profile": {
     "edit": "Edit profile",
@@ -73,44 +74,56 @@
     "support": "Supported formats: txt, doc, docx, md, pdf, xls, xlsx",
     "invalidate": "Invalid file type."
   },
-    "avatarUpload":{
-    "title":"Upload Avatar",
+  "avatarUpload": {
+    "title": "Upload Avatar",
     "upload": "Drag and drop an image here or click to upload (image size should be less than 10MB)"
   },
-  "button":{
+  "button": {
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
-  "addBaseBtn":{
+  "addBaseBtn": {
     "btnTitle": "Create new knowledge base",
-    "baseName":" Base Name",
+    "baseName": " Base Name",
     "baseType": "Base Description",
     "check": "Check",
     "cancel": "Cancel"
   },
-  "baseType":[
+  "baseType": [
     {
-        "value": "Default",
-        "label": "Default"
+      "value": "Default",
+      "label": "Default"
     },
     {
-        "value": "Humanities",
-        "label": "Humanities"
+      "value": "Humanities",
+      "label": "Humanities"
     },
     {
-        "value": "Science",
-        "label": "Science"
+      "value": "Science",
+      "label": "Science"
     },
     {
-        "value": "Engineering",
-        "label": "Engineering"
+      "value": "Engineering",
+      "label": "Engineering"
     },
     {
-        "value": "Health",
-        "label": "Health"
+      "value": "Health",
+      "label": "Health"
     },
     {
-        "value": "Social",
-        "label": "Social"
-    }]
+      "value": "Social",
+      "label": "Social"
+    }
+  ],
+  "feedback": {
+    "title": "Send your valuable feedback to us",
+    "content": "Please describe your feedback (required)",
+    "placeholder": "Please tell us the reason why you provided this feedback...",
+    "emptyWarning":"Please provide your feedback.",
+    "success": "Thank you for your feedback, we will get back to you as soon as possible.",
+    "error": "Oops, something went wrong. Please try again later.",
+    "submit": "Submit",
+    "cancel": "Cancel"
+  }
 }
+

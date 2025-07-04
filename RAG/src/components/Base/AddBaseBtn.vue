@@ -39,7 +39,6 @@ import { assets } from '@/assets/assets';
 import { onMounted, ref, watchEffect, computed } from 'vue';
 import BaseService from '@/service/BaseService';
 import { ElNotification } from 'element-plus';
-import { defineEmits } from 'vue';
 
 const iconUrl = assets.new_box_icon
 

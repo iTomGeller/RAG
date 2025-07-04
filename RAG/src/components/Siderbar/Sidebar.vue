@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="sidebar"
-    ref="sidebarRef"
-    @mouseenter="expandSidebar"
-  >
+  <div class="sidebar" ref="sidebarRef" @mouseenter="expandSidebar">
     <div class="top">
       <el-icon class="menu" :size="iconSize">
         <Menu />
@@ -60,10 +56,26 @@
         </transition>
       </div>
 
+      <!-- 用户反馈 -->
+      <div
+        class="bottom-item recent-entry icon-box"
+        @click="handleFeedback"
+        :ref="(el) => collectRecentEntry(el, 1)"
+      >
+        <el-icon :size="iconSize">
+          <EditPen />
+        </el-icon>
+        <transition name="fade-slide">
+          <span class="recent-extended-tag" v-show="extended">{{ t('sidebar.feedback') }}</span>
+        </transition>
+      </div>
+
+
+
       <div
         class="bottom-item recent-entry icon-box"
         @click="handleSettings"
-        :ref="(el) => collectRecentEntry(el, 1)"
+        :ref="(el) => collectRecentEntry(el, 2)"
       >
         <el-icon :size="iconSize">
           <Setting />
@@ -76,7 +88,7 @@
       <div
         class="bottom-item recent-entry icon-box"
         @click="handleStore"
-        :ref="(el) => collectRecentEntry(el, 2)"
+        :ref="(el) => collectRecentEntry(el, 3)"
       >
         <el-icon :size="iconSize">
           <Star />
@@ -95,6 +107,7 @@
 import { ref, inject, onMounted, onUnmounted, computed } from 'vue' // Import inject
 import RecentChat from './RecentChat.vue'
 import simplebar from 'simplebar-vue' // 引入 SimpleBar 组件
+import FeedbackDrawer from './FeedbackDrawer.vue' // 引入反馈抽屉组件
 import 'simplebar-core/dist/simplebar.css' // 引入默认样式
 
 import {
@@ -105,6 +118,7 @@ import {
   Setting,
   Star,
   CirclePlus,
+  EditPen,
 } from '@element-plus/icons-vue'
 
 import { useRouter } from 'vue-router'
@@ -113,7 +127,6 @@ import { ChatService } from '@/service/ChatService'
 
 const router = useRouter()
 
-
 // const { prevPrompts, newChat } = inject('geminiContext') // Destructure the needed properties and methods
 
 import { gsap } from 'gsap' // 引入GSAP
@@ -121,19 +134,18 @@ import { gsap } from 'gsap' // 引入GSAP
 import { useI18n } from 'vue-i18n' //全局语言切换
 const { t } = useI18n()
 
-
-
 const recentChats = ref([])
 
 const iconSize = 25
 
 const extended = ref(false)
 
-const emit = defineEmits(['update:extended']) // 定义自定义事件
+const emit = defineEmits(['update:extended','open-feedback']) // 定义自定义事件
 
 const sidebarRef = ref(null)
 const recentListRef = ref(null)
 const recentEntries = ref([]) //动画相关
+
 
 // 收集每个.recent-entry到数组中
 const collectRecentEntry = (el, index) => {
@@ -186,12 +198,12 @@ const toggleExtended = () => {
 
 const expandSidebar = () => {
   setExtendedState(true)
-  document.addEventListener('mousemove', updateMousePosition);
+  document.addEventListener('mousemove', updateMousePosition)
 }
 
 const collapseSidebar = () => {
   setExtendedState(false)
-  document.removeEventListener('mousemove', updateMousePosition);
+  document.removeEventListener('mousemove', updateMousePosition)
 }
 
 const loadPrompt = async () => {
@@ -215,6 +227,8 @@ const handleChat = () => {
   router.push('/home/chat')
 }
 
+const handleFeedback = () => emit('open-feedback');
+
 const handleStore = () => {
   router.push('/home/store')
 }
@@ -222,17 +236,17 @@ const handleSettings = () => {
   router.push('/home/settings')
 }
 
-const mousePosition = ref({ x: 0, y: 0 });//检测鼠标位置是否处于侧边栏内
-const COLLAPSE_THRESHOLD = 250; // 根据实际侧边栏宽度调整
+const mousePosition = ref({ x: 0, y: 0 }) //检测鼠标位置是否处于侧边栏内
+const COLLAPSE_THRESHOLD = 250 // 根据实际侧边栏宽度调整
 const updateMousePosition = (e) => {
   mousePosition.value = {
     x: e.clientX,
-    y: e.clientY
-  };
-  if (extended.value && mousePosition.value.x > COLLAPSE_THRESHOLD) {
-    collapseSidebar();
+    y: e.clientY,
   }
-};
+  if (extended.value && mousePosition.value.x > COLLAPSE_THRESHOLD) {
+    collapseSidebar()
+  }
+}
 
 onMounted(() => {
   loadPrompt()
@@ -240,7 +254,7 @@ onMounted(() => {
 })
 onUnmounted(() => {
   // 清理事件监听器
-});
+})
 </script>
 
 <style scoped>
@@ -263,7 +277,7 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-body.dark  .sidebar{
+body.dark .sidebar {
   background-color: rgba(255, 255, 255, var(--opacity));
 }
 

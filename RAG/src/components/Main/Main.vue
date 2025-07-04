@@ -37,6 +37,8 @@
         </div> -->
       </div>
 
+            <FeedbackDrawer v-model:visible="isDrawerVisible" />
+
       <div class="main-bottom">
         <div class="search-box">
           <input
@@ -73,6 +75,7 @@ import SuggestCards from './SuggestCards.vue'
 import ProfileFloating from '../Profile/ProfileFloating.vue'
 import { RemoveFilled } from '@element-plus/icons-vue'
 import Message from './Message.vue'
+import FeedbackDrawer from '../Siderbar/FeedbackDrawer.vue'
 import {
   ChatService,
   messageContent,
@@ -89,6 +92,7 @@ import {
 //   input,
 //   loading
 // } = inject('geminiContext');
+
 
 const input = ref('')
 const sendButtonVisible = computed(() => input.value.trim() !== '')
