@@ -87,6 +87,7 @@ import {
   messageContent,
   showResult,
   loading,
+  sources,
 } from '@/service/ChatService'
 import FileCard from '../FileUpload/FileCard.vue'
 import { gsap } from 'gsap' // 引入GSAP
