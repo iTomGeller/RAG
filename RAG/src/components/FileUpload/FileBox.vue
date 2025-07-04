@@ -64,10 +64,11 @@ const total = ref(0) // 总文件数
 
 const iconUrl = computed(() => {
   const iconName = `${props.type}_icon`
-  return assets[iconName] || assets.Engineer_icon
+  console.log(props.type)
+  return assets[iconName] || assets.star_icon
 })
 
-const title = props.title || 'Engineer'
+const title = props.title || 'Error'
 const description = props.description || 'Engineer is great science'
 
 onMounted(() => {

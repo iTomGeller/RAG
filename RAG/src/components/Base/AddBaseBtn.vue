@@ -9,12 +9,16 @@
   </div>
 
   <el-dialog :before-close="handleCancel" v-model="visiable" :title="text.title" size="80%" :with-header="false">
-    <el-form label-width="auto" class="form" label-position="top">
-      <el-form-item :label="text.baseName">
-        <el-input style="width:60%" v-model="baseName" />
+    <el-form label-width="auto" class="form" >
+
+      <el-form-item :label="text.baseName" >
+        <el-tooltip class="box-item" effect="dark" :content="noteLabelContent" placement="right-end">
+          <el-input style="width:80%" v-model="baseName" />
+        </el-tooltip>
       </el-form-item>
 
-      <el-form-item :label="text.baseType">
+      <!-- 不再使用type -->
+      <!-- <el-form-item :label="text.baseType">
         <el-select v-model="baseType" placeholder="" size="large" style="width: 240px">
           <el-option
             v-for="item in baseTypeOptions"
@@ -23,12 +27,12 @@
             :value="item.value"
           />
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
 
-      <el-form-item>
-        <el-button type="primary" @click="handleCheck">{{ text.check }}</el-button>
-        <el-button type="primary" @click="handleCancel">{{ text.cancel }}</el-button>
-      </el-form-item>
+      <div class="button-group">
+        <el-button class="button" @click="handleCancel">{{ text.cancel }}</el-button>
+        <el-button class="button" @click="handleCheck">{{ text.check }}</el-button>
+      </div>
     </el-form>
   </el-dialog>
 </template>
@@ -67,6 +71,13 @@ const i18nText = {
 
 const text = computed(() => i18nText[currentLang.value])
 
+const noteLabelContent= ref("")
+
+const noteLabel = {
+  en: 'This name will be used as a basis for AI classification.',
+  zh: '此名称将作为AI分类基础'
+}
+
 // 中英 baseType 选项静态定义
 const baseTypeMap = {
   en: [
@@ -94,6 +105,7 @@ watchEffect(() => {
   const lang = localStorage.getItem('language') || 'en'
   currentLang.value = lang
   baseTypeOptions.value = baseTypeMap[lang]
+  noteLabelContent.value = noteLabel[lang]
 })
 
 // 控制弹窗
@@ -191,5 +203,18 @@ const handleCancel = () => {
 .form {
   padding: 5%;
   max-width: 60vw;
+}
+
+.button-group {
+  width: auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 5%;
+  transition:opacity 0.3s ease;
+}
+
+.button{
+  width: 15%;
 }
 </style>
