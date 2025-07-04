@@ -81,7 +81,7 @@ export default {
 .avatar {
   width: 60px;
   height: 60px;
-  border: 0.5px solid rgb(255, 255, 255);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 50%;
 }
 
@@ -123,6 +123,7 @@ export default {
   width: 60px;
   height: 60px;
   border: 0.5px solid rgb(255, 255, 255);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   background-color: transparent;
 }

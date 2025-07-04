@@ -67,6 +67,13 @@
     "mainColor": "主色调",
     "bgTransparency": "背景透明度"
   },
+  "chat": {
+    "searchAlt": "问一问 Otter AI",
+    "aiTitle": "你好,",
+    "aiHello": "今天怎么样？:)",
+    "aiTip": "Otter AI 的回答未必正确无误，请仔细核查",
+    "sourceTip": "为你找到了一些资料..."
+  },
   "addBaseBtn":{
     "btnTitle": "新增知识库",
     "baseName":"知识库名称",

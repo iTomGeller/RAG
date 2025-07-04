@@ -64,6 +64,7 @@ onMounted(() => {
 }
 
 .message-bubble-content {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
   padding: 4px 18px;
   background-color: #f9f9f9;

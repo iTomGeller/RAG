@@ -67,6 +67,13 @@
     "mainColor": "Main Color",
     "bgTransparency": "Background Transparency"
   },
+  "chat": {
+    "searchAlt": "Search",
+    "aiTitle": "Hi,",
+    "aiHello": "How can I help you today?",
+    "aiTip": "Otter AI can make mistakes. Check important info.",
+    "sourceTip": "relevant documents found ..."
+  },
   "addBaseBtn":{
     "btnTitle": "Create new knowledge base",
     "baseName":" Base Name",

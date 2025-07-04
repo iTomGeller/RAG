@@ -10,9 +10,9 @@
       <div v-if="!showResult">
         <div class="greet">
           <p>
-            <span>Hi, {{ getUserName() }}</span>
+            <span>{{ t('chat.aiTitle') }} {{ getUserName() }}</span>
           </p>
-          <p>How can I help you today?</p>
+          <p>{{ t('chat.aiHello') }}</p>
         </div>
         <SuggestCards @update:suggestCardsOnSent="handleSuggest" />
       </div>
@@ -26,7 +26,7 @@
         <transition name="scale">
           <div v-show="hasSource" class="source" ref="sourceRef">
             <div class="source-title-box" @click="handleSourceCardClick">
-              <span class="source-title">我为你整理了一些资料...</span>
+              <span class="source-title">{{ t('chat.sourceTip') }}</span>
               <el-icon color="#ffffff" class="source-icon"><ArrowDownBold /></el-icon>
             </div>
             <span class="source-cards" v-show="sourceExtended">
@@ -48,7 +48,7 @@
           <input
             v-model="input"
             type="text"
-            placeholder="Search"
+            :placeholder="t('chat.searchAlt')"
             @keyup.enter="sendButtonVisible && sendMessage()"
           />
 
@@ -65,7 +65,7 @@
             </el-icon>
           </div>
         </div>
-        <p class="bottom-info">Otter AI can make mistakes. Check important info.</p>
+        <p class="bottom-info">{{ t('chat.aiTip') }}</p>
       </div>
     </div>
   </div>
@@ -82,6 +82,8 @@ import Message from './Message.vue'
 import { ChatService, messageContent, sources, showResult, loading } from '@/service/ChatService'
 import FileCard from '../FileUpload/FileCard.vue'
 import { gsap } from 'gsap' // 引入GSAP
+import { useI18n } from 'vue-i18n'//全局语言切换
+const { t } = useI18n()
 
 // const {
 //   onSent,
