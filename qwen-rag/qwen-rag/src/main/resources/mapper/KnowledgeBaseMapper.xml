@@ -20,6 +20,9 @@
         select id, user_id, name, type, created_at, updated_at from knowledge_base where user_id = #{userId}
         limit #{offset}, #{pageSize}
     </select>
+    <select id="getKnowledgeBaseIdAndNameList" resultType="com.cyberlanting.qwen_rag.pojo.vo.KnowledgeBaseVO">
+        select id, name from knowledge_base where user_id = #{userId}
+    </select>
 
 
 </mapper>

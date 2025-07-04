@@ -12,6 +12,7 @@ import com.cyberlanting.qwen_rag.common.util.AliOSSUtils;
 import com.cyberlanting.qwen_rag.mapper.KnowledgeBaseMapper;
 import com.cyberlanting.qwen_rag.pojo.entity.File;
 import com.cyberlanting.qwen_rag.pojo.vo.FileVO;
+import com.cyberlanting.qwen_rag.pojo.vo.KnowledgeBaseVO;
 import com.cyberlanting.qwen_rag.service.Assistant;
 import com.cyberlanting.qwen_rag.service.FileService;
 import dev.langchain4j.model.openai.OpenAiChatModel;
@@ -141,10 +142,22 @@ public class FileServiceImpl implements FileService {
         if (content == null || content.isEmpty()) {
             return Result.error("文件上传失败");
         }
-        String prompt = "请将以下文档内容分类到指定的知识库类别中。可用类别及 ID：\n" +
-                "1. 理科知识库\n2. 医学/健康知识库\n3. 其他\n4. 文科知识库\n5. 社科知识库\n6. 工科/应用科学知识库\n\n" +
-                "文档内容：\n" + content + "\n\n" +
-                "**必须只返回数字 1-6**，不要包含任何其他文字或解释。如果无法确定，返回 3。";
+
+        Long userId = getUserId();
+
+        // 获取用户的标签列表
+        List<KnowledgeBaseVO> knowledgeBases = knowledgeBaseMapper.getKnowledgeBaseIdAndNameList(userId);
+        StringBuilder sb = new StringBuilder();
+        sb.append("请将以下文档内容分类到指定的知识库类别中。可用类别及 ID：\n");
+        // 转换成字符串
+        for (KnowledgeBaseVO knowledgeBase : knowledgeBases) {
+            sb.append(knowledgeBase.getId() + ": " + knowledgeBase.getName()  + "\n");
+        }
+        sb.append("文档内容：\n");
+        sb.append(content);
+        sb.append("\n\n **必须只返回ID数字**，不要包含任何其他文字或解释。如果无法确定，返回‘其他’知识库的ID。");
+
+        String prompt = sb.toString();
 
         String aiResponse = openAiChatModel.chat(prompt).trim();
         log.info("AI 分类响应: {}", aiResponse);

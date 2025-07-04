@@ -14,5 +14,7 @@ public interface KnowledgeBaseMapper {
 
     List<KnowledgeBaseVO> getKnowledgeBaseList(Long userId, Integer offset, Integer pageSize);
 
+    List<KnowledgeBaseVO> getKnowledgeBaseIdAndNameList(Long userId);
+
     Integer getTotal(Long userId);
 }
