@@ -43,6 +43,8 @@
         ></transition>
       </div>
 
+            <FeedbackDrawer v-model:visible="isDrawerVisible" />
+
       <div class="main-bottom">
         <div class="search-box">
           <input
@@ -79,7 +81,13 @@ import SuggestCards from './SuggestCards.vue'
 import ProfileFloating from '../Profile/ProfileFloating.vue'
 import { RemoveFilled } from '@element-plus/icons-vue'
 import Message from './Message.vue'
-import { ChatService, messageContent, sources, showResult, loading } from '@/service/ChatService'
+import FeedbackDrawer from '../Siderbar/FeedbackDrawer.vue'
+import {
+  ChatService,
+  messageContent,
+  showResult,
+  loading,
+} from '@/service/ChatService'
 import FileCard from '../FileUpload/FileCard.vue'
 import { gsap } from 'gsap' // 引入GSAP
 import { useI18n } from 'vue-i18n'//全局语言切换
@@ -93,6 +101,7 @@ const { t } = useI18n()
 //   input,
 //   loading
 // } = inject('geminiContext');
+
 
 const input = ref('')
 const sendButtonVisible = computed(() => input.value.trim() !== '')
