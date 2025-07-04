@@ -32,6 +32,7 @@ function init() {
   stopChatSys()
   messageContent.value = []
   currentId.value = Date.now()
+  console.log('currentId', currentId.value)
   input.value = ''
   sources.value = []
   loading.value = false
@@ -52,10 +53,76 @@ async function getPrevPrompt() {
 
 function stopChatSys() {
   if (abortChat) {
+    loading.value = false // 停止加载状态
     abortChat() //中止SSE请求
     abortChat = null
     console.log('Chat stopped.')
   }
+}
+function getMessage() {
+  loading.value = true // 开始加载状态
+  let rawMarkdown = '' // 存储原始 Markdown 内容
+  let displayIndex = 0 // 当前显示到第几个字符
+  const typingSpeed = 20 // 打字速度（毫秒/字符）
+
+  // 添加一个空的 AI 消息用于后续填充（原始文本）
+  messageContent.value.push({ type: 'AI', text: '' })
+
+  abortChat = startSSEChat(
+    currentId.value,
+    input.value,
+    (data) => {
+      if (data.startsWith('END')) {
+        // 收到结束信号，统一转为 HTML
+        loading.value = false // 停止加载状态
+        console.log('结束')
+      } else if (data.startsWith('SOURCES:')) {
+        // 提取 SOURCES 部分并解析 JSON
+        try {
+          const sourceJson = data.replace('SOURCES:', '').trim()
+          sources.value = JSON.parse(sourceJson)
+          console.log('提取到 SOURCES:', sources.value)
+        } catch (e) {
+          console.error('解析 SOURCES 失败:', e)
+        }
+      } else if (data.startsWith('CONTENT:')) {
+        showNextChar()
+        // 递归函数：逐字显示原始文本
+        function showNextChar() {
+          if (displayIndex < rawMarkdown.length) {
+            displayIndex++
+            messageContent.value[messageContent.value.length - 1] = {
+              type: 'AI',
+              text: rawMarkdown.substring(0, displayIndex),
+            }
+            setTimeout(showNextChar, typingSpeed)
+          } else if (loading.value) {
+            setTimeout(showNextChar, typingSpeed)
+          } else {
+            // loading.value===false，说明getMessage停止了
+            // 替换为最终 HTML 展示
+            const htmlContent = safeMarkdownToHtml(rawMarkdown)
+            messageContent.value[messageContent.value.length - 1] = {
+              type: 'AI',
+              text: htmlContent,
+            }
+            console.log(messageContent.value[messageContent.value.length - 1].text)
+          }
+        }
+        console.log('开始')
+      } else {
+        rawMarkdown += data
+        console.log(data)
+      }
+    },
+    (error) => {
+      console.error('SSE 错误:', error)
+      if (error.message.includes('401')) {
+        alert('登录已过期，请重新登录')
+        router.push('/login')
+      }
+    },
+  )
 }
 
 // function formatTextForVHtml(text) {
@@ -88,7 +155,6 @@ export const ChatService = {
   },
   addNewChat() {
     showResult.value = false
-    router.push('/home/chat')
     init() // 初始化聊天内容
     messageContent.value = [] // 初始化当前聊天的历史内容
     console.log('Starting a new chat' + currentId.value)
@@ -96,81 +162,15 @@ export const ChatService = {
 
   sendMessage() {
     showResult.value = true
-    loading.value = true // 开始加载状态
     // 输入内容放入历史中
     messageContent.value.push({ type: 'USER', text: safeMarkdownToHtml(input.value) })
-
-    let rawMarkdown = '' // 存储原始 Markdown 内容
-    let displayIndex = 0 // 当前显示到第几个字符
-    const typingSpeed = 15 // 打字速度（毫秒/字符）
-
-    // 添加一个空的 AI 消息用于后续填充（原始文本）
-    messageContent.value.push({ type: 'AI', text: '' })
-
-    abortChat = startSSEChat(
-      currentId.value,
-      input.value,
-      (data) => {
-        if (data.startsWith('END')) {
-          // 收到结束信号，统一转为 HTML
-          const htmlContent = safeMarkdownToHtml(rawMarkdown)
-
-          // 替换为最终 HTML 展示
-          messageContent.value[messageContent.value.length - 1] = {
-            type: 'AI',
-            text: htmlContent,
-          }
-          console.log('结束')
-          console.log(messageContent.value[messageContent.value.length - 1].text)
-        } else if (data.startsWith('SOURCES:')) {
-          // 提取 SOURCES 部分并解析 JSON
-          try {
-            const sourceJson = data.replace('SOURCES:', '').trim()
-            sources.value = JSON.parse(sourceJson)
-            console.log('提取到 SOURCES:', sources.value)
-          } catch (e) {
-            console.error('解析 SOURCES 失败:', e)
-          }
-        } else if(data.startsWith('CONTENT:')){
-          console.log('开始')
-        } else {
-          loading.value = false // 停止加载状态
-          // 直接累积 rawMarkdown（包含非 CONTENT: 和 SOURCES: 的所有内容）
-          rawMarkdown += data
-          console.log(data)
-
-          // 递归函数：逐字显示原始文本
-          const showNextChar = () => {
-            if (displayIndex < rawMarkdown.length) {
-              displayIndex++
-              messageContent.value[messageContent.value.length - 1] = {
-                type: 'AI',
-                text: rawMarkdown.substring(0, displayIndex),
-              }
-              setTimeout(showNextChar, typingSpeed)
-            }
-          }
-
-          // 第一次进入时启动显示
-          if (displayIndex === 0) {
-            showNextChar()
-          }
-        }
-      },
-      (error) => {
-        console.error('SSE 错误:', error)
-        if (error.message.includes('401')) {
-          alert('登录已过期，请重新登录')
-          router.push('/login')
-        }
-      },
-    )
-
+    getMessage()
     input.value = '' // 清空输入框
   },
   stopChat() {
     try {
       stopChatSys()
+
     } catch (error) {
       console.error('Error stopping chat:', error)
       throw error
@@ -180,10 +180,10 @@ export const ChatService = {
     messageContent.value = [] // 清空当前消息内容
     const res = await getPrevPrompt() //获取历史对话内容
     res.data.forEach((item) => {
-      messageContent.value.push({
-        type: item.type === 'USER' ? 'USER' : 'AI',
-        text: safeMarkdownToHtml(item.text),
-      })
+        messageContent.value.push({
+          type: item.type === 'USER' ? 'USER' : 'AI',
+          text: safeMarkdownToHtml(item.text),
+        })
     })
   },
   async changeCurrentChat(id) {
@@ -192,17 +192,18 @@ export const ChatService = {
     messageContent.value = [] // 清空当前消息内容
     const res = await getPrevPrompt() //获取历史对话内容
     res.data.forEach((item) => {
-      messageContent.value.push({
-        type: item.type === 'USER' ? 'USER' : 'AI',
-        text: safeMarkdownToHtml(item.text),
-      })
+      if(item.type!=='SYSTEM'){
+        messageContent.value.push({
+          type: item.type === 'USER' ? 'USER' : 'AI',
+          text: safeMarkdownToHtml(item.text),
+        })
+      }
     })
 
     sources.value = []
     showResult.value = true
     loading.value = false
     input.value = ''
-    router.push('/home/chat')
     console.log('Switched to chat with ID:', id)
   },
 

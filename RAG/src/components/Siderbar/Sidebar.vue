@@ -144,6 +144,7 @@ const collectRecentEntry = (el, index) => {
 const handleRecClick = () => {
   if (extended.value) {
     ChatService.addNewChat()
+    router.push('/home/chat')
   }
 }
 

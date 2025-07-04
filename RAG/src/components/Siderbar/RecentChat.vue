@@ -1,9 +1,9 @@
 <template>
   <div class="chat-card">
-    <div class="chat-info"  @click="handleClick">
+    <div class="chat-info" @click="handleClick">
       <div class="chat-card-title">{{ props.name }}</div>
     </div>
-    <el-dropdown  trigger="click" @command="handleCommand">
+    <el-dropdown trigger="click" @command="handleCommand">
       <div class="chat-card-icon">
         <el-icon>
           <MoreFilled />
@@ -19,9 +19,9 @@
 </template>
 <script setup>
 import { ElDropdown, ElDropdownMenu, ElDropdownItem, ElIcon } from 'element-plus'
-import { inject, onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { MoreFilled } from '@element-plus/icons-vue'
-import { useRouter } from 'vue-router'
+import router from '@/router'
 import { ChatService } from '@/service/ChatService'
 import { ElMessage } from 'element-plus'
 
@@ -42,6 +42,7 @@ const handleCommand = (command) => {
 }
 const handleClick = async () => {
   ChatService.changeCurrentChat(props.memoryId)
+  router.push('/home/chat')
 }
 onMounted(() => {})
 </script>
@@ -58,7 +59,7 @@ onMounted(() => {})
   cursor: pointer;
 }
 
-body.dark .chat-card{
+body.dark .chat-card {
   background-color: #e2e6eb;
 }
 .chat-card-icon {

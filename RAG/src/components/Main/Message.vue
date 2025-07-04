@@ -22,16 +22,22 @@ onMounted(() => {
   })
 </script>
 <template>
-  <div :class="['message-bubble', props.type === 'USER' ? 'user-message' : 'ai-message']">
+  <div class="message-bubble" :class=" {
+    'user-message': props.type === 'USER',
+    'ai-message': props.type === 'AI'
+  }">
     <img v-if="props.type !== 'USER'" :src="assets.otter_icon" alt="AI Avatar" class="avatar" />
     <div class="message-content">
       <div class="message-bubble-content" v-html="props.text"></div>
     </div>
-    <img v-if="props.type == 'USER'" :src="user.avatarUrl" alt="User Avatar" class="avatar" />
   </div>
 </template>
 <style scoped>
 .message-bubble {
+  font-size: large;
+  font-weight: 300;
+  line-height: 1.5;
+  margin-top: 30px;
   width: 100%;
   display: flex;
   margin-bottom: 12px;
@@ -51,23 +57,23 @@ onMounted(() => {
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 35px;
   border-radius: 50%;
+  border: 10px solid rgb(227, 247, 255);
   margin: 0 8px;
 }
 
 .message-bubble-content {
   border-radius: 12px;
-  padding: 8px 12px;
+  padding: 4px 18px;
   background-color: #f0f0f0;
   color: #333;
 }
 
 /* 用户消息气泡样式 */
 .user-message .message-bubble-content {
-  background-color: #1890ff;
-  color: white;
+  border-top-right-radius: 0;
+  background-color: #dfeffd;
 }
 
 .message-bubble-content img {
