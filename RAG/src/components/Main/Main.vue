@@ -18,11 +18,11 @@
       </div>
       <div v-else class="result">
         <Message
-            v-for="(item, index) in messageContent"
-            :key="index"
-            :type="item.type"
-            :text="item.text"
-          />
+          v-for="(item, index) in messageContent"
+          :key="index"
+          :type="item.type"
+          :text="item.text"
+        />
         <!-- <div class="result-title">
           <img :src="assets.user_icon" alt="User Icon" />
           <p>{{ recentPrompt }}</p>
@@ -56,7 +56,7 @@
               alt="Send Icon"
               class="send-icon"
             />
-            <el-icon v-if="showResult" @click="stopChat()" class="stop-icon">
+            <el-icon v-if="showResult && loading" @click="stopChat()" class="stop-icon">
               <RemoveFilled />
             </el-icon>
           </div>
@@ -68,8 +68,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { assets } from '@/assets/assets'
 import SuggestCards from './SuggestCards.vue'
 import ProfileFloating from '../Profile/ProfileFloating.vue'
@@ -79,7 +78,6 @@ import FeedbackDrawer from '../Siderbar/FeedbackDrawer.vue'
 import {
   ChatService,
   messageContent,
-  sources,
   showResult,
   loading,
 } from '@/service/ChatService'
