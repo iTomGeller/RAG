@@ -1,22 +1,28 @@
 <template>
-  <div class="chat-card" :class=" {
-    'current-chat': isCurrentChat,
-  }">
-    <div class="chat-info" @click="handleClick">
+  <div
+    class="chat-card"
+    @click="handleClick"
+    :class="{
+      'current-chat': isCurrentChat,
+    }"
+  >
+    <div class="chat-info">
       <div class="chat-card-title">{{ formattedDate }}</div>
     </div>
-    <el-dropdown trigger="click" @command="handleCommand">
-      <div class="chat-card-icon">
-        <el-icon>
-          <MoreFilled />
-        </el-icon>
-      </div>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item command="delete">删除</el-dropdown-item>
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
+    <div class="delete-button" @click.stop="handleDeleteClick">
+      <el-dropdown trigger="click" @command="handleCommand">
+        <div class="chat-card-icon">
+          <el-icon>
+            <MoreFilled />
+          </el-icon>
+        </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="delete">删除</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
   </div>
 </template>
 <script setup>
@@ -47,14 +53,16 @@ const handleClick = async () => {
   router.push('/home/chat')
 }
 const formattedDate = computed(() => {
-  return new Date(props.memoryId).toLocaleString('zh-CN', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  }).replace(/\//g, '-');
+  return new Date(props.memoryId)
+    .toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
+    .replace(/\//g, '-')
 })
 const isCurrentChat = computed(() => {
   return ChatService.getCurrentChatId() === props.memoryId
@@ -62,13 +70,24 @@ const isCurrentChat = computed(() => {
 onMounted(() => {})
 </script>
 <style scoped>
+.delete-button {
+  margin: 4px 4px;
+  padding: 6px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.delete-button:hover {
+  background-color: #bababa;
+}
 .chat-card {
   margin-top: 5px;
   margin-right: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
   border-radius: 20px;
   color: #282828;
   cursor: pointer;
@@ -87,15 +106,13 @@ body.dark .chat-card.current-chat {
 .chat-card-icon {
   border-radius: 50%;
 }
-.chat-card-icon:hover {
-  background-color: #d5d8dc;
-}
 .chat-info {
   padding-left: 5px;
   width: 85%;
   display: flex;
 }
 .chat-card-title {
+  padding: 10px;
   font-size: 15px;
   font-weight: 350;
   width: 100%;

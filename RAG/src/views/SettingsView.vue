@@ -14,7 +14,14 @@
           <div class="user">
             <!-- 用户设置 -->
             <div class="settings-card avatar">
-              <img :src="user.avatarUrl" alt="User Avatar" class="user-avatar" />
+              <div class="settings-row">
+                <img :src="user.avatarUrl" alt="User Avatar" class="user-avatar" />
+              </div>
+              <div class="settings-row">
+                <div class="act-btn upload-btn">
+                  <AvatarUpload />
+                </div>
+              </div>
             </div>
             <div class="settings-card info">
               <div class="settings-row">
@@ -24,6 +31,9 @@
               <div class="settings-row">
                 <span>邮箱：</span>
                 <span>{{ user.email }}</span>
+              </div>
+              <div class="settings-row">
+                <div class="act-btn" @click="logout">退出登录</div>
               </div>
             </div>
           </div>
@@ -63,7 +73,7 @@
             </div>
 
             <div class="settings-row">
-              <span>背景透明度：</span>
+              <span class="opacity-tag">背景透明度：</span>
               <el-slider v-model="bgOpacity" :min="0" :max="100" @change="applyTheme()" />
             </div>
             <div class="settings-row">
@@ -93,6 +103,7 @@ import ThemeController from '@/components/utils/themeChange'
 import { ElDivider } from 'element-plus'
 import ProfileFloating from '@/components/Profile/ProfileFloating.vue'
 import TranslateButton from '@/components/Main/TranslateButton.vue'
+import AvatarUpload from '@/components/Profile/AvatarUpload.vue'
 
 //用户信息
 const user = ref({
@@ -160,6 +171,11 @@ const resetTheme = () => {
   applyTheme()
   localStorage.removeItem('theme')
 }
+//用户登出
+const logout = () => {
+  localStorage.removeItem('userInfo')
+  location.reload() //跳转
+}
 </script>
 
 <style scoped>
@@ -210,9 +226,10 @@ const resetTheme = () => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .settings-card.avatar {
-  padding: 20px 0px;
-  width: 100px;
+  width: 150px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 .settings-card.info {
@@ -220,17 +237,27 @@ const resetTheme = () => {
   width: 100%;
 }
 .settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  color: #333333;
+  font-weight: 400;
   padding: 10px 20px;
   cursor: pointer;
 }
 .settings-row:hover {
   background-color: #f5f5f5;
 }
+.opacity-tag {
+  width: 200px;
+}
 .user {
   display: flex;
   flex-direction: row;
   gap: 20px;
 }
+
 .settings-container {
   height: 100vh;
   background-color: var(--el-bg-color);
@@ -249,7 +276,21 @@ const resetTheme = () => {
   justify-self: right;
   margin-right: 20px;
 }
-
+.act-btn {
+  font-size: 14px;
+  font-weight: 500;
+  color: #717171;
+  border-radius: 10px;
+  width: 100%;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+}
+.act-btn.upload-btn {
+  width: 100px;
+}
 .theme-toggle {
   display: inline-flex;
   align-items: center;
