@@ -55,6 +55,9 @@
     "upload": "上传文件到您的知识库"
   },
   "settings": {
+    "title": "设置",
+    "user": "用户",
+    "language": "语言设置",
     "theme": "主题设置",
     "light": "浅色主题",
     "dark": "深色主题",
@@ -82,7 +85,14 @@
     "cancel": "取消",
     "confirm": "确认"
   },
-  "addBaseBtn": {
+  "chat": {
+    "searchAlt": "问一问 Otter AI",
+    "aiTitle": "你好,",
+    "aiHello": "今天怎么样？:)",
+    "aiTip": "Otter AI 的回答未必正确无误，请仔细核查",
+    "sourceTip": "为你找到了一些资料..."
+  },
+  "addBaseBtn":{
     "btnTitle": "新增知识库",
     "baseName": "知识库名称",
     "baseType": "知识库类别",

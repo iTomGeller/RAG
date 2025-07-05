@@ -5,7 +5,7 @@
         <Menu />
       </el-icon>
 
-      <div class="recent-list" ref="recentListRef" @click="handleRecClick">
+      <div class="recent-list" @click="handleRecClick">
         <div v-if="!extended" class="recent-list-icon">
           <el-icon :size="iconSize">
             <Clock />
@@ -46,7 +46,6 @@
       <div
         class="bottom-item recent-entry icon-box"
         @click="handleChat"
-        :ref="(el) => collectRecentEntry(el, 0)"
       >
         <el-icon :size="iconSize">
           <ChatDotSquare />
@@ -60,7 +59,6 @@
       <div
         class="bottom-item recent-entry icon-box"
         @click="handleFeedback"
-        :ref="(el) => collectRecentEntry(el, 1)"
       >
         <el-icon :size="iconSize">
           <EditPen />
@@ -75,7 +73,6 @@
       <div
         class="bottom-item recent-entry icon-box"
         @click="handleSettings"
-        :ref="(el) => collectRecentEntry(el, 2)"
       >
         <el-icon :size="iconSize">
           <Setting />
@@ -88,7 +85,6 @@
       <div
         class="bottom-item recent-entry icon-box"
         @click="handleStore"
-        :ref="(el) => collectRecentEntry(el, 3)"
       >
         <el-icon :size="iconSize">
           <Star />
@@ -143,16 +139,7 @@ const extended = ref(false)
 const emit = defineEmits(['update:extended','open-feedback']) // 定义自定义事件
 
 const sidebarRef = ref(null)
-const recentListRef = ref(null)
-const recentEntries = ref([]) //动画相关
 
-
-// 收集每个.recent-entry到数组中
-const collectRecentEntry = (el, index) => {
-  if (el) {
-    recentEntries.value[index] = el
-  }
-}
 const handleRecClick = () => {
   if (extended.value) {
     ChatService.addNewChat()
@@ -170,25 +157,9 @@ const setExtendedState = (isExtended) => {
   if (sidebarRef.value) {
     gsap.to(sidebarRef.value, {
       duration: 0.1,
-      width: extended.value ? '200px' : '75px',
+      width: extended.value ? '250px' : '75px',
       ease: 'power2.out',
       transformOrigin: 'right center',
-    })
-  }
-  if (recentListRef.value) {
-    gsap.to(recentListRef.value, {
-      duration: 0.3,
-      marginTop: extended.value ? '30px' : '20px',
-      ease: 'power2.out',
-    })
-  }
-
-  if (recentEntries.value && recentEntries.value.length > 0) {
-    gsap.to(recentEntries.value, {
-      duration: 0.3,
-      marginTop: extended.value ? '20px' : '0px',
-      ease: 'power2.out',
-      stagger: 0.05,
     })
   }
 }
@@ -238,7 +209,7 @@ const handleSettings = () => {
 }
 
 const mousePosition = ref({ x: 0, y: 0 }) //检测鼠标位置是否处于侧边栏内
-const COLLAPSE_THRESHOLD = 250 // 根据实际侧边栏宽度调整
+const COLLAPSE_THRESHOLD = 280 // 根据实际侧边栏宽度调整
 const updateMousePosition = (e) => {
   mousePosition.value = {
     x: e.clientX,
@@ -284,16 +255,11 @@ body.dark .sidebar {
 
 .sidebar .icon-box {
   display: flex;
-  /* min-width: fit-content; */
-  /* padding: 10px; */
   border-radius: 50px;
   color: #282828;
   background-color: #e2e6eb;
   cursor: pointer;
-  /* margin-top: 20px; */
-  /* padding-bottom: 5px; */
-  /* margin-right: 15px; */
-  margin-bottom: 3px;
+  margin-bottom: 10px;
 }
 
 .sidebar .icon-box:hover {

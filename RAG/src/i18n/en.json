@@ -55,6 +55,9 @@
     "upload": "upload files to the knowledge base"
   },
   "settings": {
+    "title": "Settings",
+    "user": "User",
+    "language": "Language Settings",
     "theme": "Theme Settings",
     "light": "Light Theme",
     "dark": "Dark Theme",
@@ -82,7 +85,14 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
-  "addBaseBtn": {
+  "chat": {
+    "searchAlt": "Search",
+    "aiTitle": "Hi,",
+    "aiHello": "How can I help you today?",
+    "aiTip": "Otter AI can make mistakes. Check important info.",
+    "sourceTip": "relevant documents found ..."
+  },
+  "addBaseBtn":{
     "btnTitle": "Create new knowledge base",
     "baseName": " Base Name",
     "baseType": "Base Description",

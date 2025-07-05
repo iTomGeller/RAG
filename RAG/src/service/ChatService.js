@@ -31,7 +31,6 @@ let abortChat = null
 function init() {
   stopChatSys()
   messageContent.value = []
-  currentId.value = Date.now()
   console.log('currentId', currentId.value)
   input.value = ''
   sources.value = []
@@ -53,13 +52,16 @@ async function getPrevPrompt() {
 
 function stopChatSys() {
   if (abortChat) {
-    loading.value = false // 停止加载状态
     abortChat() //中止SSE请求
+    loading.value = false // 停止加载状态
     abortChat = null
     console.log('Chat stopped.')
   }
 }
 function getMessage() {
+  if (currentId.value === null) {
+    currentId.value = Date.now()
+  }
   loading.value = true // 开始加载状态
   let rawMarkdown = '' // 存储原始 Markdown 内容
   let displayIndex = 0 // 当前显示到第几个字符
@@ -137,7 +139,13 @@ function getMessage() {
 export const ChatService = {
   async deleteChat(id) {
     try {
+      if (currentId.value === id) {
+        this.changeCurrentChat(Date.now())
+      }
+      router.push('/home/chat') // 跳转到聊天页面
       const response = await api.delete(`/chat/delete?memoryId=${id}`)
+      // 重新获取聊天列表
+      await this.getChatList()
       console.log(response.msg)
     } catch (error) {
       console.error('Delete chat error:', error)
@@ -156,11 +164,13 @@ export const ChatService = {
   addNewChat() {
     showResult.value = false
     init() // 初始化聊天内容
+    currentId.value = Date.now() // 使用当前时间戳作为新的聊天 ID
     messageContent.value = [] // 初始化当前聊天的历史内容
     console.log('Starting a new chat' + currentId.value)
   },
 
   sendMessage() {
+    sources.value = [] // 清空之前的 sources
     showResult.value = true
     // 输入内容放入历史中
     messageContent.value.push({ type: 'USER', text: safeMarkdownToHtml(input.value) })
@@ -170,7 +180,6 @@ export const ChatService = {
   stopChat() {
     try {
       stopChatSys()
-
     } catch (error) {
       console.error('Error stopping chat:', error)
       throw error
@@ -178,29 +187,22 @@ export const ChatService = {
   },
   async getPrevContent() {
     messageContent.value = [] // 清空当前消息内容
+    sources.value = [] // 清空当前 sources
     const res = await getPrevPrompt() //获取历史对话内容
     res.data.forEach((item) => {
-        messageContent.value.push({
-          type: item.type === 'USER' ? 'USER' : 'AI',
-          text: safeMarkdownToHtml(item.text),
-        })
-    })
-  },
-  async changeCurrentChat(id) {
-    stopChatSys() // 停止当前聊天
-    currentId.value = id
-    messageContent.value = [] // 清空当前消息内容
-    const res = await getPrevPrompt() //获取历史对话内容
-    res.data.forEach((item) => {
-      if(item.type!=='SYSTEM'){
+      if (item.type !== 'SYSTEM') {
         messageContent.value.push({
           type: item.type === 'USER' ? 'USER' : 'AI',
           text: safeMarkdownToHtml(item.text),
         })
       }
     })
+  },
+  async changeCurrentChat(id) {
+    stopChatSys() // 停止当前聊天
+    currentId.value = id
+    this.getPrevContent() // 获取新的聊天内容
 
-    sources.value = []
     showResult.value = true
     loading.value = false
     input.value = ''
@@ -210,8 +212,8 @@ export const ChatService = {
   setInput(text) {
     input.value = text
   },
-  setCurrentChat(id) {
-    currentId.value = id
+  getCurrentChatId() {
+    return currentId.value
   },
 }
 

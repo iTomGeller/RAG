@@ -18,7 +18,7 @@ const router = useRouter()
 const route = useRoute()
 const sidebarWidth = ref(75)
 const handleSidebarToggle = (isExtended) => {
-  sidebarWidth.value = isExtended ? 200 : 75
+  sidebarWidth.value = isExtended ? 250 : 75
 }
 
 const isDrawerVisible = ref(false);
