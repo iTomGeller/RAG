@@ -239,6 +239,11 @@ const onCancel = () => {
 .button {
   width: 30%;
 }
+/* 
+.button:hover {
+  background-color: #e5e5e5;
+  color: black; 
+} */
 
 .act-btn {
   white-space: nowrap;

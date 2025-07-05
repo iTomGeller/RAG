@@ -48,6 +48,7 @@ onMounted(async () => {
   await refresh()
 })
 
+
 const refresh = async () => {
   try {
     const res = await FeedbackService.getRecentFeedbacks({
@@ -63,6 +64,11 @@ const refresh = async () => {
     })
   }
 }
+
+defineExpose({
+    refresh,
+})
+
 
 const handleCurrentChange = async (newPage) => {
   currentPage.value = newPage
