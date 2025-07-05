@@ -28,7 +28,7 @@
 
     <el-divider></el-divider>
 
-    <el-button @click="handleClick">最近反馈</el-button>
+    <el-button @click="handleClick">{{ t('feedback.recent') }}</el-button>
     <RecentFeedback v-model="isDialogVisible" ref="feedbackRef"/>
     
   </el-drawer>
