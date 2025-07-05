@@ -3,7 +3,8 @@
     "login": "Login",
     "username": "username",
     "password": "password",
-    "register": "register"
+    "register": "register",
+    "email": "email"
   },
   "suggestions": {
     "S001": "Suggest beautiful sights for an upcoming road trip",
@@ -57,11 +58,15 @@
   "settings": {
     "title": "Settings",
     "user": "User",
+    "userTip": "Set your user information here",
     "language": "Language Settings",
+    "languageTag": "Global Language:",
+    "languageTip": "Choose your preferred language",
     "theme": "Theme Settings",
+    "themeTip": "Choose your preferred theme",
     "light": "Light Theme",
     "dark": "Dark Theme",
-    "preview": "Theme Preview",
+    "toggle": "Theme Toggle:",
     "nav": "Navigation Bar",
     "reset": "Reset",
     "content": "Card Content",
@@ -69,7 +74,8 @@
     "secondaryBtn": "Secondary Button",
     "advancedSettings": "Advanced Settings",
     "mainColor": "Main Color",
-    "bgTransparency": "Background Transparency"
+    "bgTransparency": "Background Transparency",
+    "resetTheme": "Reset to Default"
   },
   "fileUpload": {
     "categorize": "Drop a file here and I'll automatically categorize it for you...",

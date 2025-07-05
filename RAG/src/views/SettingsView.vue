@@ -9,7 +9,7 @@
           <div class="settings-item-title">
             {{ t('settings.user') }}
           </div>
-          <div class="setting-item-subtitle">在这里设置你的用户信息</div>
+          <div class="setting-item-subtitle">{{ t('settings.userTip') }}</div>
           <el-divider />
           <div class="user">
             <!-- 用户设置 -->
@@ -25,15 +25,15 @@
             </div>
             <div class="settings-card info">
               <div class="settings-row">
-                <span>用户名：</span>
+                <span>{{ t('login.username') }}</span>
                 <span>{{ user.username }}</span>
               </div>
               <div class="settings-row">
-                <span>邮箱：</span>
+                <span>{{ t('login.email') }}</span>
                 <span>{{ user.email }}</span>
               </div>
               <div class="settings-row">
-                <div class="act-btn" @click="logout">退出登录</div>
+                <div class="act-btn" @click="logout">{{ t('profile.logout') }}</div>
               </div>
             </div>
           </div>
@@ -42,12 +42,12 @@
           <div class="settings-item-title">
             {{ t('settings.language') }}
           </div>
-          <div class="setting-item-subtitle">在这里设置你的语言</div>
+          <div class="setting-item-subtitle">{{ t('settings.languageTip') }}</div>
           <el-divider />
           <div class="settings-card">
             <!-- 语言设置 -->
             <div class="settings-row">
-              <span>全局语言：</span>
+              <span>{{ t('settings.languageTag') }}</span>
               <TranslateButton />
             </div>
           </div>
@@ -56,12 +56,12 @@
           <div class="settings-item-title">
             {{ t('settings.theme') }}
           </div>
-          <div class="setting-item-subtitle">在这里设置你的主题</div>
+          <div class="setting-item-subtitle">{{ t('settings.themeTip') }}</div>
           <el-divider />
           <div class="settings-card">
             <!-- 主题设置 -->
             <div class="settings-row">
-              <span>主题切换：</span>
+              <span>{{ t('settings.language') }}</span>
               <el-switch
                 v-model="isDarkMode"
                 @change="applyTheme"
@@ -73,15 +73,15 @@
             </div>
 
             <div class="settings-row">
-              <span class="opacity-tag">背景透明度：</span>
+              <span class="opacity-tag">{{ t('settings.bgTransparency') }}</span>
               <el-slider v-model="bgOpacity" :min="0" :max="100" @change="applyTheme()" />
             </div>
             <div class="settings-row">
-              <span>主要颜色：</span>
+              <span>{{ t('settings.mainColor') }}：</span>
               <el-color-picker v-model="primaryColor" @change="applyTheme()" />
             </div>
             <div class="settings-row">
-              <span>恢复默认设置：</span>
+              <span>{{ t('settings.resetTheme') }}：</span>
               <el-button size="small" icon="refresh" @click="resetTheme">{{
                 t('settings.reset')
               }}</el-button>
@@ -212,12 +212,15 @@ const logout = () => {
 }
 .settings-list {
   margin-right: 4vw;
-  margin-top: 20vh;
+  margin-top: 6vh;
   padding-bottom: 20vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 25px;
+}
+.settings-center::-webkit-scrollbar {
+  display: none;
 }
 .settings-card {
   /* padding: 20px; */
@@ -282,7 +285,7 @@ const logout = () => {
   color: #717171;
   border-radius: 10px;
   width: 100%;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -290,98 +293,5 @@ const logout = () => {
 }
 .act-btn.upload-btn {
   width: 100px;
-}
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-}
-
-.el-button.is-link {
-  color: var(--font-normal);
-}
-
-.el-button.is-link:hover {
-  color: var(--primary-color);
-}
-
-.theme-card {
-  margin-top: 16px;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.settings-header h2 {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0;
-  padding: 16px;
-  border-bottom: 1px solid var(--el-border-color-light);
-}
-
-.theme-toggle {
-  padding: 16px;
-  border-bottom: 1px solid var(--el-border-color-light);
-}
-
-.theme-switch {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.theme-preview {
-  padding: 16px;
-}
-
-.theme-preview h3 {
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.preview-container {
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  border: 1px solid var(--el-border-color-light);
-}
-
-.preview-header {
-  padding: 12px 16px;
-  background-color: var(--el-bg-secondary);
-  transition: background-color 0.3s ease;
-}
-
-.preview-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.preview-content {
-  padding: 16px;
-  background-color: var(--el-bg-color);
-  transition: background-color 0.3s ease;
-}
-
-.preview-card {
-  padding: 16px;
-  border-radius: 4px;
-  background-color: var(--el-bg-secondary);
-  border: 1px solid var(--el-border-color-light);
-  color: var(--el-text-color-primary);
-  transition: all 0.3s ease;
-}
-
-.advanced-settings {
-  padding: 16px;
-}
-
-.advanced-settings h3 {
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 16px;
-  font-weight: 500;
 }
 </style>
