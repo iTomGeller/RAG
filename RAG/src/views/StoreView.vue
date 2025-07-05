@@ -1,39 +1,41 @@
 <template>
-  <div class="main">
-    <div class="featured-section">
-      <h1>{{ t('knowledgebase.title') }}</h1>
-      <p>{{ t('knowledgebase.description1') }}</p>
-      <p>{{ t('knowledgebase.description2') }}</p>
-    </div>
+  <div class="main-container">
+    <div class="main">
+      <div class="featured-section">
+        <h1>{{ t('knowledgebase.title') }}</h1>
+        <p>{{ t('knowledgebase.description1') }}</p>
+        <p>{{ t('knowledgebase.description2') }}</p>
+      </div>
 
-    <div class="file-boxs-grid" :class="{ 'single-item-center': boxList.length === 1 }">
-      <FileBox
-        v-for="box in boxList"
-        :key="box.id"
-        :id="box.id"
-        :name="$t('knowledgebase.categories.' + box.name, box.name)"
-        :type="box.type"
-      />
-    </div>
+      <div class="file-boxs-grid" :class="{ 'single-item-center': boxList.length === 1 }">
+        <FileBox
+          v-for="box in boxList"
+          :key="box.id"
+          :id="box.id"
+          :name="$t('knowledgebase.categories.' + box.name, box.name)"
+          :type="box.type"
+        />
+      </div>
 
-    <div class="pagination-controls-container">
-      <el-pagination
-        @current-change="handleCurrentChange"
-        @size-change="handleSizeChange"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :page-sizes="1"
-        :layout="paginationLayout"
-        :total="totalBoxes"
-        background
-      >
-      </el-pagination>
-    </div>
+      <div class="pagination-controls-container">
+        <el-pagination
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :page-sizes="1"
+          :layout="paginationLayout"
+          :total="totalBoxes"
+          background
+        >
+        </el-pagination>
+      </div>
 
-    <div class="btnGroup">
-      <FileUpload @update:uploaded="handleFileUploaded" @cancel="showUpload = false" />
+      <div class="btnGroup">
+        <FileUpload @update:uploaded="handleFileUploaded" @cancel="showUpload = false" />
 
-      <AddBaseBtn @add-base-success="refresh" />
+        <AddBaseBtn @add-base-success="refresh" />
+      </div>
     </div>
   </div>
 </template>
@@ -124,17 +126,20 @@ const handleSizeChange = (newSize) => {
 </script>
 
 <style scoped>
-.main {
+.main-container {
+  height: 100vh;
+  width: 100%;
   padding-left: 20%;
   padding-right: 20%;
   box-sizing: border-box;
   display: flex;
-  /* 使用 flex 布局来垂直居中内容 */
+  align-items: center;
+  text-align: center;
+}
+.main {
+  display: flex;
   flex-direction: column;
   align-items: center;
-  /* 水平居中 */
-  text-align: center;
-  /* 文本居中 */
 }
 
 h1 {
