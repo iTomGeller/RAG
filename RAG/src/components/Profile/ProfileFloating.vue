@@ -119,10 +119,12 @@ export default {
   margin-top: 10px;
   width: 60px;
   height: 60px;
-  border: 0.5px solid rgb(255, 255, 255);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   background-color: transparent;
+}
+body.dark .home-avatar {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 .btn-box {

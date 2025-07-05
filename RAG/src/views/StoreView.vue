@@ -1,9 +1,9 @@
 <template>
   <div class="main">
     <div class="featured-section">
-      <h1>{{ t('knowledgebase.title')}}</h1>
-      <p>{{t('knowledgebase.description1')}}</p>
-      <p>{{t('knowledgebase.description2')}}</p>
+      <h1>{{ t('knowledgebase.title') }}</h1>
+      <p>{{ t('knowledgebase.description1') }}</p>
+      <p>{{ t('knowledgebase.description2') }}</p>
     </div>
 
     <div class="file-boxs-grid" :class="{ 'single-item-center': boxList.length === 1 }">
@@ -11,7 +11,7 @@
         v-for="box in boxList"
         :key="box.id"
         :id="box.id"
-        :name=" $t('knowledgebase.categories.'+ box.name,box.name) "
+        :name="$t('knowledgebase.categories.' + box.name, box.name)"
         :type="box.type"
       />
     </div>
@@ -22,111 +22,109 @@
         @size-change="handleSizeChange"
         :current-page="currentPage"
         :page-size="pageSize"
-        :page-sizes="1"      :layout="paginationLayout"
-        :total="totalBoxes"  background
+        :page-sizes="1"
+        :layout="paginationLayout"
+        :total="totalBoxes"
+        background
       >
       </el-pagination>
     </div>
 
     <div class="btnGroup">
-    <FileUpload
-        @update:uploaded="handleFileUploaded"
-        @cancel="showUpload = false"
-      />
+      <FileUpload @update:uploaded="handleFileUploaded" @cancel="showUpload = false" />
 
-      <AddBaseBtn @add-base-success="refresh"/>
-      </div>
+      <AddBaseBtn @add-base-success="refresh" />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed ,onMounted} from 'vue';
+import { ref, computed, onMounted } from 'vue'
 
-import FileBox from '@/components/FileUpload/FileBox.vue';
-import FileUpload from '@/components/FileUpload/FileUpload.vue';
-import { ElPagination,ElNotification } from 'element-plus';
+import FileBox from '@/components/FileUpload/FileBox.vue'
+import FileUpload from '@/components/FileUpload/FileUpload.vue'
+import { ElPagination, ElNotification } from 'element-plus'
 
-import BaseService from '@/service/BaseService';
+import BaseService from '@/service/BaseService'
 
-import { useI18n } from 'vue-i18n';
-import AddBaseBtn from '@/components/Base/AddBaseBtn.vue';
-const {t} = useI18n();
+import { useI18n } from 'vue-i18n'
+import AddBaseBtn from '@/components/Base/AddBaseBtn.vue'
+const { t } = useI18n()
 
 const boxList = ref([])
 const totalPage = ref(0)
 const totalBoxes = ref(0)
 
 onMounted(async () => {
-    try {
-        const res = await BaseService.getUserBaseInfo({page: 1 , pageSize: pageSize.value });
+  try {
+    const res = await BaseService.getUserBaseInfo({ page: 1, pageSize: pageSize.value })
 
-        boxList.value = res.list;
-        totalBoxes.value = res.total;
-        totalPage.value = res.totalPage;
+    boxList.value = res.list
+    totalBoxes.value = res.total
+    totalPage.value = res.totalPage
 
-        console.log(boxList.value);
-        console.log("boxList", boxList)
-
-    }catch (error) {
-        ElNotification.error({
-            message: error.message,
-        });
-    }
+    console.log(boxList.value)
+    console.log('boxList', boxList)
+  } catch (error) {
+    ElNotification.error({
+      message: error.message,
+    })
+  }
 })
 
 const refresh = async () => {
   try {
-    const res = await BaseService.getUserBaseInfo({ page: currentPage.value, pageSize: pageSize.value });
-    boxList.value = res.list;
-    totalBoxes.value = res.total;
-    totalPage.value = res.totalPage;
-
-  }catch{
+    const res = await BaseService.getUserBaseInfo({
+      page: currentPage.value,
+      pageSize: pageSize.value,
+    })
+    boxList.value = res.list
+    totalBoxes.value = res.total
+    totalPage.value = res.totalPage
+  } catch {
     ElNotification.error({
       message: error.message,
-    });
+    })
   }
 }
 const handleFileUploaded = async () => {
-  await refresh();
-};
+  await refresh()
+}
 
 // --- 分页相关状态 ---
-const currentPage = ref(1); // 当前页码，默认为第一页
-const pageSize = ref(4); // 每页显示的文件数量，固定为4
+const currentPage = ref(1) // 当前页码，默认为第一页
+const pageSize = ref(4) // 每页显示的文件数量，固定为4
 
 // Element Plus 分页组件的布局
 // 你可以根据需要调整，例如：'total, sizes, prev, pager, next, jumper'
-const paginationLayout = ref('prev, pager, next'); // 只显示上一页、页码和下一页
+const paginationLayout = ref('prev, pager, next') // 只显示上一页、页码和下一页
 
 // 计算当前页需要显示的文件
 const paginatedFiles = computed(() => {
-  const startIndex = (currentPage.value - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  return files.value.slice(startIndex, endIndex);
-});
+  const startIndex = (currentPage.value - 1) * pageSize
+  const endIndex = startIndex + pageSize
+  return files.value.slice(startIndex, endIndex)
+})
 
 // 处理当前页码改变事件
 const handleCurrentChange = async (newPage) => {
-  currentPage.value = newPage;
-  await refresh();
+  currentPage.value = newPage
+  await refresh()
   // 由于是前端分页，这里不需要再次调用 API，数据已在 paginatedFiles 中更新
-};
+}
 
 // 处理每页显示数量改变事件 (这里pageSize是固定值，但回调函数依然保留)
 const handleSizeChange = (newSize) => {
   // 当每页大小改变时，通常重置回第一页
   // pageSize.value = newSize; // 如果 pageSize 是 ref 且可变
   // currentPage.value = 1;
-  console.log('每页显示数量改变为:', newSize);
+  console.log('每页显示数量改变为:', newSize)
   // 如果 pageSize 是动态的，这里需要更新并可能重置 currentPage
-};
+}
 </script>
 
 <style scoped>
 .main {
-  margin-top: 10vh;
-  margin-left: 10vw;
   padding-left: 20%;
   padding-right: 20%;
   box-sizing: border-box;
@@ -145,6 +143,10 @@ h1 {
   /* 调整字体大小 */
   color: #333;
   margin-bottom: 10px;
+}
+body.dark .main h1 {
+  color: #c7c7c7;
+  /* 深色模式下的标题颜色 */
 }
 
 .featured-section {
@@ -194,7 +196,7 @@ h1 {
 
 /* 如果你需要 Element Plus 文档中的 example-pagination-block 样式，
    可以将其复制过来或直接应用在 pagination-controls-container 上 */
-.example-pagination-block+.example-pagination-block {
+.example-pagination-block + .example-pagination-block {
   margin-top: 10px;
 }
 
@@ -203,11 +205,11 @@ h1 {
 }
 
 .file-boxs-grid.single-item-center {
-  grid-template-columns: 1fr; 
-  justify-items: center; 
+  grid-template-columns: 1fr;
+  justify-items: center;
 }
 
-.btnGroup{
+.btnGroup {
   display: flex;
   gap: 30px;
 }

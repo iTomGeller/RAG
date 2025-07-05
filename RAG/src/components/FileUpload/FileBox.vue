@@ -16,12 +16,7 @@
     :with-header="false"
   >
     <div class="file-cards-grid">
-      <FileCard
-        v-for="file in files"
-        :key="file.id"
-        :url="file.url"
-        :name="file.name"
-      />
+      <FileCard v-for="file in files" :key="file.id" :url="file.url" :name="file.name" />
     </div>
 
     <!-- 分页控件 -->
@@ -45,8 +40,8 @@ import FileCard from './FileCard.vue'
 import FileService from '@/service/FileService'
 import { ElNotification, ElPagination } from 'element-plus'
 
-import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const props = defineProps({
   id: Number,
@@ -108,7 +103,8 @@ const handleCurrentChange = async (newPage) => {
 .wolfram-card {
   display: flex;
   align-items: center;
-  width: 400px;
+  max-width: 400px;
+  width: 24vw;
   padding: 16px;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
@@ -118,6 +114,11 @@ const handleCurrentChange = async (newPage) => {
   transition:
     transform 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out;
+}
+body.dark .wolfram-card {
+  background-color: #2c2c2c;
+  border-color: #444;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .wolfram-card:hover {
@@ -137,6 +138,9 @@ const handleCurrentChange = async (newPage) => {
   object-fit: contain;
   background-color: #f0f0f0;
 }
+body.dark .wolfram-card__icon {
+  background-color: #3c3c3c;
+}
 
 .wolfram-card__content {
   flex-grow: 1;
@@ -147,6 +151,9 @@ const handleCurrentChange = async (newPage) => {
   font-size: 1.2em;
   color: #333;
   font-weight: 600;
+}
+body.dark .wolfram-card__title {
+  color: #c7c7c7;
 }
 
 .wolfram-card__description {

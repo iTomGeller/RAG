@@ -155,7 +155,8 @@ onMounted(async () => {
 .wolfram-card {
   display: flex;
   align-items: center;
-  width: 400px;
+  max-width: 400px;
+  width: 24vw;
   padding: 16px;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
@@ -165,6 +166,11 @@ onMounted(async () => {
   transition:
     transform 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out;
+}
+body.dark .wolfram-card {
+  background-color: #2c2c2c;
+  border-color: #444;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .wolfram-card:hover {
@@ -184,6 +190,9 @@ onMounted(async () => {
   object-fit: contain;
   background-color: #f0f0f0;
 }
+body.dark .wolfram-card__icon {
+  background-color: #3c3c3c;
+}
 
 .wolfram-card__content {
   flex-grow: 1;
@@ -194,6 +203,9 @@ onMounted(async () => {
   font-size: 1.2em;
   color: #333;
   font-weight: 600;
+}
+body.dark .wolfram-card__title {
+  color: #c7c7c7;
 }
 
 .upload-container {

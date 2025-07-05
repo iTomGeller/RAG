@@ -58,7 +58,7 @@
     --el-box-shadow-light: 0px 0px 12px rgba(0, 0, 0, 0.72);
     --el-box-shadow-lighter: 0px 0px 6px rgba(0, 0, 0, 0.72);
     --el-box-shadow-dark: 0px 16px 48px 16px rgba(0, 0, 0, 0.72), 0px 12px 32px #000000, 0px 8px 16px -8px #000000;
-    --el-bg-color-page: #0a0a0a;
+    --el-bg-color-page: #1b1c1d;
     /* --el-bg-color: #141414; */
     --el-bg-color-overlay: #1d1e1f;
     --el-text-color-primary: #E5EAF3;
@@ -84,9 +84,11 @@
 }
 
 .dark .el-button {
-    --el-button-disabled-text-color: rgba(255, 255, 255, 0.5)
+    --el-button-disabled-text-color: rgba(255, 255, 255, 0.5);
 }
-
+.dark .el-pagination {
+    --el-disabled-bg-color: #39393A
+}
 .dark .el-card {
     --el-card-bg-color: var(--el-bg-color-overlay)
 }

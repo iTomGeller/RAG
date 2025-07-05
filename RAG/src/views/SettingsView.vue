@@ -186,6 +186,9 @@ const logout = () => {
   border-radius: 10px;
   position: relative;
 }
+body.dark .settings-item {
+  background-color: #3b3b3b;
+}
 .settings-title {
   color: #585858;
   font-size: 22px;
@@ -193,10 +196,16 @@ const logout = () => {
   padding-right: 50px;
   white-space: nowrap;
 }
+body.dark .settings-title {
+  color: #c7c7c7;
+}
 .settings-item-title {
   font-size: 20px;
   font-weight: 600;
   color: #585858;
+}
+body.dark .settings-item-title {
+  color: #cfcfcf;
 }
 .setting-item-subtitle {
   font-size: 14px;
@@ -223,10 +232,12 @@ const logout = () => {
   display: none;
 }
 .settings-card {
-  /* padding: 20px; */
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+body.dark .settings-card {
+  background-color: #4a4a4a;
 }
 .settings-card.avatar {
   width: 150px;
@@ -249,8 +260,14 @@ const logout = () => {
   padding: 10px 20px;
   cursor: pointer;
 }
+body.dark .settings-row {
+  color: #cfcfcf;
+}
 .settings-row:hover {
   background-color: #f5f5f5;
+}
+body.dark .settings-row:hover {
+  background-color: #5a5a5a;
 }
 .opacity-tag {
   width: 200px;
@@ -290,6 +307,9 @@ const logout = () => {
   align-items: center;
   justify-content: center;
   height: 40px;
+}
+body.dark .act-btn {
+  color: #a9a9a9;
 }
 .act-btn.upload-btn {
   width: 100px;

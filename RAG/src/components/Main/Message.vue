@@ -34,14 +34,16 @@ onMounted(() => {
 </template>
 <style scoped>
 .message-bubble {
-  font-size: large;
-  font-weight: 300;
+  font-weight: 350;
   line-height: 1.5;
   margin-top: 30px;
   width: 100%;
   display: flex;
   margin-bottom: 12px;
   align-items: start;
+}
+body.dark .message-bubble {
+  font-weight: 400;
 }
 
 .message-bubble .message-content {
@@ -62,6 +64,10 @@ onMounted(() => {
   border: 10px solid rgb(227, 247, 255);
   margin: 0 8px;
 }
+body.dark .avatar {
+  background-color: #ffb04f;
+  border: 10px solid #554641;
+}
 
 .message-bubble-content {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -70,11 +76,19 @@ onMounted(() => {
   background-color: #f9f9f9;
   color: #333;
 }
+body.dark .message-bubble-content {
+  background-color: #3b3b3b;
+  color: #ecf0f1;
+}
 
 /* 用户消息气泡样式 */
 .user-message .message-bubble-content {
   border-top-right-radius: 0;
   background-color: #dfeffd;
+}
+body.dark .user-message .message-bubble-content {
+  background-color: #1f2d3d;
+  color: #ffffff;
 }
 
 .message-bubble-content img {
