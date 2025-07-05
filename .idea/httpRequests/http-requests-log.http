@@ -1,0 +1,150 @@
+POST http://120.77.168.177:5000/query
+Content-Type: application/json
+Content-Length: 28
+User-Agent: IntelliJ HTTP Client/PyCharm 2025.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "query":"spring文档"
+}
+
+<> 2025-07-04T162123.200.json
+
+###
+
+POST http://120.77.168.177:5000/query
+Content-Type: application/json
+Content-Length: 28
+User-Agent: IntelliJ HTTP Client/PyCharm 2025.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "query":"后端文档"
+}
+
+<> 2025-07-04T162112.200.json
+
+###
+
+POST http://120.77.168.177:5000/query
+Content-Type: application/json
+Content-Length: 34
+User-Agent: IntelliJ HTTP Client/PyCharm 2025.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "query":"你有几个文档"
+}
+
+<> 2025-07-04T162054.200.json
+
+###
+
+POST http://120.77.168.177:5000/query
+Content-Type: application/json
+Content-Length: 34
+User-Agent: IntelliJ HTTP Client/PyCharm 2025.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "query":"你有几个文档"
+}
+
+<> 2025-07-04T143545.200.json
+
+###
+
+POST http://120.77.168.177:5000/query
+Content-Type: application/json
+Content-Length: 28
+User-Agent: IntelliJ HTTP Client/PyCharm 2025.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "query":"这是什么"
+}
+
+<> 2025-07-04T143527.200.json
+
+###
+
+POST http://120.77.168.177:5000/query
+Content-Type: application/json
+Content-Length: 22
+User-Agent: IntelliJ HTTP Client/PyCharm 2025.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "query":"大学"
+}
+
+<> 2025-07-04T143503.200.json
+
+###
+
+POST http://120.77.168.177:5000/query
+Content-Type: application/json
+Content-Length: 35
+User-Agent: IntelliJ HTTP Client/PyCharm 2025.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "query":"springboot是什么"
+}
+
+<> 2025-07-04T143450.200.json
+
+###
+
+POST http://120.77.168.177:5000/query
+Content-Type: application/json
+Content-Length: 35
+User-Agent: IntelliJ HTTP Client/PyCharm 2025.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "query":"springboot是什么"
+}
+
+<> 2025-07-04T142235.200.json
+
+###
+
+POST http://120.77.168.177:5000/query
+Content-Type: application/json
+Content-Length: 20
+User-Agent: IntelliJ HTTP Client/PyCharm 2025.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "query":"123s"
+}
+
+<> 2025-07-04T142211.200.json
+
+###
+
+POST http://120.77.168.177:5000/query
+Content-Type: application/json
+Content-Length: 20
+User-Agent: IntelliJ HTTP Client/PyCharm 2025.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "query":"123s"
+}
+
+<> 2025-07-04T142207.200.json
+
+###
+
