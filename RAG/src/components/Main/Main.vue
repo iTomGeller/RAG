@@ -14,7 +14,7 @@
         </div>
         <SuggestCards @update:suggestCardsOnSent="handleSuggest" />
       </div>
-      <div v-else class="result">
+      <div v-else class="result" ref="resultRef">
         <Message
           v-for="(item, index) in messageContent"
           :key="index"
@@ -22,23 +22,30 @@
           :text="item.text"
         />
         <transition name="scale">
-          <div v-show="hasSource" class="source" ref="sourceRef">
-            <div class="source-title-box" @click="handleSourceCardClick">
-              <span class="source-title">{{ t('chat.sourceTip') }}</span>
-              <el-icon color="#ffffff" class="source-icon"><ArrowDownBold /></el-icon>
+          <div class="source-container">
+            <div v-show="hasSource" class="source" ref="sourceRef">
+              <div class="source-title-box" @click="handleSourceCardClick">
+                <span class="source-title">{{ t('chat.sourceTip') }}</span>
+                <el-icon color="#ffffff" class="source-icon"><ArrowDownBold /></el-icon>
+              </div>
+              <span
+                class="source-cards"
+                :class="{ 'two-columns': shouldUseTwoColumns }"
+                v-show="sourceExtended"
+              >
+                <transition-group name="scale" mode="out-in">
+                  <FileCard
+                    v-for="(file, index) in sources"
+                    :key="index"
+                    :url="file.url"
+                    :name="file.title"
+                    class="source-card"
+                    v-show="sourceExtended"
+                /></transition-group>
+              </span>
             </div>
-            <span class="source-cards" v-show="sourceExtended">
-              <transition-group name="scale" mode="out-in">
-                <FileCard
-                  v-for="(file, index) in sources"
-                  :key="index"
-                  :url="file.url"
-                  :name="file.title"
-                  class="source-card"
-                  v-show="sourceExtended"
-              /></transition-group>
-            </span></div
-        ></transition>
+          </div>
+        </transition>
       </div>
 
       <FeedbackDrawer v-model:visible="isDrawerVisible" />
@@ -111,17 +118,43 @@ const handleSuggest = (suggestinput) => {
   input.value = suggestinput
   sendMessage()
 }
-const sourceRef = ref(null)
+const sourceRef = ref(null) //资源框
+const resultRef = ref(null) //对话列表
+const scrollToBottom = () => {
+  if (resultRef.value && sourceExtended.value) {
+    resultRef.value.scrollTo({
+      top: resultRef.value.scrollHeight,
+      behavior: 'smooth',
+    })
+  } else if (resultRef.value) {
+    resultRef.value.scrollTo({
+      top: -400,
+      behavior: 'smooth',
+    })
+  }
+}
 const handleSourceCardClick = async () => {
   sourceExtended.value = !sourceExtended.value
   if (sourceRef.value) {
+    const sourceAmount = sources.value.length
     gsap.to(sourceRef.value, {
       duration: 0.1,
-      width: sourceExtended.value ? '600px' : '300px',
-      height: sourceExtended.value ? '300px' : '45px',
+      width: sourceExtended.value ? `${sourceAmount < 4 ? 300 : 600}px` : '300px',
+      height: sourceExtended.value ? `${getSourceRow(sourceAmount)}px` : '45px',
       ease: 'power2.out',
       transformOrigin: 'top center',
     })
+  }
+  scrollToBottom()
+}
+const shouldUseTwoColumns = computed(() => sources.value.length > 3)
+const getSourceRow = (amount) => {
+  if (amount === 1) {
+    return 100
+  } else if (amount === 2 || amount === 4) {
+    return 200
+  } else {
+    return 300
   }
 }
 const addNewChat = async () => {
@@ -145,6 +178,9 @@ onUnmounted(() => {})
 
 <style scoped>
 @import './Main.css';
+.source-container {
+  height: 400px;
+}
 .source {
   cursor: pointer;
   transition: all 0.2s ease;
@@ -154,7 +190,6 @@ onUnmounted(() => {})
   margin-top: 20px;
   border-radius: 15px;
   background-color: #67c23a;
-  margin-bottom: 100px;
 }
 .source-title-box {
   align-items: center;
@@ -177,7 +212,6 @@ onUnmounted(() => {})
   font-size: 18px;
 }
 .source-cards {
-  padding: 4px;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -186,8 +220,11 @@ onUnmounted(() => {})
   background-color: #ffffff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: 100px;
+}
+.source-cards .two-columns {
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
 }
 .source-card {
   justify-self: center;

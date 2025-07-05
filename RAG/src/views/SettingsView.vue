@@ -187,7 +187,7 @@ const logout = () => {
   position: relative;
 }
 body.dark .settings-item {
-  background-color: #3b3b3b;
+  background-color: rgba(59, 59, 59, var(--opacity));
 }
 .settings-title {
   color: #585858;

@@ -7,40 +7,42 @@
       <h3 class="wolfram-card__title">{{ title }}</h3>
     </div>
   </div>
-  <el-dialog
-    :before-close="clickCancel"
-    v-model="dialog"
-    size="80%"
-    :title="t('fileUpload.categorize')"
-    :with-header="false"
-  >
-    <div class="upload-container">
-      <!-- FilePond 文件上传区域 -->
-      <file-pond
-        ref="pondRef"
-        name="file"
-        :label-idle="t('fileUpload.upload')"
-        max-files="8"
-        allow-multiple="false"
-        allow-revert="false"
-        accepted-file-types="text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"
-        :fileValidateTypeLabelExpectedTypes="t('fileUpload.invalidate')"
-        instant-upload="false"
-        :server="serverOptions"
-        @processfile="handleUploadSuccess"
-        :max-file-size="'10MB'"
-      />
+  <div class="dialog-container">
+    <el-dialog
+      :before-close="clickCancel"
+      v-model="dialog"
+      size="80%"
+      :title="t('fileUpload.categorize')"
+      :with-header="false"
+    >
+      <div class="upload-container">
+        <!-- FilePond 文件上传区域 -->
+        <file-pond
+          ref="pondRef"
+          name="file"
+          :label-idle="t('fileUpload.upload')"
+          max-files="8"
+          allow-multiple="false"
+          allow-revert="false"
+          accepted-file-types="text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"
+          :fileValidateTypeLabelExpectedTypes="t('fileUpload.invalidate')"
+          instant-upload="false"
+          :server="serverOptions"
+          @processfile="handleUploadSuccess"
+          :max-file-size="'10MB'"
+        />
 
-      <div v-if="fileLink != null" class="result-container">
-        <el-button @click="handleCheck" class="button">
-          {{ '确认' }}
-        </el-button>
-        <el-button @click="deleteFile" class="button">
-          {{ '撤销' }}
-        </el-button>
+        <div v-if="fileLink != null" class="result-container">
+          <el-button @click="handleCheck" class="button">
+            {{ '确认' }}
+          </el-button>
+          <el-button @click="deleteFile" class="button">
+            {{ '撤销' }}
+          </el-button>
+        </div>
       </div>
-    </div>
-  </el-dialog>
+    </el-dialog>
+  </div>
 </template>
 
 <script setup>
@@ -72,7 +74,6 @@ const iconUrl = assets.folder_icon
 const title = t('knowledgebase.upload')
 const dialog = ref(false)
 
-
 // const visiable = ref(false)
 // const handleClick = () => {
 //   visiable.value = true
@@ -88,7 +89,6 @@ const dialog = ref(false)
 //   }
 // }
 // const title = '上传文件到您的知识库'
-
 
 const close = () => {
   dialog.value = false
@@ -168,7 +168,7 @@ onMounted(async () => {
     box-shadow 0.2s ease-in-out;
 }
 body.dark .wolfram-card {
-  background-color: #2c2c2c;
+  background-color: rgba(44, 44, 44, var(--opacity));
   border-color: #444;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -206,6 +206,9 @@ body.dark .wolfram-card__icon {
 }
 body.dark .wolfram-card__title {
   color: #c7c7c7;
+}
+.dialog-container{
+  text-align: start;
 }
 
 .upload-container {

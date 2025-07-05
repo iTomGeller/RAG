@@ -171,7 +171,7 @@ const handleCancel = () => {
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 body.dark .wolfram-card {
-  background-color: #2c2c2c;
+  background-color: rgba(44, 44, 44, var(--opacity));
   border-color: #444;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

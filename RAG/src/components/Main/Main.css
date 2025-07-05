@@ -64,7 +64,8 @@ body.dark .main .nav {
   cursor: pointer;
 }
 body.dark .main .cards .card {
-  background-color: #1f2d3d;
+  background-color: rgba(31, 45, 61, var(--opacity));
+  border: 1px solid rgb(51, 58, 84);
 }
 
 .main .cards .card img {
@@ -109,8 +110,8 @@ body.dark .main .cards .card p {
   border-radius: 50px;
 }
 body.dark .search-box {
-  background-color: #2c2c2c;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background-color: rgba(73, 73, 74, var(--opacity));
+  border: 1px solid #444;
 }
 
 .search-box img {
@@ -153,6 +154,7 @@ body.dark .main .bottom-info {
   margin-top: 5vh;
   height: 80vh;
   overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 
 .result::-webkit-scrollbar {

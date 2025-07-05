@@ -87,7 +87,8 @@
     --el-button-disabled-text-color: rgba(255, 255, 255, 0.5);
 }
 .dark .el-pagination {
-    --el-disabled-bg-color: #39393A
+    --el-disabled-bg-color: #36383d;
+    --el-color-primary: #4b4b52
 }
 .dark .el-card {
     --el-card-bg-color: var(--el-bg-color-overlay)

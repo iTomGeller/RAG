@@ -65,8 +65,8 @@ body.dark .message-bubble {
   margin: 0 8px;
 }
 body.dark .avatar {
-  background-color: #ffb04f;
-  border: 10px solid #554641;
+  background-color: #e2e6eb;
+  border: 10px solid #e2e6eb;
 }
 
 .message-bubble-content {
@@ -77,7 +77,7 @@ body.dark .avatar {
   color: #333;
 }
 body.dark .message-bubble-content {
-  background-color: #3b3b3b;
+  background-color: rgba(73, 73, 74, var(--opacity));
   color: #ecf0f1;
 }
 

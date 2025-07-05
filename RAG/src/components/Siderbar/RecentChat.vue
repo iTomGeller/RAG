@@ -1,10 +1,10 @@
 <template>
   <div
     class="chat-card"
-    @click="handleClick"
     :class="{
       'current-chat': isCurrentChat,
     }"
+    @click="handleClick"
   >
     <div class="chat-info">
       <div class="chat-card-title">{{ formattedDate }}</div>
