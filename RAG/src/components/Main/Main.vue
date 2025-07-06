@@ -192,6 +192,9 @@ onUnmounted(() => {})
   border-radius: 15px;
   background-color: #67c23a;
 }
+body.dark .source { 
+  background-color: #409eff;
+}
 .source-title-box {
   align-items: center;
   margin-bottom: 10px;
@@ -203,6 +206,9 @@ onUnmounted(() => {})
 }
 .source:hover {
   background-color: #69ae47;
+}
+body.dark .source:hover {
+  background-color: #2a598a;
 }
 .source-title {
   font-size: 16px;
@@ -223,6 +229,9 @@ onUnmounted(() => {})
   border-radius: 15px;
   grid-template-columns: repeat(1, 1fr);
   grid-template-rows: 100px;
+}
+body.dark .source-cards {
+  background-color: #49494a;
 }
 .source-cards .two-columns {
   grid-template-columns: repeat(2, 1fr);

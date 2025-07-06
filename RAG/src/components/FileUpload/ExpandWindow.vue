@@ -1,7 +1,7 @@
 <template>
   <div class="expandable-window-container">
     <div @click="toggleWindow">
-      <slot name="button" ></slot>
+      <slot name="button"></slot>
     </div>
     <!-- 展开的窗口 -->
     <transition name="expand">
@@ -9,11 +9,7 @@
         v-show="isOpen"
         class="window-content"
         :class="{ 'with-shadow': shadow }"
-        :style="{
-          width: width,
-          height: height,
-          backgroundColor: bgColor,
-        }"
+        :style="autoSize ? {} : { width: width, height: height }"
       >
         <!-- 窗口标题栏 -->
         <div class="window-header" @mousedown.stop="startDrag">
@@ -32,11 +28,19 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { gsap } from 'gsap' // 引入GSAP
+
+const windowRef = ref(null)
 
 const props = defineProps({
   visible: {
     type: Boolean,
     required: true,
+  },
+
+  autoSize: {
+    type: Boolean,
+    default: false,
   },
 
   // 窗口标题
@@ -58,11 +62,6 @@ const props = defineProps({
   height: {
     type: String,
     default: '300px',
-  },
-  // 背景颜色
-  bgColor: {
-    type: String,
-    default: '#ffffff',
   },
   // 是否显示阴影
   shadow: {
@@ -206,7 +205,6 @@ body.dark .window-header {
 body.dark .window-body {
   background-color: #333;
 }
-
 
 /* 展开动画 */
 .expand-enter-active,

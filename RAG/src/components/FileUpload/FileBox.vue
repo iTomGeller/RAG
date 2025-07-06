@@ -1,5 +1,10 @@
 <template>
-  <ExpandWindow :title="props.name" width="620px" height="360px" @open="windowOpen" @close="windowClose">
+  <ExpandWindow
+    :title="props.name"
+    auto-size="true"
+    @open="windowOpen"
+    @close="windowClose"
+  >
     <template #button>
       <div class="wolfram-card" @click="handleClick">
         <div class="wolfram-card__icon-wrapper">
@@ -11,12 +16,13 @@
       </div>
     </template>
     <template #content>
+      <div v-if="total===0" class="empty-tip">暂无文件</div>
       <div class="file-cards-grid">
         <FileCard v-for="file in files" :key="file.id" :url="file.url" :name="file.name" />
       </div>
 
       <!-- 分页控件 -->
-      <div class="file-cards-pagination-controls-container">
+      <div v-if="total>0" class="file-cards-pagination-controls-container">
         <el-pagination
           @current-change="handleCurrentChange"
           :current-page="currentPage"
@@ -178,10 +184,15 @@ body.dark .wolfram-card__title {
   gap: 30px;
   padding: 20px 0;
 }
+.empty-tip {
+  justify-self: center;
+  align-items: center;
+  padding: 50px 80px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.319);
+}
 
 .file-cards-pagination-controls-container {
-  position: fixed;
-  bottom: 0;
   margin-top: 30px;
   margin-bottom: 30px;
   width: 100%;
