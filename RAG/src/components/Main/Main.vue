@@ -92,6 +92,7 @@ import Message from './Message.vue'
 import FeedbackDrawer from '../Siderbar/FeedbackDrawer.vue'
 import { ChatService, messageContent, showResult, loading, sources } from '@/service/ChatService'
 import FileCard from '../FileUpload/FileCard.vue'
+import VirtualList from 'vue3-virtual-scroll-list'//虚拟滚动
 import { gsap } from 'gsap' // 引入GSAP
 import { useI18n } from 'vue-i18n' //全局语言切换
 const { t } = useI18n()
@@ -127,8 +128,8 @@ const scrollToBottom = () => {
       behavior: 'smooth',
     })
   } else if (resultRef.value) {
-    resultRef.value.scrollTo({
-      top: -400,
+    resultRef.value.scrollBy({
+      top: -300,
       behavior: 'smooth',
     })
   }

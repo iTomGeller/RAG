@@ -104,7 +104,6 @@ import { ElDivider } from 'element-plus'
 import ProfileFloating from '@/components/Profile/ProfileFloating.vue'
 import TranslateButton from '@/components/Main/TranslateButton.vue'
 import AvatarUpload from '@/components/Profile/AvatarUpload.vue'
-
 //用户信息
 const user = ref({
   username: '',
@@ -179,6 +178,10 @@ const logout = () => {
 </script>
 
 <style scoped>
+.testbutton {
+  width: 100px;
+  height: 60px;
+}
 .settings-item {
   height: auto;
   padding: 20px;

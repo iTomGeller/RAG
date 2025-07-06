@@ -1,37 +1,29 @@
 <template>
   <div class="expandable-window-container">
-    <!-- 触发按钮 -->
-    <button 
-      class="trigger-button"
-      @click="toggleWindow"
-      :aria-expanded="isOpen.toString()"
-    >
-      {{ buttonText }}
-    </button>
-    
+    <div @click="toggleWindow">
+      <slot name="button" ></slot>
+    </div>
     <!-- 展开的窗口 -->
     <transition name="expand">
-      <div 
+      <div
         v-show="isOpen"
         class="window-content"
         :class="{ 'with-shadow': shadow }"
         :style="{
           width: width,
           height: height,
-          backgroundColor: bgColor
+          backgroundColor: bgColor,
         }"
       >
         <!-- 窗口标题栏 -->
-        <div class="window-header" @mousedown="startDrag">
+        <div class="window-header" @mousedown.stop="startDrag">
           <div class="window-title">{{ title }}</div>
-          <button class="close-button" @click="closeWindow" aria-label="Close window">
-            &times;
-          </button>
+          <button class="close-button" @click.stop="closeWindow">&times;</button>
         </div>
-        
+
         <!-- 内容插槽 -->
         <div class="window-body">
-          <slot></slot>
+          <slot name="content"></slot>
         </div>
       </div>
     </transition>
@@ -42,46 +34,46 @@
 import { ref, computed } from 'vue'
 
 const props = defineProps({
-  // 按钮文本
-  buttonText: {
-    type: String,
-    default: 'Toggle Window'
+  visible: {
+    type: Boolean,
+    required: true,
   },
+
   // 窗口标题
   title: {
     type: String,
-    default: 'Window Title'
+    default: 'Window Title',
   },
   // 初始是否展开
   initialOpen: {
     type: Boolean,
-    default: false
+    default: false,
   },
   // 窗口宽度
   width: {
     type: String,
-    default: '400px'
+    default: '400px',
   },
   // 窗口高度
   height: {
     type: String,
-    default: '300px'
+    default: '300px',
   },
   // 背景颜色
   bgColor: {
     type: String,
-    default: '#ffffff'
+    default: '#ffffff',
   },
   // 是否显示阴影
   shadow: {
     type: Boolean,
-    default: true
+    default: true,
   },
   // 是否可拖动
   draggable: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 })
 
 const emit = defineEmits(['open', 'close', 'toggle'])
@@ -95,6 +87,7 @@ const toggleWindow = () => {
   isOpen.value = !isOpen.value
   emit('toggle', isOpen.value)
   if (isOpen.value) {
+    currentPos.value = { x: 0, y: 0 }
     emit('open')
   } else {
     emit('close')
@@ -103,6 +96,7 @@ const toggleWindow = () => {
 
 const openWindow = () => {
   isOpen.value = true
+  currentPos.value = { x: 0, y: 0 }
   emit('open')
 }
 
@@ -114,23 +108,23 @@ const closeWindow = () => {
 // 拖动相关逻辑
 const startDrag = (e) => {
   if (!props.draggable) return
-  
+
   isDragging.value = true
   startPos.value = {
     x: e.clientX - currentPos.value.x,
-    y: e.clientY - currentPos.value.y
+    y: e.clientY - currentPos.value.y,
   }
-  
+
   document.addEventListener('mousemove', handleDrag)
   document.addEventListener('mouseup', stopDrag)
 }
 
 const handleDrag = (e) => {
   if (!isDragging.value) return
-  
+
   currentPos.value = {
     x: e.clientX - startPos.value.x,
-    y: e.clientY - startPos.value.y
+    y: e.clientY - startPos.value.y,
   }
 }
 
@@ -143,30 +137,16 @@ const stopDrag = () => {
 // 计算窗口位置样式
 const windowStyle = computed(() => {
   return {
-    transform: `translate(${currentPos.value.x}px, ${currentPos.value.y}px)`
+    transform: `translate(${currentPos.value.x}px, ${currentPos.value.y}px)`,
   }
 })
 </script>
 
 <style scoped>
 .expandable-window-container {
+  user-select: none;
   position: relative;
   display: inline-block;
-}
-
-.trigger-button {
-  padding: 8px 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-}
-
-.trigger-button:hover {
-  background-color: #45a049;
 }
 
 .window-content {
@@ -179,7 +159,9 @@ const windowStyle = computed(() => {
   overflow: hidden;
   z-index: 1000;
   transform: v-bind('windowStyle.transform');
-  transition: transform 0.2s ease;
+}
+body.dark .window-content {
+  border-color: #555;
 }
 
 .with-shadow {
@@ -194,6 +176,9 @@ const windowStyle = computed(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+body.dark .window-header {
+  background-color: #333;
 }
 
 .window-title {
@@ -218,13 +203,21 @@ const windowStyle = computed(() => {
   height: calc(100% - 42px); /* 减去标题栏高度 */
   overflow: auto;
 }
-
-/* 展开动画 */
-.expand-enter-active, .expand-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+body.dark .window-body {
+  background-color: #333;
 }
 
-.expand-enter-from, .expand-leave-to {
+
+/* 展开动画 */
+.expand-enter-active,
+.expand-leave-active {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.expand-enter-from,
+.expand-leave-to {
   opacity: 0;
   transform: translateY(-10px) v-bind('windowStyle.transform');
 }

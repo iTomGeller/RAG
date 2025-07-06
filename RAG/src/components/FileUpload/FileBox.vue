@@ -1,36 +1,33 @@
 <template>
-  <div class="wolfram-card" @click="handleClick">
-    <div class="wolfram-card__icon-wrapper">
-      <img :src="iconUrl" :alt="title + ' Icon'" class="wolfram-card__icon" />
-    </div>
-    <div class="wolfram-card__content">
-      <h3 class="wolfram-card__title">{{ props.name }}</h3>
-    </div>
-  </div>
+  <ExpandWindow :title="props.name" width="620px" height="360px" @open="windowOpen" @close="windowClose">
+    <template #button>
+      <div class="wolfram-card" @click="handleClick">
+        <div class="wolfram-card__icon-wrapper">
+          <img :src="iconUrl" :alt="title + ' Icon'" class="wolfram-card__icon" />
+        </div>
+        <div class="wolfram-card__content">
+          <h3 class="wolfram-card__title">{{ props.name }}</h3>
+        </div>
+      </div>
+    </template>
+    <template #content>
+      <div class="file-cards-grid">
+        <FileCard v-for="file in files" :key="file.id" :url="file.url" :name="file.name" />
+      </div>
 
-  <el-dialog
-    :before-close="clickCancel"
-    v-model="visiable"
-    :title="props.name"
-    size="80%"
-    :with-header="false"
-  >
-    <div class="file-cards-grid">
-      <FileCard v-for="file in files" :key="file.id" :url="file.url" :name="file.name" />
-    </div>
-
-    <!-- 分页控件 -->
-    <div class="file-cards-pagination-controls-container">
-      <el-pagination
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :layout="'prev, pager, next'"
-        :total="total"
-        background
-      />
-    </div>
-  </el-dialog>
+      <!-- 分页控件 -->
+      <div class="file-cards-pagination-controls-container">
+        <el-pagination
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :layout="'prev, pager, next'"
+          :total="total"
+          background
+        />
+      </div>
+    </template>
+  </ExpandWindow>
 </template>
 
 <script setup>
@@ -39,6 +36,7 @@ import { assets } from '@/assets/assets'
 import FileCard from './FileCard.vue'
 import FileService from '@/service/FileService'
 import { ElNotification, ElPagination } from 'element-plus'
+import ExpandWindow from '@/components/FileUpload/ExpandWindow.vue'
 
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -182,6 +180,8 @@ body.dark .wolfram-card__title {
 }
 
 .file-cards-pagination-controls-container {
+  position: fixed;
+  bottom: 0;
   margin-top: 30px;
   margin-bottom: 30px;
   width: 100%;
