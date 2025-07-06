@@ -16,7 +16,7 @@
       </div>
     </template>
     <template #content>
-      <div v-if="total===0" class="empty-tip">暂无文件</div>
+      <div v-if="total===0" class="empty-tip">{{ t('fileCard.emptyTip') }}</div>
       <div class="file-cards-grid">
         <FileCard v-for="file in files" :key="file.id" :url="file.url" :name="file.name" />
       </div>

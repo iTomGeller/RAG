@@ -24,7 +24,8 @@
           max-files="8"
           allow-multiple="false"
           allow-revert="false"
-          accepted-file-types="text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"
+          :file-validate-type-detect-type="customTypeDetector"
+          accepted-file-types="text/plain, md/xlsx/xls, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"
           :fileValidateTypeLabelExpectedTypes="t('fileUpload.invalidate')"
           instant-upload="false"
           :server="serverOptions"
@@ -59,7 +60,18 @@ const { t } = useI18n()
 
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import baseURL from '@/config/baseURL.js'
-
+//filepond自定义限制文件类型
+const customTypeDetector = (source, type) => {
+  return new Promise(function (resolve) {
+    // 通过文件扩展名检测类型
+    const extension = source.name.split('.').pop().toLowerCase()
+    if (extension === 'xls' || extension === 'xlsx' || extension === 'md') {
+      resolve('md/xlsx/xls')
+    } else {
+      resolve(type)
+    }
+  })
+}
 // 注册插件并创建 FilePond 组件
 const FilePond = vueFilePond(FilePondPluginFileValidateSize, FilePondPluginFileValidateType)
 const token = localStorage.getItem('token')
@@ -207,7 +219,7 @@ body.dark .wolfram-card__icon {
 body.dark .wolfram-card__title {
   color: #c7c7c7;
 }
-.dialog-container{
+.dialog-container {
   text-align: start;
 }
 

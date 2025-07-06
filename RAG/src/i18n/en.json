@@ -77,6 +77,9 @@
     "bgTransparency": "Background Transparency",
     "resetTheme": "Reset to Default"
   },
+  "fileCard":{
+    "emptyTip": "empty..."
+  },
   "fileUpload": {
     "categorize": "Drop a file here and I'll automatically categorize it for you...",
     "upload": "Drag and drop a document file here<br/><span class='file-types'>Supported formats: txt, doc, docx, md, pdf, xls, xlsx</span>",
