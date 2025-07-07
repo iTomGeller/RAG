@@ -201,6 +201,7 @@ export const ChatService = {
     console.log('get history')
   },
   async changeCurrentChat(id) {
+    sources.value = [] // 清空之前的 sources
     stopChatSys() // 停止当前聊天
     currentId.value = id
     this.getPrevContent() // 获取新的聊天内容

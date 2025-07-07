@@ -21,36 +21,37 @@
           :type="item.type"
           :text="item.text"
         />
-        <div class="source-container">
-          <transition name="scale">
-            <div v-show="hasSource" class="source" ref="sourceRef">
-              <div class="source-title-box" @click="handleSourceCardClick">
-                <span class="source-title">{{ t('chat.sourceTip') }}</span>
-                <el-icon color="#ffffff" class="source-icon"><ArrowDownBold /></el-icon>
-              </div>
-              <span
-                class="source-cards"
-                :class="{ 'two-columns': shouldUseTwoColumns }"
-                v-show="sourceExtended"
-              >
-                <transition-group name="scale" mode="out-in">
-                  <FileCard
-                    v-for="(file, index) in sources"
-                    :key="index"
-                    :url="file.url"
-                    :name="file.title"
-                    class="source-card"
-                    v-show="sourceExtended"
-                /></transition-group>
-              </span>
-            </div>
-          </transition>
-        </div>
       </div>
 
       <FeedbackDrawer v-model:visible="isDrawerVisible" />
 
       <div class="main-bottom">
+        <transition name="scale">
+          <div v-if="hasSource && !sourceHiden" class="source" ref="sourceRef">
+            <div class="source-title-box" @click="handleSourceCardClick">
+              <el-icon color="#ffffff" class="source-icon"><ArrowDownBold /></el-icon>
+              <span class="source-title">{{ t('chat.sourceTip') }}</span>
+              <div class="source-hide" @click.stop="handleHideButtonClick">
+                <el-icon size="small" color="grey"><CloseBold /></el-icon>
+              </div>
+            </div>
+            <span
+              class="source-cards"
+              :class="{ 'two-columns': shouldUseTwoColumns }"
+              v-show="sourceExtended"
+            >
+              <transition-group name="scale" mode="out-in">
+                <FileCard
+                  v-for="(file, index) in sources"
+                  :key="index"
+                  :url="file.url"
+                  :name="file.title"
+                  class="source-card"
+                  v-show="sourceExtended"
+              /></transition-group>
+            </span>
+          </div>
+        </transition>
         <div class="search-box">
           <input
             v-model="input"
@@ -82,8 +83,9 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
 import { assets } from '@/assets/assets'
+import { CloseBold } from '@element-plus/icons-vue'
 import { ArrowDownBold } from '@element-plus/icons-vue'
 import SuggestCards from './SuggestCards.vue'
 import ProfileFloating from '../Profile/ProfileFloating.vue'
@@ -92,7 +94,6 @@ import Message from './Message.vue'
 import FeedbackDrawer from '../Siderbar/FeedbackDrawer.vue'
 import { ChatService, messageContent, showResult, loading, sources } from '@/service/ChatService'
 import FileCard from '../FileUpload/FileCard.vue'
-import VirtualList from 'vue3-virtual-scroll-list' //虚拟滚动
 import { gsap } from 'gsap' // 引入GSAP
 import { useI18n } from 'vue-i18n' //全局语言切换
 const { t } = useI18n()
@@ -108,8 +109,13 @@ const { t } = useI18n()
 
 const input = ref('')
 const sendButtonVisible = computed(() => input.value.trim() !== '')
+
+const sourceHiden = ref(false) //手动控制显资源框
 const sendMessage = () => {
-  sourceExtended.value = false //发送消息时，让source列表回归默认状态
+  sourceHiden.value = false
+  if (sourceExtended.value === true) {
+    toggleSourceCard()
+  }
   ChatService.setInput(input.value)
   ChatService.sendMessage()
   input.value = '' // 清空输入框
@@ -121,6 +127,33 @@ const handleSuggest = (suggestinput) => {
 }
 const sourceRef = ref(null) //资源框
 const resultRef = ref(null) //对话列表
+let isUserScrolling = false
+resultRef.value?.addEventListener('scroll', () => {
+  const { scrollTop, scrollHeight, clientHeight } = resultRef.value
+  isUserScrolling = scrollTop + clientHeight < scrollHeight - 50
+})
+
+// 智能滚动逻辑
+watch(
+  messageContent,
+  async () => {
+    await nextTick()
+    if (!isUserScrolling && resultRef.value) {
+      const smoothScroll = () => {
+        resultRef.value.scrollTo({
+          top: resultRef.value.scrollHeight,
+          behavior: 'smooth',
+        })
+      }
+
+      // 性能优化：使用RAF减少重绘
+      requestAnimationFrame(() => {
+        requestAnimationFrame(smoothScroll)
+      })
+    }
+  },
+  { deep: true },
+)
 const scrollToBottom = () => {
   if (resultRef.value && sourceExtended.value) {
     resultRef.value.scrollTo({
@@ -134,7 +167,13 @@ const scrollToBottom = () => {
     })
   }
 }
-const handleSourceCardClick = async () => {
+const handleSourceCardClick = () => {
+  toggleSourceCard()
+}
+const handleHideButtonClick = () => {
+  sourceHiden.value = true
+}
+const toggleSourceCard = async () => {
   sourceExtended.value = !sourceExtended.value
   if (sourceRef.value) {
     const sourceAmount = sources.value.length
@@ -142,11 +181,11 @@ const handleSourceCardClick = async () => {
       duration: 0.1,
       width: sourceExtended.value ? `${sourceAmount < 4 ? 300 : 600}px` : '300px',
       height: sourceExtended.value ? `${getSourceRow(sourceAmount)}px` : '45px',
+      marginBottom: sourceExtended.value ? '60px' : '10px',
       ease: 'power2.out',
       transformOrigin: 'top center',
     })
   }
-  scrollToBottom()
 }
 const shouldUseTwoColumns = computed(() => sources.value.length > 3)
 const getSourceRow = (amount) => {
@@ -179,16 +218,13 @@ onUnmounted(() => {})
 
 <style scoped>
 @import './Main.css';
-.source-container {
-  height: 400px;
-}
 .source {
   cursor: pointer;
   transition: all 0.2s ease;
   justify-self: center;
   width: 300px;
   height: 45px;
-  margin-top: 20px;
+  margin-bottom: 10px;
   border-radius: 15px;
   background-color: #67c23a;
 }
@@ -198,7 +234,7 @@ body.dark .source {
 .source-title-box {
   align-items: center;
   margin-bottom: 10px;
-  padding: 10px 32px;
+  padding: 10px 0px;
   border-radius: 10px;
   width: auto;
   display: flex;
@@ -216,6 +252,7 @@ body.dark .source:hover {
   color: #ffffff;
 }
 .source-icon {
+  margin-left: 15px;
   font-size: 18px;
 }
 .source-cards {
@@ -241,7 +278,17 @@ body.dark .source-cards {
   margin: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
-
+.source-hide {
+  margin-right: 10px;
+  margin-left: 60px;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .send-icon {
   cursor: pointer;
 }
