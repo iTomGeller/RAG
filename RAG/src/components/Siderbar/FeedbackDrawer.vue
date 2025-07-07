@@ -37,7 +37,7 @@
       <div class="recent-feedback-item" v-for="(item, index) in recentFeedback" :key="index">
         <el-card style="width: 100%; margin-bottom: 5px" shadow="hover">
           <div class="content">
-            <div>{{ item.id }}</div>
+            <!-- <div>{{ item.id }}</div> -->
             <div>{{ item.content }}</div>
             <el-button type="text" @click="deleteFeedback(item.id)"
               ><el-icon><Delete /></el-icon
