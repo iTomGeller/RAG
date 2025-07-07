@@ -150,14 +150,15 @@ const windowStyle = computed(() => {
 
 .window-content {
   position: absolute;
-  top: -50%;
-  left: -50%;
+  top: -80%;
+  left: -5%;
   margin-top: 10px;
   border: 1px solid #ddd;
   border-radius: 6px;
   overflow: hidden;
   z-index: 1000;
   transform: v-bind('windowStyle.transform');
+  background-color: #fff;
 }
 body.dark .window-content {
   border-color: #555;
@@ -200,7 +201,6 @@ body.dark .window-header {
 .window-body {
   padding: 15px;
   height: calc(100% - 42px); /* 减去标题栏高度 */
-  background-color: #fff;
   overflow: auto;
 }
 body.dark .window-body {

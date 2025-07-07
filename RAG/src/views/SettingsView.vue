@@ -61,7 +61,7 @@
           <div class="settings-card">
             <!-- 主题设置 -->
             <div class="settings-row">
-              <span>{{ t('settings.language') }}</span>
+              <span>{{ t('settings.theme') }}</span>
               <el-switch
                 v-model="isDarkMode"
                 @change="applyTheme"

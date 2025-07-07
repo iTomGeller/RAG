@@ -12,9 +12,9 @@
       :before-close="clickCancel"
       v-model="dialog"
       size="80%"
-      :title="t('fileUpload.categorize')"
       :with-header="false"
     >
+      <div class="upload-title">{{ t('fileUpload.categorize') }}</div>
       <div class="upload-container">
         <!-- FilePond 文件上传区域 -->
         <file-pond
@@ -85,23 +85,6 @@ const iconUrl = assets.folder_icon
 
 const title = t('knowledgebase.upload')
 const dialog = ref(false)
-
-// const visiable = ref(false)
-// const handleClick = () => {
-//   visiable.value = true
-// }
-// const onCancel = () => {
-//   visiable.value = false
-//   clear()
-// }
-// // 添加文件到本地列表
-// const handleAddFile = (error, file) => {
-//   if (!error) {
-//     files.value.push(file)
-//   }
-// }
-// const title = '上传文件到您的知识库'
-
 const close = () => {
   dialog.value = false
 }
@@ -140,7 +123,7 @@ const handleUploadSuccess = (error, file) => {
       pondRef.value?.removeFile(file.id)
     }, 7000)
   } else {
-    ElNotification.error('上传失败',error)
+    ElNotification.error('上传失败', error)
   }
 }
 //文件分类信息
@@ -222,7 +205,11 @@ body.dark .wolfram-card__title {
 .dialog-container {
   text-align: start;
 }
+.upload-title{
+  text-align: center;
+  font-size: 18px;
 
+}
 .upload-container {
   width: 400px;
   margin: 20px auto;

@@ -148,7 +148,7 @@ body.dark .home-avatar {
 }
 .upload-btn:hover {
   color: #52a7ff;
-  background-color: #ecf5ff;
+  background-color: rgb(24.4, 33.8, 43.5);
   transition: background-color 0.3s ease;
 }
 .act-btn {
