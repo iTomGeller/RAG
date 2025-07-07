@@ -1,10 +1,5 @@
 <template>
-  <ExpandWindow
-    :title="props.name"
-    auto-size="true"
-    @open="windowOpen"
-    @close="windowClose"
-  >
+  <ExpandWindow :title="props.name" auto-size="true" @open="windowOpen" @close="windowClose">
     <template #button>
       <div class="wolfram-card" @click="handleClick">
         <div class="wolfram-card__icon-wrapper">
@@ -16,13 +11,13 @@
       </div>
     </template>
     <template #content>
-      <div v-if="total===0" class="empty-tip">{{ t('fileCard.emptyTip') }}</div>
-      <div class="file-cards-grid">
+      <div v-if="total === 0" class="empty-tip">{{ t('fileCard.emptyTip') }}</div>
+      <div class="file-cards-grid" :class="{ 'single-item-center': total === 1 }">
         <FileCard v-for="file in files" :key="file.id" :url="file.url" :name="file.name" />
       </div>
 
       <!-- 分页控件 -->
-      <div v-if="total>0" class="file-cards-pagination-controls-container">
+      <div v-if="total > 0" class="file-cards-pagination-controls-container">
         <el-pagination
           @current-change="handleCurrentChange"
           :current-page="currentPage"
@@ -73,7 +68,7 @@ const title = props.title || 'Error'
 const description = props.description || 'Engineer is great science'
 
 onMounted(() => {
-  refresh()
+  // refresh()
 })
 
 const handleClick = () => {
@@ -177,14 +172,14 @@ body.dark .wolfram-card__title {
 
 .file-cards-grid {
   display: grid;
-
-  /* For 2 columns: repeat(2, 1fr) */
-  /* For responsive columns: repeat(auto-fill, minmax(280px, 1fr)) */
-
   grid-template-columns: repeat(2, 1fr);
-  /* grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); */
   gap: 30px;
   padding: 20px 0;
+}
+.file-cards-grid.single-item-center {
+  gap:0px;
+  grid-template-columns: repeat(1, 1fr);
+  justify-items: center;
 }
 .empty-tip {
   justify-self: center;
@@ -196,7 +191,6 @@ body.dark .wolfram-card__title {
 
 .file-cards-pagination-controls-container {
   margin-top: 30px;
-  margin-bottom: 30px;
   width: 100%;
   display: flex;
   justify-content: center;
