@@ -32,6 +32,7 @@
           background
         />
       </div>
+      <FileUploadButton :-base-id="props.id"/>
     </template>
   </ExpandWindow>
 </template>
@@ -45,6 +46,7 @@ import { ElNotification, ElPagination } from 'element-plus'
 import ExpandWindow from '@/components/FileUpload/ExpandWindow.vue'
 
 import { useI18n } from 'vue-i18n'
+import FileUploadButton from './FileUploadButton.vue'
 const { t } = useI18n()
 
 const props = defineProps({
@@ -189,7 +191,7 @@ body.dark .wolfram-card__title {
   align-items: center;
   padding: 50px 80px;
   border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.319);
+  /* background-color: rgba(0, 0, 0, 0.319); */
 }
 
 .file-cards-pagination-controls-container {

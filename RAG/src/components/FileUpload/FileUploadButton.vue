@@ -1,6 +1,6 @@
 <template>
   <img
-    :src="assets.gallery_icon"
+    :src="assets.folder_icon"
     @click="dialog = true"
     alt="Gallery Icon"
     style="cursor: pointer; width: 30px; height: 30px"
@@ -39,13 +39,24 @@
 
 <script setup>
 import { assets } from '@/assets/assets'
-import { ref} from 'vue'
+import { ref , defineProps, onMounted} from 'vue'
 import vueFilePond from 'vue-filepond'
 import 'filepond/dist/filepond.min.css'
 import { ElMessage } from 'element-plus'
 import baseURL from '@/config/baseURL.js'
 import FileService from '@/service/FileService.js'
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
+
+const props = defineProps({
+  BaseId: Number,
+})
+
+onMounted(
+  ()=>{
+    console.log("BaseId",props.BaseId)
+  }
+)
+
 
 const FilePond = vueFilePond(FilePondPluginFileValidateSize)
 const token = localStorage.getItem('token')
@@ -72,7 +83,7 @@ const close = () => {
 // 服务器上传配置
 const serverOptions = {
   process: {
-    url: `${baseURL}/files/upload/2`, // 此处的数字对应知识库id
+    url: `${baseURL}/files/upload/${props.BaseId}`, 
     method: 'POST',
     timeout: 7000,
     withCredentials: true,
