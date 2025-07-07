@@ -1,5 +1,36 @@
 <template>
+  <!-- 最近反馈弹窗 -->
+  <el-dialog
+    :before-close="clickCancel"
+    :visible.sync="isDialogVisible"
+    title="最近反馈"
+    width="50%"
+    :close-on-click-modal="false"
+  >
+    <div class="recent-feedback">
+      <div class="recent-feedback-item" v-for="(item, index) in recentFeedback" :key="index">
+        <el-card style="width: 100%; margin-bottom: 10px" shadow="hover">
+          <div class="content">
+            <div>{{ item.id }}</div>
+            <div>{{ item.content }}</div>
+            <el-button type="text" @click="deleteFeedback(item.id)"><el-icon><Delete/></el-icon></el-button>
+          </div>
+        </el-card>
+      </div>
+    </div>
 
+    <!-- 分页控件 -->
+    <div class="file-cards-pagination-controls-container">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :layout="'prev, pager, next'"
+        :total="total"
+        background
+      />
+    </div>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -34,9 +65,9 @@ const refresh = async () => {
   }
 }
 
-// defineExpose({
-//     refresh,
-// })
+defineExpose({
+    refresh,
+})
 
 
 const handleCurrentChange = async (newPage) => {
