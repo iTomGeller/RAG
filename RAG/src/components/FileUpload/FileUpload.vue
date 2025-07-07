@@ -110,7 +110,7 @@ const serverOptions = {
   process: {
     url: `${baseURL}/files/upload/auto-classify`, // 此处的数字对应知识库id
     method: 'POST',
-    timeout: 7000,
+    timeout: 30000,
     withCredentials: true,
     headers: {
       Authorization: `Bearer ${token}`, // 如果需要认证
