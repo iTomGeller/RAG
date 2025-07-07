@@ -150,8 +150,8 @@ const windowStyle = computed(() => {
 
 .window-content {
   position: absolute;
-  top: -50%;
-  left: -50%;
+  top: -80%;
+  left: -30%;
   margin-top: 10px;
   border: 1px solid #ddd;
   border-radius: 6px;

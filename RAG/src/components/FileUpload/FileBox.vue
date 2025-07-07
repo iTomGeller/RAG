@@ -12,8 +12,14 @@
     </template>
     <template #content>
       <div v-if="total === 0" class="empty-tip">{{ t('fileCard.emptyTip') }}</div>
-      <div class="file-cards-grid" :class="{ 'single-item-center': total === 1 }">
-        <FileCard v-for="file in files" :key="file.id" :url="file.url" :name="file.name" />
+      <div v-else class="file-cards-grid" :class="{ 'single-item-center': total === 1 }">
+        <FileCard
+          class="file-card"
+          v-for="file in files"
+          :key="file.id"
+          :url="file.url"
+          :name="file.name"
+        />
       </div>
 
       <!-- 分页控件 -->
@@ -27,7 +33,7 @@
           background
         />
       </div>
-      <FileUploadButton :-base-id="props.id"/>
+      <FileUploadButton :baseId="props.id" :baseName="props.name" />
     </template>
   </ExpandWindow>
 </template>
@@ -177,20 +183,26 @@ body.dark .wolfram-card__title {
   padding: 20px 0;
 }
 .file-cards-grid.single-item-center {
-  gap:0px;
+  gap: 0px;
   grid-template-columns: repeat(1, 1fr);
   justify-items: center;
 }
+.file-card {
+  max-width: 220px;
+}
+
 .empty-tip {
   justify-self: center;
   align-items: center;
-  padding: 50px 80px;
+  padding: 20px 120px;
+  margin-top: 10px;
   border-radius: 10px;
   /* background-color: rgba(0, 0, 0, 0.319); */
 }
 
 .file-cards-pagination-controls-container {
-  margin-top: 30px;
+  margin-top: 0px;
+  margin-bottom: 20px;
   width: 100%;
   display: flex;
   justify-content: center;

@@ -85,23 +85,6 @@ const iconUrl = assets.folder_icon
 
 const title = t('knowledgebase.upload')
 const dialog = ref(false)
-
-// const visiable = ref(false)
-// const handleClick = () => {
-//   visiable.value = true
-// }
-// const onCancel = () => {
-//   visiable.value = false
-//   clear()
-// }
-// // 添加文件到本地列表
-// const handleAddFile = (error, file) => {
-//   if (!error) {
-//     files.value.push(file)
-//   }
-// }
-// const title = '上传文件到您的知识库'
-
 const close = () => {
   dialog.value = false
 }
