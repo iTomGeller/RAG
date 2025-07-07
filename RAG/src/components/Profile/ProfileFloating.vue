@@ -27,7 +27,7 @@
             <div class="upload-btn"><AvatarUpload /></div>
 
             <!-- 组合式api内部，不需要导入，使用this点取的语法 -->
-            <el-button class="act-btn" @click="logout">{{ this.$t('profile.logout') }}</el-button>
+            <el-button class="act-btn" @click="clickLogout">{{ this.$t('profile.logout') }}</el-button>
           </div>
         </div>
       </div>
@@ -42,6 +42,7 @@
 
 <script>
 import AvatarUpload from './AvatarUpload.vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
   name: 'ProfileFloating',
@@ -64,6 +65,27 @@ export default {
   methods: {
     editProfile() {
       console.log('edit profile')
+    },
+    clickLogout() {
+  ElMessageBox.confirm('确认要退出登录吗？', '确认', {
+    confirmButtonText: '退出',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(() => {
+      ElMessage({
+        type: 'success',
+        message: '推出成功，回到登录页面',
+      })
+      this.logout()
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '已取消',
+      })
+    })
+
     },
     logout() {
       localStorage.removeItem('userInfo')

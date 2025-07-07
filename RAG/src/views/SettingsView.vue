@@ -33,7 +33,7 @@
                 <span>{{ user.email }}</span>
               </div>
               <div class="settings-row">
-                <div class="act-btn" @click="logout">{{ t('profile.logout') }}</div>
+                <div class="act-btn" @click="ClickLogout">{{ t('profile.logout') }}</div>
               </div>
             </div>
           </div>
@@ -97,7 +97,7 @@
 </template>
 <script setup>
 import { onMounted, ref, watch } from 'vue'
-import { ElButton } from 'element-plus'
+import { ElButton, ElMessageBox, ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import ThemeController from '@/components/utils/themeChange'
 import { ElDivider } from 'element-plus'
@@ -169,6 +169,26 @@ const resetTheme = () => {
   bgOpacity.value = 100
   applyTheme()
   localStorage.removeItem('theme')
+}
+const ClickLogout = () => {
+  ElMessageBox.confirm('确认要退出登录吗？', '确认', {
+    confirmButtonText: '退出',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(() => {
+      ElMessage({
+        type: 'success',
+        message: '推出成功，回到登录页面',
+      })
+      logout()
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '已取消',
+      })
+    })
 }
 //用户登出
 const logout = () => {
