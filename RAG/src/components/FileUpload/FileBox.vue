@@ -1,41 +1,39 @@
 <template>
-  <div class="wolfram-card" @click="handleClick">
-    <div class="wolfram-card__icon-wrapper">
-      <img :src="iconUrl" :alt="title + ' Icon'" class="wolfram-card__icon" />
-    </div>
-    <div class="wolfram-card__content">
-      <h3 class="wolfram-card__title">{{ props.name }}</h3>
-    </div>
-  </div>
-
-  <el-dialog
-    :before-close="clickCancel"
-    v-model="visiable"
+  <ExpandWindow
     :title="props.name"
-    size="80%"
-    :with-header="false"
+    auto-size="true"
+    @open="windowOpen"
+    @close="windowClose"
   >
-    <div class="file-cards-grid">
-      <FileCard
-        v-for="file in files"
-        :key="file.id"
-        :url="file.url"
-        :name="file.name"
-      />
-    </div>
+    <template #button>
+      <div class="wolfram-card" @click="handleClick">
+        <div class="wolfram-card__icon-wrapper">
+          <img :src="iconUrl" :alt="title + ' Icon'" class="wolfram-card__icon" />
+        </div>
+        <div class="wolfram-card__content">
+          <h3 class="wolfram-card__title">{{ props.name }}</h3>
+        </div>
+      </div>
+    </template>
+    <template #content>
+      <div v-if="total===0" class="empty-tip">{{ t('fileCard.emptyTip') }}</div>
+      <div class="file-cards-grid">
+        <FileCard v-for="file in files" :key="file.id" :url="file.url" :name="file.name" />
+      </div>
 
-    <!-- 分页控件 -->
-    <div class="file-cards-pagination-controls-container">
-      <el-pagination
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :layout="'prev, pager, next'"
-        :total="total"
-        background
-      />
-    </div>
-  </el-dialog>
+      <!-- 分页控件 -->
+      <div v-if="total>0" class="file-cards-pagination-controls-container">
+        <el-pagination
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :layout="'prev, pager, next'"
+          :total="total"
+          background
+        />
+      </div>
+    </template>
+  </ExpandWindow>
 </template>
 
 <script setup>
@@ -44,9 +42,10 @@ import { assets } from '@/assets/assets'
 import FileCard from './FileCard.vue'
 import FileService from '@/service/FileService'
 import { ElNotification, ElPagination } from 'element-plus'
+import ExpandWindow from '@/components/FileUpload/ExpandWindow.vue'
 
-import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const props = defineProps({
   id: Number,
@@ -108,7 +107,8 @@ const handleCurrentChange = async (newPage) => {
 .wolfram-card {
   display: flex;
   align-items: center;
-  width: 400px;
+  max-width: 400px;
+  width: 24vw;
   padding: 16px;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
@@ -118,6 +118,11 @@ const handleCurrentChange = async (newPage) => {
   transition:
     transform 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out;
+}
+body.dark .wolfram-card {
+  background-color: rgba(44, 44, 44, var(--opacity));
+  border-color: #444;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .wolfram-card:hover {
@@ -137,6 +142,9 @@ const handleCurrentChange = async (newPage) => {
   object-fit: contain;
   background-color: #f0f0f0;
 }
+body.dark .wolfram-card__icon {
+  background-color: #3c3c3c;
+}
 
 .wolfram-card__content {
   flex-grow: 1;
@@ -147,6 +155,9 @@ const handleCurrentChange = async (newPage) => {
   font-size: 1.2em;
   color: #333;
   font-weight: 600;
+}
+body.dark .wolfram-card__title {
+  color: #c7c7c7;
 }
 
 .wolfram-card__description {
@@ -172,6 +183,13 @@ const handleCurrentChange = async (newPage) => {
   /* grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); */
   gap: 30px;
   padding: 20px 0;
+}
+.empty-tip {
+  justify-self: center;
+  align-items: center;
+  padding: 50px 80px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.319);
 }
 
 .file-cards-pagination-controls-container {

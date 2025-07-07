@@ -9,21 +9,31 @@
           <div class="settings-item-title">
             {{ t('settings.user') }}
           </div>
-          <div class="setting-item-subtitle">在这里设置你的用户信息</div>
+          <div class="setting-item-subtitle">{{ t('settings.userTip') }}</div>
           <el-divider />
           <div class="user">
             <!-- 用户设置 -->
             <div class="settings-card avatar">
-              <img :src="user.avatarUrl" alt="User Avatar" class="user-avatar" />
+              <div class="settings-row">
+                <img :src="user.avatarUrl" alt="User Avatar" class="user-avatar" />
+              </div>
+              <div class="settings-row">
+                <div class="act-btn upload-btn">
+                  <AvatarUpload />
+                </div>
+              </div>
             </div>
             <div class="settings-card info">
               <div class="settings-row">
-                <span>用户名：</span>
+                <span>{{ t('login.username') }}</span>
                 <span>{{ user.username }}</span>
               </div>
               <div class="settings-row">
-                <span>邮箱：</span>
+                <span>{{ t('login.email') }}</span>
                 <span>{{ user.email }}</span>
+              </div>
+              <div class="settings-row">
+                <div class="act-btn" @click="logout">{{ t('profile.logout') }}</div>
               </div>
             </div>
           </div>
@@ -32,12 +42,12 @@
           <div class="settings-item-title">
             {{ t('settings.language') }}
           </div>
-          <div class="setting-item-subtitle">在这里设置你的语言</div>
+          <div class="setting-item-subtitle">{{ t('settings.languageTip') }}</div>
           <el-divider />
           <div class="settings-card">
             <!-- 语言设置 -->
             <div class="settings-row">
-              <span>全局语言：</span>
+              <span>{{ t('settings.languageTag') }}</span>
               <TranslateButton />
             </div>
           </div>
@@ -46,12 +56,12 @@
           <div class="settings-item-title">
             {{ t('settings.theme') }}
           </div>
-          <div class="setting-item-subtitle">在这里设置你的主题</div>
+          <div class="setting-item-subtitle">{{ t('settings.themeTip') }}</div>
           <el-divider />
           <div class="settings-card">
             <!-- 主题设置 -->
             <div class="settings-row">
-              <span>主题切换：</span>
+              <span>{{ t('settings.language') }}</span>
               <el-switch
                 v-model="isDarkMode"
                 @change="applyTheme"
@@ -63,15 +73,15 @@
             </div>
 
             <div class="settings-row">
-              <span>背景透明度：</span>
+              <span class="opacity-tag">{{ t('settings.bgTransparency') }}</span>
               <el-slider v-model="bgOpacity" :min="0" :max="100" @change="applyTheme()" />
             </div>
             <div class="settings-row">
-              <span>主要颜色：</span>
+              <span>{{ t('settings.mainColor') }}：</span>
               <el-color-picker v-model="primaryColor" @change="applyTheme()" />
             </div>
             <div class="settings-row">
-              <span>恢复默认设置：</span>
+              <span>{{ t('settings.resetTheme') }}：</span>
               <el-button size="small" icon="refresh" @click="resetTheme">{{
                 t('settings.reset')
               }}</el-button>
@@ -93,7 +103,7 @@ import ThemeController from '@/components/utils/themeChange'
 import { ElDivider } from 'element-plus'
 import ProfileFloating from '@/components/Profile/ProfileFloating.vue'
 import TranslateButton from '@/components/Main/TranslateButton.vue'
-
+import AvatarUpload from '@/components/Profile/AvatarUpload.vue'
 //用户信息
 const user = ref({
   username: '',
@@ -160,15 +170,27 @@ const resetTheme = () => {
   applyTheme()
   localStorage.removeItem('theme')
 }
+//用户登出
+const logout = () => {
+  localStorage.removeItem('userInfo')
+  location.reload() //跳转
+}
 </script>
 
 <style scoped>
+.testbutton {
+  width: 100px;
+  height: 60px;
+}
 .settings-item {
   height: auto;
   padding: 20px;
   background-color: #f0f4f9;
   border-radius: 10px;
   position: relative;
+}
+body.dark .settings-item {
+  background-color: rgba(59, 59, 59, var(--opacity));
 }
 .settings-title {
   color: #585858;
@@ -177,10 +199,16 @@ const resetTheme = () => {
   padding-right: 50px;
   white-space: nowrap;
 }
+body.dark .settings-title {
+  color: #c7c7c7;
+}
 .settings-item-title {
   font-size: 20px;
   font-weight: 600;
   color: #585858;
+}
+body.dark .settings-item-title {
+  color: #cfcfcf;
 }
 .setting-item-subtitle {
   font-size: 14px;
@@ -196,23 +224,29 @@ const resetTheme = () => {
 }
 .settings-list {
   margin-right: 4vw;
-  margin-top: 20vh;
+  margin-top: 6vh;
   padding-bottom: 20vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 25px;
 }
+.settings-center::-webkit-scrollbar {
+  display: none;
+}
 .settings-card {
-  /* padding: 20px; */
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+body.dark .settings-card {
+  background-color: #4a4a4a;
+}
 .settings-card.avatar {
-  padding: 20px 0px;
-  width: 100px;
+  width: 150px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 .settings-card.info {
@@ -220,17 +254,33 @@ const resetTheme = () => {
   width: 100%;
 }
 .settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  color: #333333;
+  font-weight: 400;
   padding: 10px 20px;
   cursor: pointer;
 }
+body.dark .settings-row {
+  color: #cfcfcf;
+}
 .settings-row:hover {
   background-color: #f5f5f5;
+}
+body.dark .settings-row:hover {
+  background-color: #5a5a5a;
+}
+.opacity-tag {
+  width: 200px;
 }
 .user {
   display: flex;
   flex-direction: row;
   gap: 20px;
 }
+
 .settings-container {
   height: 100vh;
   background-color: var(--el-bg-color);
@@ -249,98 +299,22 @@ const resetTheme = () => {
   justify-self: right;
   margin-right: 20px;
 }
-
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-}
-
-.el-button.is-link {
-  color: var(--font-normal);
-}
-
-.el-button.is-link:hover {
-  color: var(--primary-color);
-}
-
-.theme-card {
-  margin-top: 16px;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.settings-header h2 {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0;
-  padding: 16px;
-  border-bottom: 1px solid var(--el-border-color-light);
-}
-
-.theme-toggle {
-  padding: 16px;
-  border-bottom: 1px solid var(--el-border-color-light);
-}
-
-.theme-switch {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.theme-preview {
-  padding: 16px;
-}
-
-.theme-preview h3 {
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 16px;
+.act-btn {
+  font-size: 14px;
   font-weight: 500;
-}
-
-.preview-container {
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  border: 1px solid var(--el-border-color-light);
-}
-
-.preview-header {
-  padding: 12px 16px;
-  background-color: var(--el-bg-secondary);
-  transition: background-color 0.3s ease;
-}
-
-.preview-nav {
+  color: #717171;
+  border-radius: 10px;
+  width: 100%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  height: 40px;
 }
-
-.preview-content {
-  padding: 16px;
-  background-color: var(--el-bg-color);
-  transition: background-color 0.3s ease;
+body.dark .act-btn {
+  color: #a9a9a9;
 }
-
-.preview-card {
-  padding: 16px;
-  border-radius: 4px;
-  background-color: var(--el-bg-secondary);
-  border: 1px solid var(--el-border-color-light);
-  color: var(--el-text-color-primary);
-  transition: all 0.3s ease;
-}
-
-.advanced-settings {
-  padding: 16px;
-}
-
-.advanced-settings h3 {
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 16px;
-  font-weight: 500;
+.act-btn.upload-btn {
+  width: 100px;
 }
 </style>

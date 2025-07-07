@@ -6,14 +6,13 @@
       trigger="hover"
       width="250px"
       offset="20"
-      :popper-style ="{borderRadius: '30px'}"
+      :popper-style="{ borderRadius: '30px' }"
     >
-
       <!-- content goes here -->
       <div class="profile-content">
         <!-- user information -->
         <div class="user-info">
-          <img :src="user.avatarUrl " alt="User Avatar" class="avatar" />
+          <img :src="user.avatarUrl" alt="User Avatar" class="avatar" />
           <div class="user-details">
             <h3>{{ user.username }}</h3>
             <p>{{ user.email }}</p>
@@ -23,29 +22,30 @@
         <!-- user options -->
         <div class="profile-actions">
           <div class="btn-box">
-          <!-- <el-button class="act-btn" @click="editProfile">Update Avatar</el-button> -->
-          <AvatarUpload />
-          <!-- 组合式api内部，不需要导入，使用this点取的语法 -->
-          <el-button  class="act-btn" @click="logout">{{ this.$t('profile.logout') }}</el-button>
+            <!-- <el-button class="act-btn" @click="editProfile">Update Avatar</el-button> -->
+
+            <div class="upload-btn"><AvatarUpload /></div>
+
+            <!-- 组合式api内部，不需要导入，使用this点取的语法 -->
+            <el-button class="act-btn" @click="logout">{{ this.$t('profile.logout') }}</el-button>
           </div>
         </div>
       </div>
 
       <!-- avatar popover -->
       <template #reference>
-        <el-avatar :src="user.avatarUrl" class="home-avatar" alt="Avatar"/>
+        <el-avatar :src="user.avatarUrl" class="home-avatar" alt="Avatar" />
       </template>
     </el-popover>
   </div>
 </template>
 
 <script>
-import AvatarUpload from './AvatarUpload.vue';
-
+import AvatarUpload from './AvatarUpload.vue'
 
 export default {
   name: 'ProfileFloating',
-  components: {AvatarUpload},
+  components: { AvatarUpload },
   data() {
     return {
       user: {
@@ -56,20 +56,20 @@ export default {
     }
   },
   mounted() {
-    const userInfo = localStorage.getItem('userInfo');
+    const userInfo = localStorage.getItem('userInfo')
     if (userInfo) {
-      this.user = JSON.parse(userInfo);
+      this.user = JSON.parse(userInfo)
     }
   },
   methods: {
     editProfile() {
-      console.log('edit profile');
-      },
-      logout() {
-        localStorage.removeItem('userInfo');
-        location.reload(); //跳转
-      },
-  }
+      console.log('edit profile')
+    },
+    logout() {
+      localStorage.removeItem('userInfo')
+      location.reload() //跳转
+    },
+  },
 }
 </script>
 
@@ -77,7 +77,6 @@ export default {
 <!-- 使用 :popper-style="{ borderRadius: '30px' }" 控制边框圆角 -->
 
 <style scoped>
-
 .avatar {
   width: 60px;
   height: 60px;
@@ -111,21 +110,21 @@ export default {
   gap: 10px;
 }
 
-.btn-box  .act-btn {
+.btn-box .act-btn {
   flex: 1;
-  /* margin: 0 !important; */
   border: none;
-  
 }
 
 .home-avatar {
   margin-top: 10px;
   width: 60px;
   height: 60px;
-  border: 0.5px solid rgb(255, 255, 255);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   background-color: transparent;
+}
+body.dark .home-avatar {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 .btn-box {
@@ -137,11 +136,25 @@ export default {
   width: 210px;
   gap: 5px solid hsl(0, 7%, 9%);
 }
-
+.upload-btn {
+  font-weight: 500;
+  height: 50px;
+  width: 200px;
+  margin: 0 0 0 5px;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.upload-btn:hover {
+  color: #52a7ff;
+  background-color: #ecf5ff;
+  transition: background-color 0.3s ease;
+}
 .act-btn {
   height: 50px;
   width: 200px;
-  margin:0 0 0 5px !important;
+  margin: 0 0 0 5px !important;
   padding: 0 !important;
   background-color: transparent;
   border-radius: 20px;

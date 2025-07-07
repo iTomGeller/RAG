@@ -197,6 +197,7 @@ export const ChatService = {
         })
       }
     })
+    console.log('get history')
   },
   async changeCurrentChat(id) {
     stopChatSys() // 停止当前聊天
@@ -206,6 +207,8 @@ export const ChatService = {
     showResult.value = true
     loading.value = false
     input.value = ''
+    console.log('showResult:', showResult.value)
+    console.log('loading:', loading.value)
     console.log('Switched to chat with ID:', id)
   },
 

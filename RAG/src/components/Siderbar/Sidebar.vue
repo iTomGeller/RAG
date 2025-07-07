@@ -250,7 +250,7 @@ onUnmounted(() => {
 }
 
 body.dark .sidebar {
-  background-color: rgba(255, 255, 255, var(--opacity));
+  background-color: rgba(73, 73, 74, var(--opacity));
 }
 
 .sidebar .icon-box {

@@ -3,7 +3,8 @@
     "login": "登录",
     "username": "用户名",
     "password": "密码",
-    "register": "注册"
+    "register": "注册",
+    "email": "邮箱"
   },
   "suggestions": {
     "S001": "建议即将到来的公路旅行中值得看的美丽景点",
@@ -57,11 +58,15 @@
   "settings": {
     "title": "设置",
     "user": "用户",
+    "userTip": "在这里设置你的用户信息",
     "language": "语言设置",
+    "languageTag":"全局语言:",
+    "languageTip": "选择你喜欢的语言",
     "theme": "主题设置",
+    "themeTip": "选择你喜欢的主题",
     "light": "浅色主题",
     "dark": "深色主题",
-    "preview": "主题预览",
+    "toggle": "主题切换:",
     "nav": "导航栏",
     "reset": "重置",
     "content": "卡片内容",
@@ -69,12 +74,16 @@
     "secondaryBtn": "次要按钮",
     "advancedSettings": "高级设置",
     "mainColor": "主色调",
-    "bgTransparency": "背景透明度"
+    "bgTransparency": "背景透明度",
+    "resetTheme": "恢复默认设置"
+  },
+  "fileCard":{
+    "emptyTip": "暂无文件"
   },
   "fileUpload": {
     "categorize": "放入文件，我会帮你自动分类...",
     "upload": "拖放文档文件到这里<br/><span class='file-types'>支持格式: txt, doc, docx, md, pdf, xls, xlsx</span>",
-    "support": "支持格式：txt,doc,docx,md,pdf,xls,xlsx",
+    "support": "支持格式: txt,doc,docx,md,pdf,xls,xlsx",
     "invalidate": "文件类型不符合要求"
   },
   "avatarUpload": {

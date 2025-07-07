@@ -1,6 +1,6 @@
 <template>
-  <el-button  @click="dialog = true" alt="Logout Icon" class="act-btn"
-    > {{ t('profile.edit') }}</el-button>
+  <div  @click="dialog = true" alt="Logout Icon" class="act-btn"
+    > {{ t('profile.edit') }}</div>
 
   <el-dialog
     v-model="dialog"
@@ -246,12 +246,12 @@ const onCancel = () => {
 } */
 
 .act-btn {
-  height: 50px;
-  width: 200px;
-  margin: 0 0 0 5px !important;
-  padding: 0 !important;
+  white-space: nowrap;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: transparent;
-  border: none;
-  border-radius: 20px;
 }
 </style>
