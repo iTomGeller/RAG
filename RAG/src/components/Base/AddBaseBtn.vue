@@ -128,7 +128,7 @@ const handleClick = () => {
 }
 
 const handleCheck = async () => {
-  if (!baseName.value || !baseType.value) {
+  if (!baseName.value) {
     ElNotification.error({ message: currentLang.value === 'zh' ? '请填写所有字段' : 'Please fill in all fields' })
     return
   }
