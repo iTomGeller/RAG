@@ -143,6 +143,7 @@ export const ChatService = {
         this.changeCurrentChat(Date.now())
       }
       router.push('/home/chat') // 跳转到聊天页面
+      showResult.value = false
       const response = await api.delete(`/chat/delete?memoryId=${id}`)
       // 重新获取聊天列表
       await this.getChatList()

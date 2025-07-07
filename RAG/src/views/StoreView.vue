@@ -8,13 +8,15 @@
       </div>
 
       <div class="file-boxs-grid" :class="{ 'single-item-center': boxList.length === 1 }">
-        <FileBox
-          v-for="box in boxList"
-          :key="box.id"
-          :id="box.id"
-          :name="$t('knowledgebase.categories.' + box.name, box.name)"
-          :type="box.type"
-        />
+        <transition-group name="fade-slide" mode="out-in">
+          <div v-for="box in boxList" :key="box.id" class="file-box-wrapper">
+            <FileBox
+              :id="box.id"
+              :name="$t('knowledgebase.categories.' + box.name, box.name)"
+              :type="box.type"
+            />
+          </div>
+        </transition-group>
       </div>
 
       <div class="pagination-controls-container">
@@ -53,75 +55,55 @@ import { useI18n } from 'vue-i18n'
 import AddBaseBtn from '@/components/Base/AddBaseBtn.vue'
 const { t } = useI18n()
 
+// 所有知识库数据（本地存储）
+const allBoxes = ref([])
+// 当前页显示的知识库列表
 const boxList = ref([])
-const totalPage = ref(0)
+// 总数用于分页
 const totalBoxes = ref(0)
+// 当前页码，默认为第一页
+const currentPage = ref(1)
+// 每页显示的文件数量
+const pageSize = ref(4)
 
+// Element Plus 分页组件的布局
+const paginationLayout = ref('prev, pager, next') // 只显示上一页、页码和下一页
+
+// 在 mounted 时一次性获取所有数据
 onMounted(async () => {
+  refresh()
+})
+
+// 根据当前页码更新显示的数据
+const updateCurrentPageData = () => {
+  const startIndex = (currentPage.value - 1) * pageSize.value
+  const endIndex = startIndex + pageSize.value
+  boxList.value = allBoxes.value.slice(startIndex, endIndex)
+}
+
+// 刷新数据（仅更新当前页）
+const refresh = async () => {
   try {
-    const res = await BaseService.getUserBaseInfo({ page: 1, pageSize: pageSize.value })
-
-    boxList.value = res.list
-    totalBoxes.value = res.total
-    totalPage.value = res.totalPage
-
-    console.log(boxList.value)
-    console.log('boxList', boxList)
+    const res = await BaseService.getUserBaseInfo({ page: 1, pageSize: 100 }) // 获取全部数据
+    allBoxes.value = res.list
+    totalBoxes.value = res.list.length
+    updateCurrentPageData()
   } catch (error) {
     ElNotification.error({
       message: error.message,
     })
   }
-})
-
-const refresh = async () => {
-  try {
-    const res = await BaseService.getUserBaseInfo({
-      page: currentPage.value,
-      pageSize: pageSize.value,
-    })
-    boxList.value = res.list
-    totalBoxes.value = res.total
-    totalPage.value = res.totalPage
-  } catch {
-    ElNotification.error({
-      message: error.message,
-    })
-  }
 }
-const handleFileUploaded = async () => {
-  await refresh()
-}
-
-// --- 分页相关状态 ---
-const currentPage = ref(1) // 当前页码，默认为第一页
-const pageSize = ref(4) // 每页显示的文件数量，固定为4
-
-// Element Plus 分页组件的布局
-// 你可以根据需要调整，例如：'total, sizes, prev, pager, next, jumper'
-const paginationLayout = ref('prev, pager, next') // 只显示上一页、页码和下一页
-
-// 计算当前页需要显示的文件
-const paginatedFiles = computed(() => {
-  const startIndex = (currentPage.value - 1) * pageSize
-  const endIndex = startIndex + pageSize
-  return files.value.slice(startIndex, endIndex)
-})
 
 // 处理当前页码改变事件
-const handleCurrentChange = async (newPage) => {
+const handleCurrentChange = (newPage) => {
   currentPage.value = newPage
-  await refresh()
-  // 由于是前端分页，这里不需要再次调用 API，数据已在 paginatedFiles 中更新
+  updateCurrentPageData()
 }
 
 // 处理每页显示数量改变事件 (这里pageSize是固定值，但回调函数依然保留)
 const handleSizeChange = (newSize) => {
-  // 当每页大小改变时，通常重置回第一页
-  // pageSize.value = newSize; // 如果 pageSize 是 ref 且可变
-  // currentPage.value = 1;
   console.log('每页显示数量改变为:', newSize)
-  // 如果 pageSize 是动态的，这里需要更新并可能重置 currentPage
 }
 </script>
 
@@ -170,16 +152,15 @@ body.dark .main h1 {
 .file-boxs-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  /* 固定两列 */
   gap: 30px;
   padding: 20px 0;
-  /* 调整最大宽度以更好地居中，并与main的padding-left/right匹配 */
   max-width: 600px;
   /* 假设 FileBox 宽度 approx 280px * 2 + 30px gap */
   width: 100%;
   /* 确保在 max-width 范围内占据可用宽度 */
   justify-content: center;
   /* 如果列数不足，内容居中 */
+  min-height: 230px;
 }
 
 .pagination-controls-container {
@@ -217,5 +198,22 @@ body.dark .main h1 {
 .btnGroup {
   display: flex;
   gap: 30px;
+}
+.fade-slide-enter-active {
+  transition: all 0.4s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-slide-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-slide-leave-active {
+  position: absolute;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0s ease;
 }
 </style>

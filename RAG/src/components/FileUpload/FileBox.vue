@@ -59,24 +59,40 @@ const props = defineProps({
 })
 
 const visiable = ref(false)
+// 存储所有文件数据（本地）
+const allFiles = ref([])
+// 当前页显示的文件列表
 const files = ref([])
-
-// --- 分页相关状态 ---
-const currentPage = ref(1) // 当前页码，默认为第一页
-const pageSize = ref(4) // 每页显示的文件数量，固定为4
-const total = ref(0) // 总文件数
+// 总文件数
+const total = ref(0)
+// 当前页码，默认为第一页
+const currentPage = ref(1)
+// 每页显示的文件数量
+const pageSize = ref(4)
 
 const iconUrl = computed(() => {
   const iconName = `${props.type}_icon`
-  console.log(props.type)
   return assets[iconName] || assets.star_icon
 })
 
 const title = props.title || 'Error'
 const description = props.description || 'Engineer is great science'
 
-onMounted(() => {
-  // refresh()
+onMounted(async () => {
+  try {
+    const res = await FileService.getBaseFiles({
+      baseNum: props.id,
+      page: 1,
+      pageSize: 1000, // 获取全部文件
+    })
+    allFiles.value = res.list
+    total.value = res.list.length
+    updateCurrentPageData()
+  } catch (error) {
+    ElNotification.error({
+      message: '获取知识库文件失败',
+    })
+  }
 })
 
 const handleClick = () => {
@@ -84,27 +100,35 @@ const handleClick = () => {
   visiable.value = true
 }
 
+// 根据当前页码更新显示的数据
+const updateCurrentPageData = () => {
+  const startIndex = (currentPage.value - 1) * pageSize.value
+  const endIndex = startIndex + pageSize.value
+  files.value = allFiles.value.slice(startIndex, endIndex)
+}
+
+// 刷新数据（重新获取全部文件）
 const refresh = async () => {
   try {
     const res = await FileService.getBaseFiles({
       baseNum: props.id,
-      page: currentPage.value,
-      pageSize: pageSize.value,
+      page: 1,
+      pageSize: 1000, // 获取全部文件
     })
-    files.value = res.list
-    total.value = res.total
-    // console.log(files.value)
+    allFiles.value = res.list
+    total.value = res.list.length
+    updateCurrentPageData()
   } catch (error) {
     ElNotification.error({
-      message: '获取知识库列表失败',
+      message: '获取知识库文件失败',
     })
   }
-  // console.log('updated')
 }
 
-const handleCurrentChange = async (newPage) => {
+// 处理当前页码改变事件
+const handleCurrentChange = (newPage) => {
   currentPage.value = newPage
-  await refresh()
+  updateCurrentPageData()
 }
 </script>
 
