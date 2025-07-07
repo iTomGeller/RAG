@@ -21,8 +21,8 @@
           :type="item.type"
           :text="item.text"
         />
-        <transition name="scale">
-          <div class="source-container">
+        <div class="source-container">
+          <transition name="scale">
             <div v-show="hasSource" class="source" ref="sourceRef">
               <div class="source-title-box" @click="handleSourceCardClick">
                 <span class="source-title">{{ t('chat.sourceTip') }}</span>
@@ -44,8 +44,8 @@
                 /></transition-group>
               </span>
             </div>
-          </div>
-        </transition>
+          </transition>
+        </div>
       </div>
 
       <FeedbackDrawer v-model:visible="isDrawerVisible" />
@@ -92,7 +92,7 @@ import Message from './Message.vue'
 import FeedbackDrawer from '../Siderbar/FeedbackDrawer.vue'
 import { ChatService, messageContent, showResult, loading, sources } from '@/service/ChatService'
 import FileCard from '../FileUpload/FileCard.vue'
-import VirtualList from 'vue3-virtual-scroll-list'//虚拟滚动
+import VirtualList from 'vue3-virtual-scroll-list' //虚拟滚动
 import { gsap } from 'gsap' // 引入GSAP
 import { useI18n } from 'vue-i18n' //全局语言切换
 const { t } = useI18n()
@@ -192,7 +192,7 @@ onUnmounted(() => {})
   border-radius: 15px;
   background-color: #67c23a;
 }
-body.dark .source { 
+body.dark .source {
   background-color: #409eff;
 }
 .source-title-box {

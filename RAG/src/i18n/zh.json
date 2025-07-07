@@ -60,7 +60,7 @@
     "user": "用户",
     "userTip": "在这里设置你的用户信息",
     "language": "语言设置",
-    "languageTag":"全局语言:",
+    "languageTag": "全局语言:",
     "languageTip": "选择你喜欢的语言",
     "theme": "主题设置",
     "themeTip": "选择你喜欢的主题",
@@ -77,12 +77,13 @@
     "bgTransparency": "背景透明度",
     "resetTheme": "恢复默认设置"
   },
-  "fileCard":{
+  "fileCard": {
     "emptyTip": "暂无文件"
   },
   "fileUpload": {
-    "categorize": "放入文件，我会帮你自动分类...",
-    "upload": "拖放文档文件到这里<br/><span class='file-types'>支持格式: txt, doc, docx, md, pdf, xls, xlsx</span>",
+    "categorize": "放入文件，我会帮你自动分类... :)",
+    "upload": "<span >拖放文档文件到这里<span><br/><span style='font-size:12px'>支持格式: txt doc md pdf xls</span>",
+    "empty": "<span style='font-size:14px'>暂无文件<br/><span style='font-size:14px'>拖放文档文件到这里<span><br/><span style='font-size:12px'>支持格式: txt doc md pdf xls</span>",
     "support": "支持格式: txt,doc,docx,md,pdf,xls,xlsx",
     "invalidate": "文件类型不符合要求"
   },
@@ -101,7 +102,7 @@
     "aiTip": "Otter AI 的回答未必正确无误，请仔细核查",
     "sourceTip": "为你找到了一些资料..."
   },
-  "addBaseBtn":{
+  "addBaseBtn": {
     "btnTitle": "新增知识库",
     "baseName": "知识库名称",
     "baseType": "知识库类别",
@@ -138,7 +139,7 @@
     "title": "向Otter AI发送反馈",
     "content": "请描述您的反馈内容(必填）",
     "placeholder": "请告诉我们是什么原因促使您提供此反馈...",
-    "emptyWarning":"反馈内容不能为空",
+    "emptyWarning": "反馈内容不能为空",
     "success": "感谢您的反馈，我们会尽快处理。",
     "error": "提交失败，请稍后再试。",
     "submit": "提交",

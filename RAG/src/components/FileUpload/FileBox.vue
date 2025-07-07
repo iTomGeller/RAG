@@ -11,8 +11,7 @@
       </div>
     </template>
     <template #content>
-      <div v-if="total === 0" class="empty-tip">{{ t('fileCard.emptyTip') }}</div>
-      <div v-else class="file-cards-grid" :class="{ 'single-item-center': total === 1 }">
+      <div v-if="total > 0" class="file-cards-grid" :class="{ 'single-item-center': total === 1 }">
         <FileCard
           class="file-card"
           v-for="file in files"
@@ -21,6 +20,7 @@
           :name="file.name"
         />
       </div>
+      <div v-else class="empty-file-box"></div>
 
       <!-- 分页控件 -->
       <div v-if="total > 0" class="file-cards-pagination-controls-container">
@@ -33,7 +33,9 @@
           background
         />
       </div>
-      <FileUploadButton :baseId="props.id" :baseName="props.name" />
+      <div class="upload-container">
+        <FileUploadButton :baseId="props.id" :baseName="props.name" :empty="total === 0" />
+      </div>
     </template>
   </ExpandWindow>
 </template>
@@ -191,20 +193,21 @@ body.dark .wolfram-card__title {
   max-width: 220px;
 }
 
-.empty-tip {
-  justify-self: center;
-  align-items: center;
-  padding: 20px 120px;
-  margin-top: 10px;
-  border-radius: 10px;
-  /* background-color: rgba(0, 0, 0, 0.319); */
+.empty-file-box{
+  width:400px;
+  height: 0px;
 }
 
 .file-cards-pagination-controls-container {
   margin-top: 0px;
-  margin-bottom: 20px;
   width: 100%;
   display: flex;
   justify-content: center;
+}
+.upload-container{
+  margin-top: 15px;
+}
+.filepond--drop-label {
+    color: #851616;
 }
 </style>

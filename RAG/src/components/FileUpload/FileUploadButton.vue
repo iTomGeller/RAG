@@ -7,7 +7,7 @@
     <file-pond
       ref="pondRef"
       name="file"
-      :label-idle="t('fileUpload.upload')"
+      :label-idle="props.empty ? t('fileUpload.empty') : t('fileUpload.upload')"
       max-files="8"
       allow-multiple="false"
       allow-revert="false"
@@ -45,6 +45,10 @@ const props = defineProps({
   baseName: {
     type: String,
     required: true,
+  },
+  empty: {
+    type: Boolean,
+    default: false,
   },
 })
 //filepond自定义限制文件类型

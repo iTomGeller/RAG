@@ -12,9 +12,9 @@
       :before-close="clickCancel"
       v-model="dialog"
       size="80%"
-      :title="t('fileUpload.categorize')"
       :with-header="false"
     >
+      <div class="upload-title">{{ t('fileUpload.categorize') }}</div>
       <div class="upload-container">
         <!-- FilePond 文件上传区域 -->
         <file-pond
@@ -123,7 +123,7 @@ const handleUploadSuccess = (error, file) => {
       pondRef.value?.removeFile(file.id)
     }, 7000)
   } else {
-    ElNotification.error('上传失败',error)
+    ElNotification.error('上传失败', error)
   }
 }
 //文件分类信息
@@ -205,7 +205,11 @@ body.dark .wolfram-card__title {
 .dialog-container {
   text-align: start;
 }
+.upload-title{
+  text-align: center;
+  font-size: 18px;
 
+}
 .upload-container {
   width: 400px;
   margin: 20px auto;
