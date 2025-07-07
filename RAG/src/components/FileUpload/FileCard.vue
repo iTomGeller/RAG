@@ -16,12 +16,12 @@ const props = defineProps({
   name: String,
 })
 function getIcon(url) {
-  if (/\.docx?$/.test(url)) return new URL('@/assets/icons/doc.png', import.meta.url).href
-  if (/\.xlsx?$/.test(url)) return new URL('@/assets/icons/xls.png', import.meta.url).href
-  if (/\.txt$/.test(url)) return new URL('@/assets/icons/txt.png', import.meta.url).href
-  if (/\.md$/.test(url)) return new URL('@/assets/icons/md.png', import.meta.url).href
-  if (/\.pdf$/.test(url)) return new URL('@/assets/icons/pdf.png', import.meta.url).href
-  return new URL('@/assets/icons/file.png', import.meta.url).href
+  if (/\.docx?$/.test(url)) return new URL('@/assets/file-icons/doc.png', import.meta.url).href
+  if (/\.xlsx?$/.test(url)) return new URL('@/assets/file-icons/xls.png', import.meta.url).href
+  if (/\.txt$/.test(url)) return new URL('@/assets/file-icons/txt.png', import.meta.url).href
+  if (/\.md$/.test(url)) return new URL('@/assets/file-icons/md.png', import.meta.url).href
+  if (/\.pdf$/.test(url)) return new URL('@/assets/file-icons/pdf.png', import.meta.url).href
+  return new URL('@/assets/file-icons/file.png', import.meta.url).href
 }
 
 function handlePreview() {

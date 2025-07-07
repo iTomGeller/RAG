@@ -18,10 +18,10 @@
 
         <template v-if="!isLogin && isEmailValid">
           <div calss="input-group">
-            <label for="verificationCode">验证码</label>
+            <label for="verificationCode" style="color: #ababab ;">验证码</label>
             <div class="code-input">
               <input text="text" id="verificationCode" v-model="verificationCode" required />
-              <button type="button" @click="handleSendCode" :disabled="isCodeSent">
+              <button type="button" @click="handleSendCode" :disabled="isCodeSent" style="width: auto; border-radius: 3px;margin-left: 20px;">
                 {{ isCodeSent ? `重新获取(${codeCountdown})` : '发送验证码' }}
               </button>
             </div>
@@ -262,7 +262,7 @@ button:disabled {
 
 .code-input {
   display: flex;
-  gap: 10px;
+  gap: 20px;
 }
 
 .code-input input {
