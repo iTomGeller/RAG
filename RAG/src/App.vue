@@ -1,5 +1,4 @@
 <script setup>
-// import GeminiProvider from './components/context/GeminiProvider.vue';
 import { RouterView } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import ThemeControlle from './components/utils/themeChange'

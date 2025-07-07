@@ -140,7 +140,7 @@ const handleUploadSuccess = (error, file) => {
       pondRef.value?.removeFile(file.id)
     }, 7000)
   } else {
-    ElNotification.error('上传失败', error)
+    ElNotification.error('上传失败',error)
   }
 }
 //文件分类信息

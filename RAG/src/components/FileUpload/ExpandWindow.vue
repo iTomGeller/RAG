@@ -200,6 +200,7 @@ body.dark .window-header {
 .window-body {
   padding: 15px;
   height: calc(100% - 42px); /* 减去标题栏高度 */
+  background-color: #fff;
   overflow: auto;
 }
 body.dark .window-body {
