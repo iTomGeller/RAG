@@ -21,6 +21,7 @@
           :type="item.type"
           :text="item.text"
         />
+        <div class="result-spacer"></div>
       </div>
 
       <FeedbackDrawer v-model:visible="isDrawerVisible" />
@@ -347,6 +348,9 @@ body.dark .source-cards {
 }
 .fade-slide-leave-to {
   opacity: 0;
+}
+.result-spacer{
+  height: 100px;
 }
 
 @keyframes loader {
