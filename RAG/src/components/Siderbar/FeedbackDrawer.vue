@@ -190,7 +190,6 @@ watch(
 .btn-group .btn {
   border-radius: 10px;
   color: #282828;
-  /* background-color: #e2e6eb; */
   cursor: pointer;
 }
 
