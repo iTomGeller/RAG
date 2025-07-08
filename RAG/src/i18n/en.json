@@ -100,7 +100,7 @@
     "aiTitle": "Hi,",
     "aiHello": "How can I help you today?",
     "aiTip": "Otter AI can make mistakes. Check important info.",
-    "sourceTip": "relevant documents found ..."
+    "sourceTip": "relevant documents"
   },
   "addBaseBtn":{
     "btnTitle": "Create new knowledge base",
